@@ -1,0 +1,97 @@
+@charset "ISO-8859-1";
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+#navImage {
+    max-width: 125px;
+}
+
+nav {
+    background: linear-gradient(#fc6434, #f06c4e);
+    height: 100px;
+}
+
+#cartImage {
+    max-width: 40px;  
+}
+
+#profileImage {
+    max-width: 60px;
+}
+
+
+.navbar-nav {
+    display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Add this line to align items to the right */
+  flex-grow: 1; /* Add this line to allow items to grow and fill the remaining space */ 
+}
+
+.filter {
+ text-align: center;
+}
+
+.header {
+    margin-top: 20px;
+    font-size: 25px;
+}
+
+.checkbox-container {
+    display: inline-block;
+    margin-top: 10px
+}
+
+.cb {
+    margin-left: 55px
+}
+
+.range__slider {
+    position: relative;
+    width: 100%;
+    height: calc(65px - 10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    margin: 30px 0;
+}
+.range__slider::before, .range__slider::after {
+  padding: 10px;
+   
+    font-size: 0.9rem;
+    
+}
+.range__slider::before {
+    content: attr(data-min);
+    left: 10px;
+}
+.range__slider::after {
+    content: attr(data-max);
+    right: 10px;
+}
+.range__slider .length__title::after {
+    content: attr(data-length);
+    position: absolute;
+    right: -20px;
+    font-variant-numeric: tabular-nums;
+
+}
+
+.length__title::after {
+	content: attr(data-length);
+	position: absolute;
+	right: -20px;
+	font-variant-numeric: tabular-nums;
+}
+
+.field-title {
+	position: absolute;
+    top: -15%;
+    left: 48%;
+	pointer-events: none;
+	user-select: none;
+}
+
+.btn-danger {
+    margin-right: 10px;
+    
+}
