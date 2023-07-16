@@ -136,7 +136,7 @@ public class UserDAO {
 				user.setAge(rs.getInt("age"));
 				user.setGender(rs.getString("gender"));
 
-				userList.remove(user);
+				userList.add(user);
 			}
 		} catch (Exception e) {
 			// Log any exceptions
