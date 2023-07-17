@@ -1,4 +1,4 @@
-package com.myshop.userws.dbaccess;
+package Books;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
