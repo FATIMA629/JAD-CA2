@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import Books.*;
 
 @RestController
+@RequestMapping("books")
 
 public class BookController {
+	
 	@RequestMapping(method=RequestMethod.GET, path="/getAllBooks")
 	public ArrayList<Book> getAllBooks() {
 		ArrayList<Book> bookList = new ArrayList<>();
@@ -18,4 +20,5 @@ public class BookController {
 		}
 		return bookList;
 	}
+	
 }

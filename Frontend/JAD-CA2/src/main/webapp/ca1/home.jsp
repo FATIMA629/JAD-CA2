@@ -120,7 +120,7 @@ String searchInput = request.getParameter("searchInput");
 								<div class="rating-stars">
 									<%-- Generate the star rating based on book's rating --%>
 									<%
-									for (int i = 1; i < book.getRating(); i++) {
+										for (int i = 1; i < book.getRating(); i++) {
 									%>
 									<span class="fa fa-star checked"></span>
 									<%

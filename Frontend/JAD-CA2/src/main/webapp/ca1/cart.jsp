@@ -8,6 +8,7 @@
 <%
 // Retrieve the cart items from the session
 List<Book> cartItems = (List<Book>) session.getAttribute("cartItems");
+int userid = (int) session.getAttribute("userId");
 %>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,7 +49,7 @@ List<Book> cartItems = (List<Book>) session.getAttribute("cartItems");
 	%>
 
 	<div class="container-fluid"
-		style="background-color: #f1f1f1; height: 100%;">
+		style="background-color: #f1f1f1; height: 100vh;">
 		<div class="cart-header">
 			<h3>Shopping Cart</h3>
 			<hr class="browse-line">
@@ -74,7 +75,7 @@ List<Book> cartItems = (List<Book>) session.getAttribute("cartItems");
 			for (Book item : cartItems) {
 			%>
 			<div class="item-container"
-				style="width: 89%; height: 150px; margin: 0 auto; border-radius: 5px; border: 1px solid rgba(0, 0, 0, .4); background-color: rgb(221, 221, 221);">
+				style="width: 89%; height: 150px; margin: 0 auto; border-radius: 5px; border: 1px solid rgba(0, 0, 0, .4); background-color: rgb(221, 221, 221) margin-bottom: 30px;">
 				<div class="row">
 					<div class="col-6 p-3">
 						<img src="<%=item.getImageLocation()%>" alt="<%=item.getTitle()%>"
@@ -87,13 +88,15 @@ List<Book> cartItems = (List<Book>) session.getAttribute("cartItems");
 					<div class="col-3 center">
 						<button class="minus-button">-</button>
 						<input type="text"
-							value="<%=cartDao.getQuantity(1, Integer.parseInt(item.getBookId()))%>"
+							value="<%=cartDao.getQuantity(userid, Integer.parseInt(item.getBookId()))%>"
 							class="quantity-input">
 						<button class="plus-button">+</button>
 					</div>
+					
 					<div class="col-1 center">
-						<button class="delete">Delete</button>
+						<button type="submit" class="delete" name="bookId" value="<%=item.getBookId()%>">Delete</button>
 					</div>
+				
 				</div>
 			</div>
 			<%

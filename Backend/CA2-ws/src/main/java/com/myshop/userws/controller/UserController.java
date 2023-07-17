@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.myshop.userws.dbaccess.*;
 
 @RestController
+@RequestMapping("books")
 
 public class UserController {
 

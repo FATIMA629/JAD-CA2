@@ -31,11 +31,9 @@ public class AddToCartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        String action = request.getParameter("action");
 
-//        if (action != null && action.equals("delete")) {
-//            int bookId = Integer.parseInt(request.getParameter("bookId"));
-////            deleteCartItem(1);
-//        } else {
+
             HttpSession session = request.getSession();
+            int userid = (int) session.getAttribute("userId");
             int bookId = Integer.parseInt(request.getParameter("id"));
             int cartQuantity = Integer.parseInt(request.getParameter("cart-quantity"));
 
@@ -45,9 +43,9 @@ public class AddToCartServlet extends HttpServlet {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            cartDao.addToCart(1, bookId, cartQuantity);
+            cartDao.addToCart(userid, bookId, cartQuantity);
 
-            List<Book> cartItems = cartDao.getAllBooksInCart(1);
+            List<Book> cartItems = cartDao.getAllBooksInCart(userid);
             session.setAttribute("cartItems", cartItems);
         //}
 

@@ -135,17 +135,17 @@ Book book = bookDao.getBookById(bookId);
 						<hr>
 					</div>
 					<p class="book-amount"><%=book.getPrice()%></p>
+					<form action="../AddToCartServlet" method="post">
 					<div class="quantity-wrapper">
 						<span class="quantity-text">Quantity: </span>
 						<div class="quantity">
-							<button class="minus-button">-</button>
-							<input type="text" value="1" class="quantity-input">
-							<button class="plus-button">+</button>
+							<button class="minus-button" type="button">-</button>
+							<input type="text" name="cart-quantity" value="1" class="quantity-input">
+							<button class="plus-button" type="button">+</button>
 						</div>
 					</div>
-					<form action="../AddToCartServlet" method="post">
 						<input type="hidden" name="id" value="<%=book.getBookId()%>">
-						<button class="buy--btn">
+						<button type="submit" class="buy--btn">
 							<img src="images/output-onlinepngtools.png" alt="cart-image"
 								class="add-to-cart"> ADD TO CART
 						</button>

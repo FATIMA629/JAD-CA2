@@ -8,7 +8,7 @@ import Books.Book;
 import Books.BookDao;
 
 public class CartDao {
-    private String connURL = "jdbc:mysql://localhost/ca1?user=root&password=Jer2k0518222&serverTimezone=UTC";
+    private String connURL = "jdbc:mysql://localhost/ca1?user=root&password=root&serverTimezone=UTC";
 
     public CartDao() throws ClassNotFoundException {
         // Load JDBC Driver
@@ -160,4 +160,38 @@ public class CartDao {
 
         return quantity;
     }
+    
+    public void deleteFromCart(int userId, int bookId) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+
+            // Delete the book from the cart
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM shoppingcart WHERE UserID = ? AND BookID = ?");
+            stmt.setInt(1, userId);
+            stmt.setInt(2, bookId);
+            stmt.executeUpdate();
+
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+   
+
+
+
+
+
+
+    
+    
 }
