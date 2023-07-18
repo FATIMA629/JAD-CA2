@@ -18,6 +18,7 @@ public class CartController {
             cartList = cartDao.getAllBooksInCart(userid);
             System.out.print(cartList);
         } catch (Exception e) {
+        	System.out.print("Hello");
             System.out.println("Error: " + e);
         }
         return cartList;
