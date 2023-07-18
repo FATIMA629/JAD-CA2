@@ -131,9 +131,9 @@ public class GenreDao {
 		return genreName;
 	}
 
-	public List<Genre> getAllGenres() {
+	public ArrayList<Genre> getAllGenres() {
 		Connection conn = null;
-		List<Genre> genres = new ArrayList<>();
+		ArrayList<Genre> genres = new ArrayList<>();
 
 		try {
 			conn = getConnection();
