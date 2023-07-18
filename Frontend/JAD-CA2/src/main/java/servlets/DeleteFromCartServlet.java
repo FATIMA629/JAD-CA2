@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Books.Book;
 import Cart.CartDao;
 
 /**
@@ -53,6 +56,8 @@ public class DeleteFromCartServlet extends HttpServlet {
 
         // Delete the book from the user's cart
         cartDao.deleteFromCart(userid, bookId);
+        List<Book> cartItems = cartDao.getAllBooksInCart(userid);
+        session.setAttribute("cartItems", cartItems);
 
         // Redirect the user back to the cart page
         response.sendRedirect("ca1/cart.jsp");

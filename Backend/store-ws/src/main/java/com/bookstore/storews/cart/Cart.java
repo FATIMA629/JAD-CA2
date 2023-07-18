@@ -1,4 +1,4 @@
-package Cart;
+package com.bookstore.storews.cart;
 
 public class Cart {
 	private int userid;

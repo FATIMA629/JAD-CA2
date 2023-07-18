@@ -94,9 +94,11 @@ int userid = (int) session.getAttribute("userId");
 					</div>
 					
 					<div class="col-1 center">
+					<form action="../DeleteFromCartServlet" method="post">
 						<button type="submit" class="delete" name="bookId" value="<%=item.getBookId()%>">Delete</button>
+					</form>
 					</div>
-				
+					
 				</div>
 			</div>
 			<%
