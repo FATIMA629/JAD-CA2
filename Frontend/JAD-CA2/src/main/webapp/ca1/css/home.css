@@ -361,7 +361,7 @@ p {
 .profile-prompt {
 	display: none;
 	position: absolute;
-	bottom: -170px;
+	bottom: -123px;
 	left: 50%;
 	transform: translateX(-88%);
 	width: 150px;

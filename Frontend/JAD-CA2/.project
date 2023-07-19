@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
+	<name>JAD CA2</name>
+=======
 	<name>JAD-CA2</name>
+>>>>>>> fd0119f8742123b9181ad7a6276a56372bf5d001
 	<comment></comment>
 	<projects>
 	</projects>
