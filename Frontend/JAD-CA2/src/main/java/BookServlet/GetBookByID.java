@@ -17,19 +17,20 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import Books.Book;
 
 /**
- * Servlet implementation class getBooks
+ * Servlet implementation class GetBookByID
  */
-@WebServlet("/getBooks")
-public class getBooks extends HttpServlet {
+@WebServlet("/GetBookByID")
+public class GetBookByID extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public getBooks() {
+    public GetBookByID() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,10 +41,10 @@ public class getBooks extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
 		PrintWriter out = response.getWriter();
         Client client = ClientBuilder.newClient();
-        String restUrl = "http://localhost:8081/store/books/getAllBooks";
+        String bookid = request.getParameter("bookid");
+        String restUrl = "http://localhost:8081/store/books/getBookById/" + bookid;
         WebTarget target = client.target(restUrl);
         Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
         Response resp = invocationBuilder.get();
@@ -51,23 +52,20 @@ public class getBooks extends HttpServlet {
 
         if (resp.getStatus() == Response.Status.OK.getStatusCode()) {
             System.out.println("success");
-            ArrayList<Book> bookList = resp.readEntity(new GenericType<ArrayList<Book>>() {});
-            System.out.println(bookList.size());
-            for (Book book : bookList) {
+            Book book = resp.readEntity(new GenericType<Book>() {});
                 System.out.println(book.getBookId());
-                out.print("<br>Userid: " + book.getBookId());
+                out.print("<br>Bookid: " + book.getBookId());
                 out.print("<br>Description: " + book.getDescription());
                 out.print("<br>Author: " + book.getAuthor() + "<br>");
-            }
-
-            request.setAttribute("bookArray", bookList);
+            
+            request.setAttribute("book", book);
             System.out.println("......requestObj set...forwarding..");
-            String url = "ca1/home.jsp";
+            String url = "ca1/viewBook.jsp";
             RequestDispatcher cd = request.getRequestDispatcher(url);
             //cd.forward(request, response);
         } else {
             System.out.println("failed");
-            String url = "ca1/home.jsp";
+            String url = "ca1/viewBook.jsp";
             request.setAttribute("err", "NotFound");
             RequestDispatcher cd = request.getRequestDispatcher(url);
             //cd.forward(request, response);
