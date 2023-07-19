@@ -7,24 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+import com.bookstore.storews.dbaccess.DBConnection;
 
 public class GenreDao {
-	private String connURL = "jdbc:mysql://localhost/ca1?user=root&password=root&serverTimezone=UTC";
-
-	public GenreDao() throws ClassNotFoundException {
-		Class.forName("com.mysql.cj.jdbc.Driver"); // Load JDBC Driver
-	}
-
-	public Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(connURL); // Establish connection to URL
-	}
 
 	public Genre getGenreById(int genreId) {
 		Connection conn = null;
 		Genre genre = null;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM genres WHERE genreId = ?");
 			pstmt.setInt(1, genreId);
@@ -50,7 +42,7 @@ public class GenreDao {
 		Map<Genre, Integer> popularGenres = new HashMap<>();
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement(
 					"SELECT genreId, COUNT(*) as genreCount FROM books GROUP BY genreId ORDER BY genreCount DESC LIMIT ?");
@@ -74,45 +66,41 @@ public class GenreDao {
 	}
 
 	public List<Genre> getTopRatedGenres(int limit) {
-	    Connection conn = null;
-	    List<Genre> topRatedGenres = new ArrayList<>();
+		Connection conn = null;
+		List<Genre> topRatedGenres = new ArrayList<>();
 
-	    try {
-	        conn = getConnection();
+		try {
+			conn = DBConnection.getConnection();
 
-	        PreparedStatement pstmt = conn.prepareStatement(
-	                "SELECT g.genreId, g.genreName, AVG(b.rating) AS avgRating " +
-	                "FROM genres g " +
-	                "JOIN books b ON g.genreId = b.genreId " +
-	                "GROUP BY g.genreId " +
-	                "ORDER BY avgRating DESC " +
-	                "LIMIT ?");
-	        pstmt.setInt(1, limit);
+			PreparedStatement pstmt = conn.prepareStatement("SELECT g.genreId, g.genreName, AVG(b.rating) AS avgRating "
+					+ "FROM genres g " + "JOIN books b ON g.genreId = b.genreId " + "GROUP BY g.genreId "
+					+ "ORDER BY avgRating DESC " + "LIMIT ?");
+			pstmt.setInt(1, limit);
 
-	        ResultSet rs = pstmt.executeQuery();
+			ResultSet rs = pstmt.executeQuery();
 
-	        while (rs.next()) {
-	            Genre genre = new Genre();
-	            genre.setGenreId(rs.getInt("genreId"));
-	            genre.setGenreName(rs.getString("genreName"));
+			while (rs.next()) {
+				Genre genre = new Genre();
+				genre.setGenreId(rs.getInt("genreId"));
+				genre.setGenreName(rs.getString("genreName"));
 
-	            topRatedGenres.add(genre);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        closeConnection(conn);
-	    }
+				topRatedGenres.add(genre);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
 
-	    return topRatedGenres;
+		return topRatedGenres;
 	}
-	
+
 	public String getGenreNameById(int genreId) {
 		Connection conn = null;
 		String genreName = null;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT genreName FROM genres WHERE genreID = ?");
 			pstmt.setInt(1, genreId);
@@ -136,7 +124,7 @@ public class GenreDao {
 		ArrayList<Genre> genres = new ArrayList<>();
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM genres");
@@ -159,37 +147,35 @@ public class GenreDao {
 	}
 
 	public String getGenre(int genreId) {
-	    Connection conn = null;
-	    String genreName = null;
-	    try {
-	        conn = getConnection();
+		Connection conn = null;
+		String genreName = null;
+		try {
+			conn = DBConnection.getConnection();
 
-	        PreparedStatement pstmt = conn.prepareStatement("SELECT GenreName FROM genres WHERE genreID = ?;");
-	        pstmt.setInt(1, genreId);
-	        ResultSet rs = pstmt.executeQuery();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT GenreName FROM genres WHERE genreID = ?;");
+			pstmt.setInt(1, genreId);
+			ResultSet rs = pstmt.executeQuery();
 
-	        // Step 7: Process Result
-	        if (rs.next()) {
-	            genreName = rs.getString("GenreName");
-	        }
+			// Step 7: Process Result
+			if (rs.next()) {
+				genreName = rs.getString("GenreName");
+			}
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        // Ensure connection is closed
-	        if (conn != null) {
-	            try {
-	                conn.close();
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
-	    return genreName;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			// Ensure connection is closed
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return genreName;
 	}
 
-
-	
 	public void closeConnection(Connection conn) {
 		if (conn != null) {
 			try {
