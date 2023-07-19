@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
         
+<<<<<<< HEAD
     <wb-module deploy-name="JAD CA2">
+=======
+    <wb-module deploy-name="JAD-CA2">
+>>>>>>> fd0119f8742123b9181ad7a6276a56372bf5d001
                 
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
                 
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
                 
+<<<<<<< HEAD
         <property name="java-output-path" value="/JAD CA2/build/classes"/>
         <property name="context-root" value="JAD CA2"/>
+=======
+        <property name="java-output-path" value="/JAD-CA2/build/classes"/>
+        <property name="context-root" value="JAD-CA2"/>
+>>>>>>> fd0119f8742123b9181ad7a6276a56372bf5d001
             
     </wb-module>
     
