@@ -466,7 +466,7 @@
 		%>
 
 		<h2 class="mb-4" id="add-book-section">Add Book</h2>
-		<form action="../AddBookServlet" method="post">
+		<form action="../CreateNewBook" method="post">
 			<!-- Title field -->
 			<div class="mb-3">
 				<label for="title" class="form-label">Title</label> <input

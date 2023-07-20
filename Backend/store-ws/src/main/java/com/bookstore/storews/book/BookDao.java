@@ -45,7 +45,7 @@ public class BookDao {
 		return book;
 	}
 
-		public boolean createBook(Book book) {
+		public boolean createBook(Book book) throws SQLException, ClassNotFoundException{
 		System.out.println("Entered createBook method");
 		Connection conn = null;
 		boolean created = false;
@@ -58,8 +58,11 @@ public class BookDao {
 			PreparedStatement pstmt = conn.prepareStatement(
 					"INSERT INTO books (Title, Author, GenreID, Price, Quantity, Publisher, PublishDate ,ISBN, Rating, Description, ImageLocation, Sold) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
+			System.out.println("insert statement done");
 			pstmt.setString(1, book.getTitle());
+			System.out.println("insert title done");
 			pstmt.setString(2, book.getAuthor());
+			System.out.println("insert author done");
 			pstmt.setInt(3, book.getGenreId());
 			pstmt.setDouble(4, book.getPrice());
 			pstmt.setInt(5, book.getQuantity());
@@ -70,8 +73,13 @@ public class BookDao {
 			pstmt.setString(10, book.getDescription());
 			pstmt.setString(11, book.getImageLocation());
 			pstmt.setInt(12, book.getSold());
+			
+			System.out.println("insert done");
 
 			int rowsAffected = pstmt.executeUpdate();
+			
+			
+			
 			System.out.println("Executed SQL query, rows affected: " + rowsAffected);
 			created = (rowsAffected > 0);
 
