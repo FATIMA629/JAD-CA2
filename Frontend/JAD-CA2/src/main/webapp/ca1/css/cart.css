@@ -238,4 +238,5 @@ h3 {
   
   .delete:hover {
 text-decoration: underline;
+color: blue;
   }

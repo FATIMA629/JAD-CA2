@@ -511,25 +511,18 @@ public class BookDao {
 	}
 	
 	
-	public ArrayList<Book> getFilteredBooks(String genre, double price) {
+	public ArrayList<Book> getFilteredBooks(int[] genreIds, double price) {
 	    Connection conn = null;
-	    ArrayList<Book> books = new ArrayList<>();
+	    ArrayList<Book> filteredBooks = new ArrayList<>();
 	    try {
 	    	conn = DBConnection.getConnection();
 
 	        // Modify the SQL query based on your database schema and table names
 	        String query = "SELECT b.*, g.GenreName FROM books b JOIN genres g ON b.GenreID = g.GenreID";
 
-	        // Create a list to store the query conditions
-	        List<String> conditions = new ArrayList<>();
-
-	        // Create a list to store the query parameters
-	        List<Object> params = new ArrayList<>();
-
 	        // Check if genre is provided
-	        if (genre != null && !genre.isEmpty()) {
-	            conditions.add("g.GenreName = ?");
-	            params.add(genre);
+	        if (genreIds != null) {
+	           query += "WHERE g.GenreID = ?";
 	        }
 
 	        // Check if price is provided

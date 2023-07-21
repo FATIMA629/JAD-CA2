@@ -3,6 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
+
+
 <%
 // Hardcoded book ID for testing
 String bookId = "1";
@@ -10,6 +12,7 @@ String bookId = "1";
 // Create a BookDao and get the book
 BookDao bookDao = new BookDao();
 GenreDao genreDao = new GenreDao();
+//List<Book> allBooks = (List<Book>) request.getAttribute("bookArray");
 List<Book> allBooks = bookDao.readAllBooks();
 
 String searchInput = request.getParameter("searchInput");

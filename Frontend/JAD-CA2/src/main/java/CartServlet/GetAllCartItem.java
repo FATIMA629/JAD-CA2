@@ -63,15 +63,15 @@ public class GetAllCartItem extends HttpServlet {
 
             request.setAttribute("cartArray", cartList);
             System.out.println("......requestObj set...forwarding..");
-            String url = "ca1/home.jsp";
+            String url = "/ca1/home.jsp";
             RequestDispatcher cd = request.getRequestDispatcher(url);
-            //cd.forward(request, response);
+            cd.forward(request, response);
         } else {
             System.out.println("failed");
-            String url = "ca1/home.jsp";
+            String url = "/ca1/home.jsp";
             request.setAttribute("err", "NotFound");
             RequestDispatcher cd = request.getRequestDispatcher(url);
-            //cd.forward(request, response);
+            cd.forward(request, response);
         }
 	}
 

@@ -75,7 +75,7 @@ int userid = (int) session.getAttribute("userId");
 			for (Book item : cartItems) {
 			%>
 			<div class="item-container"
-				style="width: 89%; height: 150px; margin: 0 auto; border-radius: 5px; border: 1px solid rgba(0, 0, 0, .4); background-color: rgb(221, 221, 221) margin-bottom: 30px;">
+				style="width: 89%; height: 150px; margin: 0 auto; border-radius: 5px; border: 1px solid rgba(0, 0, 0, .4); background-color: rgb(221, 221, 221); margin-bottom: 30px;">
 				<div class="row">
 					<div class="col-6 p-3">
 						<img src="<%=item.getImageLocation()%>" alt="<%=item.getTitle()%>"
