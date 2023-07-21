@@ -14,8 +14,7 @@
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-	
-<link
+	<link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
@@ -466,7 +465,7 @@
 		%>
 
 		<h2 class="mb-4" id="add-book-section">Add Book</h2>
-		<form action="../AddBookServlet" method="post">
+		<form action="../CreateNewBook" method="post">
 			<!-- Title field -->
 			<div class="mb-3">
 				<label for="title" class="form-label">Title</label> <input
