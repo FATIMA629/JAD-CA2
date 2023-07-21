@@ -49,7 +49,7 @@ public class CartController {
     }
     
     @RequestMapping(path = "/deleteFromCart/{userid}/{bookid}", method = RequestMethod.DELETE)
-	public boolean deleteUser(@PathVariable("userid") int userid, @PathVariable("bookid") int bookid) {
+	public boolean deleteFromCart(@PathVariable("userid") int userid, @PathVariable("bookid") int bookid) {
     	boolean deleted = false;
 		try {
 			CartDao cartDao = new CartDao();

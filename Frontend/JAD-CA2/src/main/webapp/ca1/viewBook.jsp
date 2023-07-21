@@ -135,7 +135,7 @@ Book book = bookDao.getBookById(bookId);
 						<hr>
 					</div>
 					<p class="book-amount"><%=book.getPrice()%></p>
-					<form action="../AddToCartServlet" method="post">
+					<form action="../AddToCart" method="post">
 					<div class="quantity-wrapper">
 						<span class="quantity-text">Quantity: </span>
 						<div class="quantity">

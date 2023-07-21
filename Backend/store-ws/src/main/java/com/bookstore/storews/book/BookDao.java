@@ -230,9 +230,9 @@ public class BookDao {
 		return updated;
 	}
 
-	public List<Book> getTopSellingBooks(int limit) {
+	public ArrayList<Book> getTopSellingBooks(int limit) {
 		Connection conn = null;
-		List<Book> topSellingBooks = new ArrayList<>();
+		ArrayList<Book> topSellingBooks = new ArrayList<>();
 
 		try {
 			conn = DBConnection.getConnection();
@@ -259,9 +259,9 @@ public class BookDao {
 		return topSellingBooks;
 	}
 
-	public List<Book> getNewestBooks(int limit) {
+	public ArrayList<Book> getNewestBooks(int limit) {
 		Connection conn = null;
-		List<Book> newestBooks = new ArrayList<>();
+		ArrayList<Book> newestBooks = new ArrayList<>();
 
 		try {
 			conn = DBConnection.getConnection();
@@ -288,9 +288,9 @@ public class BookDao {
 		return newestBooks;
 	}
 
-	public List<Book> getHighestRatedBooks(int limit) {
+	public ArrayList<Book> getHighestRatedBooks(int limit) {
 		Connection conn = null;
-		List<Book> highestRatedBooks = new ArrayList<>();
+		ArrayList<Book> highestRatedBooks = new ArrayList<>();
 
 		try {
 			conn = DBConnection.getConnection();
@@ -410,9 +410,9 @@ public class BookDao {
 		return totalBooksSold;
 	}
 
-	public List<Book> getLowestStockBooks(int limit) {
+	public ArrayList<Book> getLowestStockBooks(int limit) {
 		Connection conn = null;
-		List<Book> lowestStockBooks = new ArrayList<>();
+		ArrayList<Book> lowestStockBooks = new ArrayList<>();
 
 		try {
 			conn = DBConnection.getConnection();
@@ -472,9 +472,9 @@ public class BookDao {
 		return averageRating;
 	}
 
-	public List<Book> searchBooks(String keyword) {
+	public ArrayList<Book> searchBooks(String keyword) {
 	    Connection conn = null;
-	    List<Book> books = new ArrayList<>();
+	    ArrayList<Book> books = new ArrayList<>();
 	    try {
 	    	conn = DBConnection.getConnection();
 
@@ -511,9 +511,9 @@ public class BookDao {
 	}
 	
 	
-	public List<Book> getFilteredBooks(String genre, double price) {
+	public ArrayList<Book> getFilteredBooks(String genre, double price) {
 	    Connection conn = null;
-	    List<Book> books = new ArrayList<>();
+	    ArrayList<Book> books = new ArrayList<>();
 	    try {
 	    	conn = DBConnection.getConnection();
 
