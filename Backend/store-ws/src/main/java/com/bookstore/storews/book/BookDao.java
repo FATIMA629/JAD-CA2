@@ -511,38 +511,38 @@ public class BookDao {
 	}
 	
 	
-	public ArrayList<Book> getFilteredBooks(int[] genreIds, double price) {
+	public ArrayList<Book> getFilteredBooks(String[] genreIds, double price) {
 	    Connection conn = null;
 	    ArrayList<Book> filteredBooks = new ArrayList<>();
 	    try {
 	    	conn = DBConnection.getConnection();
 
 	        // Modify the SQL query based on your database schema and table names
-	        String query = "SELECT b.*, g.GenreName FROM books b JOIN genres g ON b.GenreID = g.GenreID";
+	        String query = "SELECT b.*, g.GenreName FROM books b JOIN genres g ON b.GenreID = g.GenreID WHERE b.Price <= ?";
 
 	        // Check if genre is provided
-	        if (genreIds != null) {
-	           query += "WHERE g.GenreID = ?";
-	        }
-
-	        // Check if price is provided
-	        if (price >= 0) {
-	            conditions.add("b.Price <= ?");
-	            params.add(price);
-	        }
-
-	        // Add the conditions to the query if any exists
-	        if (!conditions.isEmpty()) {
-	            query += " WHERE " + String.join(" AND ", conditions);
-	        }
-
-	        PreparedStatement pstmt = conn.prepareStatement(query);
-
-	        // Set the query parameters
-	        for (int i = 0; i < params.size(); i++) {
-	            pstmt.setObject(i + 1, params.get(i));
-	        }
-
+	        if (genreIds != null  && genreIds.length > 0) {
+	           query += "AND g.GenreID IN(";
+for (int i = 0; i < genreIds.length; i++) {
+    if (i > 0) {
+        query += ",";
+    }
+    query += "?";
+}
+query += ")";
+	        }   
+			 
+	        System.out.print(query);
+	        
+     PreparedStatement pstmt = conn.prepareStatement(query);
+			   pstmt.setDouble(1, price);
+			   
+			   if (genreIds != null && genreIds.length > 0) {
+		            for (int i = 0; i < genreIds.length; i++) {
+		                pstmt.setString(i + 2, genreIds[i]);
+		            }
+		        }
+			   
 	        ResultSet rs = pstmt.executeQuery();
 
 	        // Process the result
@@ -563,7 +563,7 @@ public class BookDao {
 	            book.setImageLocation(rs.getString("ImageLocation"));
 	            book.setSold(rs.getInt("Sold"));
 
-	            books.add(book);
+	            filteredBooks.add(book);
 	        }
 
 	    } catch (SQLException e) {
@@ -572,7 +572,7 @@ public class BookDao {
 			closeConnection(conn);
 		}
 
-	    return books;
+	    return filteredBooks;
 	}
  
 	private void closeConnection(Connection conn) {

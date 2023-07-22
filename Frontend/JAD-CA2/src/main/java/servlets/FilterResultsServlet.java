@@ -49,7 +49,7 @@ public class FilterResultsServlet extends HttpServlet {
                 System.out.print(genreId + "<br>");
             }
         }
-        int price = Integer.parseInt(request.getParameter("price"));
+        double price = Double.parseDouble(request.getParameter("price"));
         System.out.print(price);
         
      // Create an instance of the BookDao class
@@ -63,10 +63,10 @@ public class FilterResultsServlet extends HttpServlet {
         // Check if the bookDao object was successfully initialized
         if (bookDao != null) {
             // Retrieve the filtered results from the database
-            //List<Book> filteredBooks = bookDao.getFilteredBooks(genre, price);
+            List<Book> filteredBooks = bookDao.getFilteredBooks(selectedGenres, price);
 
             // Set the filtered results as a request attribute
-            //request.setAttribute("filteredBooks", filteredBooks);
+            request.setAttribute("filteredBooks", filteredBooks);
 
             // Forward the request to a JSP page to display the results
             RequestDispatcher dispatcher = request.getRequestDispatcher("/ca1/filterResults.jsp");

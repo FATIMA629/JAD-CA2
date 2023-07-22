@@ -132,18 +132,18 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getFilteredBooks")
-    public ArrayList<Book> getFilteredBooks(@RequestParam(value = "genre", required = false) String genre,
-            @RequestParam(value = "price", required = false) double price) {
-    	ArrayList<Book> filteredBooks = new ArrayList<>();
+    public ArrayList<Book> getFilteredBooks(@RequestParam(value = "genre", required = false) String[] genreIds,
+                                            @RequestParam(value = "price", required = false) double price) {
+        ArrayList<Book> filteredBooks = new ArrayList<>();
         try {
             BookDao bookDao = new BookDao();
-            filteredBooks = bookDao.getFilteredBooks(genre, price);
+            filteredBooks = bookDao.getFilteredBooks(genreIds, price);
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
         return filteredBooks;
     }
-
+    
     @RequestMapping(method = RequestMethod.GET, path = "/getTotalRevenue")
     public double getTotalRevenue() {
         double totalRevenue = 0;
