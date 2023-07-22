@@ -361,7 +361,7 @@ p {
 .profile-prompt.guest{
 	display: none;
 	position: absolute;
-	bottom: -123px;
+	bottom: -183px;
 	left: 50%;
 	transform: translateX(-88%);
 	width: 150px;
@@ -376,7 +376,7 @@ p {
 .profile-prompt.user{
 	display: none;
 	position: absolute;
-	bottom: -180px;
+	bottom: -120px;
 	left: 50%;
 	transform: translateX(-88%);
 	width: 150px;

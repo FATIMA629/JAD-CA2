@@ -44,7 +44,9 @@ public class SearchBook extends HttpServlet {
 		
 		PrintWriter out = response.getWriter();
         Client client = ClientBuilder.newClient();
-        String restUrl = "http://localhost:8081/store/books/searchBooks/c";
+        String keyword = request.getParameter("search");
+        System.out.print(keyword);
+        String restUrl = "http://localhost:8081/store/books/searchBooks/" + keyword;
         WebTarget target = client.target(restUrl);
         Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
         Response resp = invocationBuilder.get();
@@ -61,17 +63,17 @@ public class SearchBook extends HttpServlet {
                 out.print("<br>Author: " + book.getAuthor() + "<br>");
             }
 
-            request.setAttribute("bookArray", bookList);
+            request.setAttribute("searchBookArray", bookList);
             System.out.println("......requestObj set...forwarding..");
-            String url = "ca1/home.jsp";
+            String url = "/ca1/search.jsp";
             RequestDispatcher cd = request.getRequestDispatcher(url);
-            //cd.forward(request, response);
+            cd.forward(request, response);
         } else {
             System.out.println("failed");
-            String url = "ca1/home.jsp";
+            String url = "/ca1/search.jsp";
             request.setAttribute("err", "NotFound");
             RequestDispatcher cd = request.getRequestDispatcher(url);
-            //cd.forward(request, response);
+            cd.forward(request, response);
         }
 	}
 

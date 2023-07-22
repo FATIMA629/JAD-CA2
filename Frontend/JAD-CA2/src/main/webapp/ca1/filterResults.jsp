@@ -8,15 +8,7 @@
 BookDao bookDao = new BookDao();
 GenreDao genreDao = new GenreDao();
 
-// Retrieve the genre and price parameters from the request
-String genre = request.getParameter("genre");
-String price = request.getParameter("price");
-
-// Retrieve the filtered books using the bookDao
-List<Book> filteredBooks = bookDao.getFilteredBooks(genre, Double.parseDouble(price));
-
-// Set the filteredBooks as an attribute in the request
-request.setAttribute("filteredBooks", filteredBooks);
+List<Book> filteredBooks = (List<Book>) request.getAttribute("bookArray");
 %>
 <!DOCTYPE html>
 <html>

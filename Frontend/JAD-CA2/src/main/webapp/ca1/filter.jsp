@@ -60,7 +60,7 @@ String searchInput = request.getParameter("searchInput");
 		<div class="browse" style="display: flex; justify-content: center">
 			<h3>Browse</h3>
 		</div>
-		<form action="../FilterResultsServlet" method="post">
+		<form action="../GetFilteredBook">
 			<%
 			for (Genre genre : genreList) {
 			%>

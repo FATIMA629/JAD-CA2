@@ -15,7 +15,7 @@ GenreDao genreDao = new GenreDao();
 //List<Book> allBooks = (List<Book>) request.getAttribute("bookArray");
 List<Book> allBooks = bookDao.readAllBooks();
 
-String searchInput = request.getParameter("searchInput");
+
 %>
 <!DOCTYPE html>
 <html>
