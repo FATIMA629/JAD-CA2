@@ -16,7 +16,7 @@ public class Book {
 	private String publishDate;
 	
 	public String getPublishDate() {
-		return publishDate;
+		return publishDate;	
 	}
 
 	public void setPublishDate(String publishDate) {

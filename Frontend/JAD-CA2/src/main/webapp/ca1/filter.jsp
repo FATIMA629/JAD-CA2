@@ -56,11 +56,10 @@ String searchInput = request.getParameter("searchInput");
 
  <jsp:include page="header.jsp" />
 
-	<div class="container-fluid">
-		<div class="browse" style="display: flex; justify-content: center">
-			<h3>Browse</h3>
-		</div>
+	<div class="container-fluid filter">
+			<h4 class="header">Filter</h4>
 		<form action="../GetFilteredBook">
+		<div class="checkbox-container">
 			<%
 			for (Genre genre : genreList) {
 			%>
@@ -70,15 +69,18 @@ String searchInput = request.getParameter("searchInput");
             </label>
             <br>
         <% } %>
-        
-     <div class="length range__slider" data-min="1" data-max="32">
+        </div>
+      
+     <div class="length range__slider" data-min="1" data-max="40">
 		<div class="length__title field-title" data-length='0'>Max Price:</div>
-		<input id="slider" type="range" min="4" max="40" value="16" name="price" />
+		<input id="slider" type="range" min="1" max="40" value="20" name="price" />
 	</div>
-	
+	<div class="btn-container">
 <button type="reset" class="btn btn-danger">Reset</button>
 <button type="submit" class="btn btn-success">Apply</button>
-		</form>	
+</div>
+</form>
+	
 	</div>
 	
 	

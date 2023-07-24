@@ -240,3 +240,99 @@ h3 {
 text-decoration: underline;
 color: blue;
   }
+  
+  .checkout-section {
+    display: grid;
+        grid-template-columns: 1fr 20.3125rem 11.875rem;
+        align-items: center;
+        box-sizing: border-box;
+        background: #f1f1f1;
+        width: 100%;
+        flex: 1;
+        font-size: 1rem;
+        position: relative;
+        margin-top: 0.75rem;
+        border-radius: 0;
+    transition: background .1s cubic-bezier(.4,0,.6,1);
+}
+
+.grid-container {
+    padding: 12px 0;
+    grid-column-start: 2;
+    grid-column-end: 4;
+    -ms-grid-column-span: 3;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+}
+
+.ff {
+    display: flex;
+flex-direction: column;
+}
+
+.aa {
+    display: flex;
+justify-content: flex-end; align-items: center;
+}
+
+.bb {
+    margin-left: 20px;
+display: flex;
+align-items: center;
+}
+
+.total-price {
+    font-size: 16px;
+color: #222;
+line-height: 19px;
+}
+
+.total-amount {
+    font-size: 24px;
+line-height: 28px;
+margin-left: 5px;
+color: black;
+}
+
+.cc {
+    font-size: 14px;
+    margin-top: 1px; display: flex;
+    justify-content: flex-end;
+}
+
+.checkout-section .checkout-btn-solid {
+    padding: 13px 36px;
+            margin: 0 22px 0 15px;
+            text-transform: capitalize;
+            font-weight: 300;
+            height: 2.5rem;
+            box-sizing: border-box;
+            font-size: .875rem;
+            border-radius: 2px;
+            width: 13.125rem;
+}
+
+.checkout-btn-solid--primary {
+    position: relative;
+    overflow: visible;
+    outline: 0px;
+    background: rgb(238, 77, 45);
+}
+
+.checkout-btn-solid {
+    outline: none;
+    cursor: pointer;
+    border: 0px;
+    line-height: 1;
+    letter-spacing: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    transition: opacity 0.2s ease 0s;
+    user-select: none;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 1px 1px 0px;
+}
+  

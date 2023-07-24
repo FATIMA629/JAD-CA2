@@ -46,6 +46,8 @@ int userid = (int) session.getAttribute("userId");
 	<jsp:include page="header.jsp" />
 	<%
 	CartDao cartDao = new CartDao();
+	double totalPrice = 0.0;
+	int totalCartItemsAmt = 0;
 	%>
 
 	<div class="container-fluid"
@@ -73,6 +75,9 @@ int userid = (int) session.getAttribute("userId");
 			</div>
 			<%
 			for (Book item : cartItems) {
+				 totalCartItemsAmt += cartDao.getQuantity(userid, Integer.parseInt(item.getBookId()));
+				 double totalPriceOfEachBook = item.getPrice() * cartDao.getQuantity(userid, Integer.parseInt(item.getBookId()));
+				 totalPrice += totalPriceOfEachBook;
 			%>
 			<div class="item-container"
 				style="width: 89%; height: 150px; margin: 0 auto; border-radius: 5px; border: 1px solid rgba(0, 0, 0, .4); background-color: rgb(221, 221, 221); margin-bottom: 30px;">
@@ -83,7 +88,7 @@ int userid = (int) session.getAttribute("userId");
 							style="font-size: 15px;"><%=item.getTitle()%></span>
 					</div>
 					<div class="col-2 center">
-						<span><%=Double.toString(item.getPrice())%></span>
+						<span><%=totalPriceOfEachBook%></span>
 					</div>
 					<div class="col-3 center">
 						<button class="minus-button">-</button>
@@ -105,8 +110,34 @@ int userid = (int) session.getAttribute("userId");
 			}
 			%>
 		</div>
+		<section class="checkout-section">
+            <div class="grid-container">
+<div class="ff">
+                <div class="aa">
+                    <div class="bb">
+<div class="total-price">
+    Total (<%=totalCartItemsAmt %> item):
+</div>
+<div class="total-amount">
+<%=totalPrice %>
+</div>
+                    </div>
+                </div>
+                
+     
+                <div class="cc"></div>
+            </div>
+            <button class="checkout-btn-solid checkout-btn-solid--primary">
+                <span style="width: 100%">Check out</span>
+            </button>
+</div>
+        </section>
 	</div>
 </body>
+
+<%
+System.out.println(totalPrice);
+%>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

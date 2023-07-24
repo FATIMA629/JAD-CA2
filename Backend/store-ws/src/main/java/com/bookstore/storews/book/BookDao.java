@@ -1,7 +1,6 @@
 package com.bookstore.storews.book;
 
 import java.sql.*;
-import java.util.List;
 import java.util.ArrayList;
 import com.bookstore.storews.dbaccess.DBConnection;
 

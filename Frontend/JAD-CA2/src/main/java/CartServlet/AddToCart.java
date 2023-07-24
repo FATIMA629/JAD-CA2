@@ -78,13 +78,13 @@ public class AddToCart extends HttpServlet {
 			});
 
 			request.setAttribute("rec", rec);
-			String url = request.getContextPath() + "/ca1/cart.jsp";
+			String url = "/ca1/cart.jsp";
 			System.out.println(url);
 			RequestDispatcher cd = request.getRequestDispatcher(url);
 			cd.forward(request, response);
 		} else {
 			System.out.println("Failure");
-			String url = "ca1/cart.jsp";
+			String url = "/ca1/cart.jsp";
 			request.setAttribute("err", "FailedInsertBook");
 			RequestDispatcher cd = request.getRequestDispatcher(url);
 			cd.forward(request, response);

@@ -3,7 +3,6 @@ package com.bookstore.storews.controller;
 import org.springframework.web.bind.annotation.*;
 import com.bookstore.storews.book.*;
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("books")

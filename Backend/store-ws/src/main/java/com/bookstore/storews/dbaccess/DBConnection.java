@@ -20,7 +20,7 @@ public class DBConnection {
 		String dbUrl = "jdbc:mysql://localhost/ca1";
 		String dbUser = "root";
 		String dbPassword = "root";
-		String dbClass = "com.mysql.jdbc.Driver";
+		String dbClass = "com.mysql.cj.jdbc.Driver";
 
 		// Initialize connection object to null
 		Connection connection = null;

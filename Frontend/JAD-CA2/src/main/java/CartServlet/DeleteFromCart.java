@@ -69,12 +69,12 @@ public class DeleteFromCart extends HttpServlet {
             
             request.setAttribute("book", book);
             System.out.println("......requestObj set...forwarding..");
-            String url = "ca1/viewBook.jsp";
+            String url = "/ca1/cart.jsp";
             RequestDispatcher cd = request.getRequestDispatcher(url);
             cd.forward(request, response);
         } else {
             System.out.println("failed");
-            String url = "ca1/viewBook.jsp";
+            String url = "/ca1/cart.jsp";
             request.setAttribute("err", "NotFound");
             RequestDispatcher cd = request.getRequestDispatcher(url);
             cd.forward(request, response);
