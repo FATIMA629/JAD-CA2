@@ -1,6 +1,8 @@
 package com.bookstore.storews.order;
 
 import java.util.Date;
+import java.util.List;
+import com.bookstore.storews.order.*;
 
 public class Order {
 	private int orderId;
@@ -12,6 +14,16 @@ public class Order {
 	private String billingAddress;
 	private String postalCode;
 	private String country;
+    private List<OrderItem> orderItems;
+
+    // Getter and setter for orderItems
+    public List<OrderItem> getOrderItems() {
+        return this.orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
 
 	// Constructors, getters, and setters
 

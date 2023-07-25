@@ -1,9 +1,8 @@
 package DBAccess;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 import java.text.ParseException;
-
 
 public class Order {
 	private int orderId;
@@ -15,7 +14,17 @@ public class Order {
 	private String billingAddress;
 	private String postalCode;
 	private String country;
+    private List<OrderItem> orderItems;
 
+    // Getter and setter for orderItems
+    public List<OrderItem> getOrderItems() {
+        return this.orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+    
 	// Constructors, getters, and setters
 
 	public int getOrderId() {
@@ -42,19 +51,19 @@ public class Order {
 		this.totalPrice = totalPrice;
 	}
 
-    public String getOrderDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(orderDate);
-    }
+	public Date getOrderDate() {
+		return this.orderDate;
+	}
 
-    public void setOrderDate(String orderDate) {
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            this.orderDate = dateFormat.parse(orderDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
+	public void setOrderDate(java.sql.Date date) {
+		// try {
+		// SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		// this.orderDate = dateFormat.parse(date);
+		this.orderDate = date;
+		// } catch (ParseException e) {
+		// e.printStackTrace();
+		// }
+	}
 
 	public String getOrderStatus() {
 		return orderStatus;
