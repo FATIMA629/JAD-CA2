@@ -3,7 +3,6 @@ package com.bookstore.storews.controller;
 import org.springframework.web.bind.annotation.*;
 import com.bookstore.storews.book.*;
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("books")
@@ -72,8 +71,8 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getTopSellingBooks/{limit}")
-    public List<Book> getTopSellingBooks(@PathVariable("limit") int limit) {
-        List<Book> topSellingBooks = new ArrayList<>();
+    public ArrayList<Book> getTopSellingBooks(@PathVariable("limit") int limit) {
+        ArrayList<Book> topSellingBooks = new ArrayList<>();
         try {
             BookDao bookDao = new BookDao();
             topSellingBooks = bookDao.getTopSellingBooks(limit);
@@ -84,8 +83,8 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getNewestBooks/{limit}")
-    public List<Book> getNewestBooks(@PathVariable("limit") int limit) {
-        List<Book> newestBooks = new ArrayList<>();
+    public ArrayList<Book> getNewestBooks(@PathVariable("limit") int limit) {
+        ArrayList<Book> newestBooks = new ArrayList<>();
         try {
             BookDao bookDao = new BookDao();
             newestBooks = bookDao.getNewestBooks(limit);
@@ -96,8 +95,8 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getHighestRatedBooks/{limit}")
-    public List<Book> getHighestRatedBooks(@PathVariable("limit") int limit) {
-        List<Book> highestRatedBooks = new ArrayList<>();
+    public ArrayList<Book> getHighestRatedBooks(@PathVariable("limit") int limit) {
+    	ArrayList<Book> highestRatedBooks = new ArrayList<>();
         try {
             BookDao bookDao = new BookDao();
             highestRatedBooks = bookDao.getHighestRatedBooks(limit);
@@ -108,8 +107,8 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getLowestStockBooks/{limit}")
-    public List<Book> getLowestStockBooks(@PathVariable("limit") int limit) {
-        List<Book> lowestStockBooks = new ArrayList<>();
+    public ArrayList<Book> getLowestStockBooks(@PathVariable("limit") int limit) {
+    	ArrayList<Book> lowestStockBooks = new ArrayList<>();
         try {
             BookDao bookDao = new BookDao();
             lowestStockBooks = bookDao.getLowestStockBooks(limit);
@@ -120,8 +119,8 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/searchBooks/{keyword}")
-    public List<Book> searchBooks(@PathVariable("keyword") String keyword) {
-        List<Book> books = new ArrayList<>();
+    public ArrayList<Book> searchBooks(@PathVariable("keyword") String keyword) {
+    	ArrayList<Book> books = new ArrayList<>();
         try {
             BookDao bookDao = new BookDao();
             books = bookDao.searchBooks(keyword);
@@ -132,18 +131,18 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getFilteredBooks")
-    public List<Book> getFilteredBooks(@RequestParam(value = "genre", required = false) String genre,
-            @RequestParam(value = "price", required = false) double price) {
-        List<Book> filteredBooks = new ArrayList<>();
+    public ArrayList<Book> getFilteredBooks(@RequestParam(value = "genre", required = false) String[] genreIds,
+                                            @RequestParam(value = "price", required = false) double price) {
+        ArrayList<Book> filteredBooks = new ArrayList<>();
         try {
             BookDao bookDao = new BookDao();
-            filteredBooks = bookDao.getFilteredBooks(genre, price);
+            filteredBooks = bookDao.getFilteredBooks(genreIds, price);
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
         return filteredBooks;
     }
-
+    
     @RequestMapping(method = RequestMethod.GET, path = "/getTotalRevenue")
     public double getTotalRevenue() {
         double totalRevenue = 0;

@@ -1,7 +1,6 @@
 package com.bookstore.storews.book;
 
 import java.sql.*;
-import java.util.List;
 import java.util.ArrayList;
 import com.bookstore.storews.dbaccess.DBConnection;
 
@@ -230,9 +229,9 @@ public class BookDao {
 		return updated;
 	}
 
-	public List<Book> getTopSellingBooks(int limit) {
+	public ArrayList<Book> getTopSellingBooks(int limit) {
 		Connection conn = null;
-		List<Book> topSellingBooks = new ArrayList<>();
+		ArrayList<Book> topSellingBooks = new ArrayList<>();
 
 		try {
 			conn = DBConnection.getConnection();
@@ -259,9 +258,9 @@ public class BookDao {
 		return topSellingBooks;
 	}
 
-	public List<Book> getNewestBooks(int limit) {
+	public ArrayList<Book> getNewestBooks(int limit) {
 		Connection conn = null;
-		List<Book> newestBooks = new ArrayList<>();
+		ArrayList<Book> newestBooks = new ArrayList<>();
 
 		try {
 			conn = DBConnection.getConnection();
@@ -288,9 +287,9 @@ public class BookDao {
 		return newestBooks;
 	}
 
-	public List<Book> getHighestRatedBooks(int limit) {
+	public ArrayList<Book> getHighestRatedBooks(int limit) {
 		Connection conn = null;
-		List<Book> highestRatedBooks = new ArrayList<>();
+		ArrayList<Book> highestRatedBooks = new ArrayList<>();
 
 		try {
 			conn = DBConnection.getConnection();
@@ -410,9 +409,9 @@ public class BookDao {
 		return totalBooksSold;
 	}
 
-	public List<Book> getLowestStockBooks(int limit) {
+	public ArrayList<Book> getLowestStockBooks(int limit) {
 		Connection conn = null;
-		List<Book> lowestStockBooks = new ArrayList<>();
+		ArrayList<Book> lowestStockBooks = new ArrayList<>();
 
 		try {
 			conn = DBConnection.getConnection();
@@ -472,9 +471,9 @@ public class BookDao {
 		return averageRating;
 	}
 
-	public List<Book> searchBooks(String keyword) {
+	public ArrayList<Book> searchBooks(String keyword) {
 	    Connection conn = null;
-	    List<Book> books = new ArrayList<>();
+	    ArrayList<Book> books = new ArrayList<>();
 	    try {
 	    	conn = DBConnection.getConnection();
 
@@ -511,45 +510,38 @@ public class BookDao {
 	}
 	
 	
-	public List<Book> getFilteredBooks(String genre, double price) {
+	public ArrayList<Book> getFilteredBooks(String[] genreIds, double price) {
 	    Connection conn = null;
-	    List<Book> books = new ArrayList<>();
+	    ArrayList<Book> filteredBooks = new ArrayList<>();
 	    try {
 	    	conn = DBConnection.getConnection();
 
 	        // Modify the SQL query based on your database schema and table names
-	        String query = "SELECT b.*, g.GenreName FROM books b JOIN genres g ON b.GenreID = g.GenreID";
-
-	        // Create a list to store the query conditions
-	        List<String> conditions = new ArrayList<>();
-
-	        // Create a list to store the query parameters
-	        List<Object> params = new ArrayList<>();
+	        String query = "SELECT b.*, g.GenreName FROM books b JOIN genres g ON b.GenreID = g.GenreID WHERE b.Price <= ?";
 
 	        // Check if genre is provided
-	        if (genre != null && !genre.isEmpty()) {
-	            conditions.add("g.GenreName = ?");
-	            params.add(genre);
-	        }
-
-	        // Check if price is provided
-	        if (price >= 0) {
-	            conditions.add("b.Price <= ?");
-	            params.add(price);
-	        }
-
-	        // Add the conditions to the query if any exists
-	        if (!conditions.isEmpty()) {
-	            query += " WHERE " + String.join(" AND ", conditions);
-	        }
-
-	        PreparedStatement pstmt = conn.prepareStatement(query);
-
-	        // Set the query parameters
-	        for (int i = 0; i < params.size(); i++) {
-	            pstmt.setObject(i + 1, params.get(i));
-	        }
-
+	        if (genreIds != null  && genreIds.length > 0) {
+	           query += "AND g.GenreID IN(";
+for (int i = 0; i < genreIds.length; i++) {
+    if (i > 0) {
+        query += ",";
+    }
+    query += "?";
+}
+query += ")";
+	        }   
+			 
+	        System.out.print(query);
+	        
+     PreparedStatement pstmt = conn.prepareStatement(query);
+			   pstmt.setDouble(1, price);
+			   
+			   if (genreIds != null && genreIds.length > 0) {
+		            for (int i = 0; i < genreIds.length; i++) {
+		                pstmt.setString(i + 2, genreIds[i]);
+		            }
+		        }
+			   
 	        ResultSet rs = pstmt.executeQuery();
 
 	        // Process the result
@@ -570,7 +562,7 @@ public class BookDao {
 	            book.setImageLocation(rs.getString("ImageLocation"));
 	            book.setSold(rs.getInt("Sold"));
 
-	            books.add(book);
+	            filteredBooks.add(book);
 	        }
 
 	    } catch (SQLException e) {
@@ -579,7 +571,7 @@ public class BookDao {
 			closeConnection(conn);
 		}
 
-	    return books;
+	    return filteredBooks;
 	}
  
 	private void closeConnection(Connection conn) {

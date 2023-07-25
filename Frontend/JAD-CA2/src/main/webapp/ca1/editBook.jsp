@@ -58,7 +58,7 @@
 
 	<div class="container mt-5">
 		<h2 class="mb-4">Edit Book</h2>
-		<form method="post" action="../UpdateBookServlet">
+		<form method="post" action="../UpdateBook">
 			<input type="hidden" name="bookId" value="<%=book.getBookId()%>">
 
 			<div class="mb-3">

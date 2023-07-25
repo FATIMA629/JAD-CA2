@@ -10,7 +10,7 @@ String bookId = "1";
 // Create a BookDao and get the book
 BookDao bookDao = new BookDao();
 GenreDao genreDao = new GenreDao();
-List<Book> allBooks = bookDao.readAllBooks();
+List<Genre> genreList = genreDao.getAllGenres();
 
 String searchInput = request.getParameter("searchInput");
 %>
@@ -24,7 +24,7 @@ String searchInput = request.getParameter("searchInput");
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- <!—customised CSS -->
 
-<link href="css/home.css" rel="stylesheet" />
+<link href="css/filter.css" rel="stylesheet" />
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- <!—compiled & minified CSS -->
@@ -56,95 +56,82 @@ String searchInput = request.getParameter("searchInput");
 
  <jsp:include page="header.jsp" />
 
-
-	<div id="carouselExampleControls" class="carousel slide m-5"
-		data-bs-ride="carousel">
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<img
-					src="https://asset.popular.com.sg/general/popular-online/2023/home/titbitscarnival_june-b.jpg"
-					class="d-block w-75 mx-auto height" alt="...">
-			</div>
-			<div class="carousel-item">
-				<img
-					src="https://asset.popular.com.sg/general/popular-online/2023/home/logitech-b.jpg"
-					class="d-block w-75 mx-auto height" alt="...">
-			</div>
-			<div class="carousel-item">
-				<img
-					src="https://asset.popular.com.sg/general/popular-online/2023/home/myreward-b.jpg"
-					class="d-block w-75 mx-auto height" alt="...">
-			</div>
-		</div>
-		<button class="carousel-control-prev" type="button"
-			data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span> <span
-				class="visually-hidden">Previous</span>
-		</button>
-		<button class="carousel-control-next" type="button"
-			data-bs-target="#carouselExampleControls" data-bs-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span> <span
-				class="visually-hidden">Next</span>
-		</button>
-	</div>
-
-
-
-	<div class="container-fluid">
-		<div class="browse" style="display: flex; justify-content: center">
-			<h3>Browse</h3>
-			<a href="filter.jsp"><img src="images/menu.png"
-				class="filter-btn"></a>
-		</div>
-		<hr class="browse-line">
-		<section id="movies"
-			style="min-height: 100vh; width: 90%; margin-left: 110px; display: flex; flex-wrap: wrap; justify-content: space-between;">
+	<div class="container-fluid filter">
+			<h4 class="header">Filter</h4>
+		<form action="../GetFilteredBook">
+		<div class="checkbox-container">
 			<%
-			for (Book book : allBooks) {
+			for (Genre genre : genreList) {
 			%>
-			<div class="book-container">
-				<a href="viewBook.jsp?id=<%=book.getBookId()%>"
-					style="text-decoration: none;">
-					<figure class="movie-figure"
-						style="background-color: white; width: 14em; margin: 0.5em; box-shadow: 0 5px 15px gray; overflow: hidden; position: relative; cursor: pointer; transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);">
-						<img src="<%=book.getImageLocation()%>" alt="logo-image"
-							style="height: 21em; width: 100%; border-style: none">
-						<figcaption
-							style="display: block; line-height: 2; padding: 0 0.8em; height: 140px;">
-							<h5
-								style="text-transform: uppercase; font-weight: 600; color: #737373; display: block; font-size: 1em; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"><%=book.getTitle()%></h5>
-							<p
-								style="text-transform: capitalize; font-size: 1em; font-weight: 600; color: #dcbe00; display: block; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px;"><%=genreDao.getGenre(book.getGenreId())%></p>
-							<div class="rating-stars"
-								style="display: flex; align-items: center;">
-								<div class="rating-stars">
-									<%-- Generate the star rating based on book's rating --%>
-									<%
-									for (int i = 1; i < book.getRating(); i++) {
-									%>
-									<span class="fa fa-star checked"></span>
-									<%
-									}
-									%>
-									<%
-									for (int i = (int) book.getRating(); i <= 4; i++) {
-									%>
-									<span class="fa fa-star"></span>
-									<%
-									}
-									%>
-								</div>
-								<h4 style="color: black; display: block;"><%=book.getRating()%></h4>
-							</div>
-						</figcaption>
-					</figure>
-				</a>
-			</div>
-			<%
-			}
-			%>
-		</section>
+			<label>
+                <input type="checkbox" name="genre" value="<%=Integer.toString(genre.getGenreId()) %>">
+                <%=genre.getGenreName() %>
+            </label>
+            <br>
+        <% } %>
+        </div>
+      
+     <div class="length range__slider" data-min="1" data-max="40">
+		<div class="length__title field-title" data-length='0'>Max Price:</div>
+		<input id="slider" type="range" min="1" max="40" value="20" name="price" />
 	</div>
+	<div class="btn-container">
+<button type="reset" class="btn btn-danger">Reset</button>
+<button type="submit" class="btn btn-success">Apply</button>
+</div>
+</form>
+	
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<script>
+	console.clear();
+	
+	const sliderProps = {
+		fill: "#0B1EDF",
+		background: "rgba(255, 255, 255, 0.214)",
+	};
+
+	// Selecting the Range Slider container which will effect the LENGTH property of the password.
+	const slider = document.querySelector(".range__slider");
+
+	// Text which will show the value of the range slider.
+	const sliderValue = document.querySelector(".length__title");
+
+	// Using Event Listener to apply the fill and also change the value of the text.
+	slider.querySelector("input").addEventListener("input", event => {
+		sliderValue.setAttribute("data-length", event.target.value);
+		applyFill(event.target);
+	});
+	// Selecting the range input and passing it in the applyFill func.
+	applyFill(slider.querySelector("input"));
+	// This function is responsible to create the trailing color and setting the fill.
+	function applyFill(slider) {
+		const percentage = (100 * (slider.value - slider.min)) / (slider.max - slider.min);
+		const bg = `linear-gradient(90deg, ${sliderProps.fill} ${percentage}%, ${sliderProps.background} ${percentage +
+				0.1}%)`;
+		slider.style.background = bg;
+		sliderValue.setAttribute("data-length", slider.value);
+	}
+
+	// Selecting all the DOM Elements that are necessary -->
+	// The Viewbox where the result will be shown
+	const resultEl = document.getElementById("result");
+	// The input slider, will use to change the length of the password
+	const lengthEl = document.getElementById("slider");
+
+
+	
+	</script>
+	
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

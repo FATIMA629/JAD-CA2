@@ -2,12 +2,17 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import Books.Book;
+import Cart.CartDao;
 import Users.User;
 import Users.UserDao;
 
@@ -29,6 +34,7 @@ public class VerifyLoginServlet extends HttpServlet {
 		}
 
 		try {
+			CartDao cartDao = new CartDao();
 			UserDao userDao = new UserDao();
 			User user = userDao.loginUser(username, password);
 
@@ -36,6 +42,8 @@ public class VerifyLoginServlet extends HttpServlet {
 				session.setAttribute("userId", user.getUserID());
 				session.setAttribute("role", user.getRole());
 				session.setAttribute("loggedIn", true);
+				List<Book> cartItems = cartDao.getAllBooksInCart(user.getUserID());
+				session.setAttribute("cartItems", cartItems);
 
 				if (user.getRole().equals("admin")) {
 					response.sendRedirect("ca1/adminDashboard.jsp");

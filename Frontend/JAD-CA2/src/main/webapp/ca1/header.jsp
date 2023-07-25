@@ -51,7 +51,7 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="home.jsp"> <img
-				src="images/home.png" class="img-fluid" id="navImage">
+				src="../images/home.png" class="img-fluid" id="navImage">
 			</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -62,7 +62,7 @@
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav mx-auto">
 					<!-- Added 'mx-auto' class for center alignment -->
-					<form method="get" class="search-container" action="search.jsp">
+					<form class="search-container" action="../SearchBook">
 						<input type="text" name="search" id="search-bar"
 							placeholder="Search anything...">
 						<button type="submit" class="search-btn">
@@ -72,16 +72,16 @@
 					</form>
 					<a href="adminDashboard.jsp"> <!-- Add a link to the admin dashboard page -->
 						<button class="btn btn-primary">Admin Dashboard</button> <!-- Add a button for admin dashboard -->
-					</a> <a href="cart.jsp"> <img src="images/cart.png"
+					</a> <a href="cart.jsp"> <img src="../images/cart.png"
 						class="img-fluid" id="cartImage">
 					</a>
 					<div class="cart-drawer">
 						<div class="profile-icon">
-							<img src="images/profile.png" class="img-fluid" id="profileImage">
-							<div class="profile-prompt">
+							<img src="../images/profile.png" class="img-fluid" id="profileImage">
+							<div class="profile-prompt user">
 								<div class="profile">
 									<span class="dot"><img class="profile-picture"
-										src="images/image-removebg-preview (39).png" /></span> <a
+										src="../images/image-removebg-preview (39).png" /></span> <a
 										href="./userEditUser"><span class="profile-status">Admin</span></a>
 								</div>
 								<hr>
@@ -105,7 +105,7 @@
 
 		<div class="container-fluid">
 			<a class="navbar-brand" href="home.jsp"> <img
-				src="images/home.png" class="img-fluid" id="navImage">
+				src="../images/home.png" class="img-fluid" id="navImage">
 			</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -116,7 +116,7 @@
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav mx-auto">
 					<!-- Added 'mx-auto' class for center alignment -->
-					<form method="get" class="search-container" action="search.jsp">
+					<form class="search-container" action="../SearchBook">
 						<input type="text" name="search" id="search-bar"
 							placeholder="Search anything...">
 						<button type="submit" class="search-btn">
@@ -125,16 +125,16 @@
 						</button>
 					</form>
 
-					<a href="cart.jsp"> <img src="images/cart.png"
+					<a href="cart.jsp"> <img src="../images/cart.png"
 						class="img-fluid" id="cartImage">
 					</a>
 					<div class="cart-drawer">
 						<div class="profile-icon">
-							<img src="images/profile.png" class="img-fluid" id="profileImage">
-							<div class="profile-prompt">
+							<img src="../images/profile.png" class="img-fluid" id="profileImage">
+							<div class="profile-prompt user">
 								<div class="profile">
 									<span class="dot"><img class="profile-picture"
-										src="images/image-removebg-preview (39).png" /></span> <a
+										src="../images/image-removebg-preview (39).png" /></span> <a
 										href="./userEditUser"><span class="profile-status">User</span></a>
 								</div>
 								<hr>
@@ -157,7 +157,7 @@
 		<!-- Navbar content for guest -->
 		<div class="container-fluid">
 			<a class="navbar-brand" href="home.jsp"> <img
-				src="images/home.png" class="img-fluid" id="navImage">
+				src="../images/home.png" class="img-fluid" id="navImage">
 			</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -168,7 +168,7 @@
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav mx-auto">
 					<!-- Added 'mx-auto' class for center alignment -->
-					<form method="get" class="search-container" action="search.jsp">
+					<form class="search-container" action="../SearchBook">
 						<input type="text" name="search" id="search-bar"
 							placeholder="Search anything...">
 						<button type="submit" class="search-btn">
@@ -177,16 +177,16 @@
 						</button>
 					</form>
 
-					<a href="cart.jsp"> <img src="images/cart.png"
+					<a href="cart.jsp"> <img src="../images/cart.png"
 						class="img-fluid" id="cartImage">
 					</a>
 					<div class="cart-drawer">
 						<div class="profile-icon">
-							<img src="images/profile.png" class="img-fluid" id="profileImage">
-							<div class="profile-prompt">
+							<img src="../images/profile.png" class="img-fluid" id="profileImage">
+							<div class="profile-prompt guest">
 								<div class="profile">
 									<span class="dot"><img class="profile-picture"
-										src="images/image-removebg-preview (39).png" /></span> <a href="#"><span
+										src="../images/image-removebg-preview (39).png" /></span> <a href="#"><span
 										class="profile-status">Guest</span></a>
 								</div>
 								<hr>
@@ -205,7 +205,6 @@
 	<%
 	}
 	%>
-
-
+	
 </body>
 </html>

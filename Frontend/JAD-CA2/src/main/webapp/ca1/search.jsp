@@ -9,7 +9,7 @@ String searchQuery = request.getParameter("search");
 // Create a BookDao and get the search results
 BookDao bookDao = new BookDao();
 GenreDao genreDao = new GenreDao();
-List<Book> searchResults = bookDao.searchBooks(searchQuery);
+List<Book> searchBooks = (List<Book>) request.getAttribute("searchBookArray");
 %>
 <!DOCTYPE html>
 <html>
@@ -58,7 +58,7 @@ List<Book> searchResults = bookDao.searchBooks(searchQuery);
 		<hr class="browse-line">
 		<h3 style="padding-left: 75px">Search Results:</h3>
 		<%
-		if (searchResults.isEmpty()) {
+		if (searchBooks.isEmpty()) {
 		%>
 		<p>No results found.</p>
 		<%
@@ -67,7 +67,7 @@ List<Book> searchResults = bookDao.searchBooks(searchQuery);
 		<section id="movies"
 			style="min-height: 100vh; width: 90%; margin-left: 110px; display: flex; flex-wrap: wrap; justify-content: space-between;">
 			<%
-			for (Book book : searchResults) {
+			for (Book book : searchBooks) {
 			%>
 			<div class="book-container">
 				<a href="viewBook.jsp?id=<%=book.getBookId()%>"
