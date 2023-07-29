@@ -1,11 +1,15 @@
 package com.bookstore.storews.book;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import com.bookstore.storews.dbaccess.DBConnection;
 
 public class BookDao {
-	
 
 	public Book getBookById(String bookId) {
 		Connection conn = null;
@@ -44,24 +48,19 @@ public class BookDao {
 		return book;
 	}
 
-		public boolean createBook(Book book) throws SQLException, ClassNotFoundException{
+	public boolean createBook(Book book) throws SQLException, ClassNotFoundException, IOException {
 		System.out.println("Entered createBook method");
 		Connection conn = null;
 		boolean created = false;
 
 		try {
 			conn = DBConnection.getConnection();
-			// Print statement after getting the connection to see if this line executes
-			System.out.println("Got connection");
 
 			PreparedStatement pstmt = conn.prepareStatement(
 					"INSERT INTO books (Title, Author, GenreID, Price, Quantity, Publisher, PublishDate ,ISBN, Rating, Description, ImageLocation, Sold) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-			System.out.println("insert statement done");
 			pstmt.setString(1, book.getTitle());
-			System.out.println("insert title done");
 			pstmt.setString(2, book.getAuthor());
-			System.out.println("insert author done");
 			pstmt.setInt(3, book.getGenreId());
 			pstmt.setDouble(4, book.getPrice());
 			pstmt.setInt(5, book.getQuantity());
@@ -72,19 +71,13 @@ public class BookDao {
 			pstmt.setString(10, book.getDescription());
 			pstmt.setString(11, book.getImageLocation());
 			pstmt.setInt(12, book.getSold());
-			
-			System.out.println("insert done");
 
 			int rowsAffected = pstmt.executeUpdate();
-			
-			
-			
-			System.out.println("Executed SQL query, rows affected: " + rowsAffected);
+
 			created = (rowsAffected > 0);
 
 			System.out.println("Insert executed, created = " + created);
 		} catch (SQLException e) {
-			// Print out any exceptions that might be thrown
 			e.printStackTrace();
 		} finally {
 			closeConnection(conn);
@@ -472,108 +465,107 @@ public class BookDao {
 	}
 
 	public ArrayList<Book> searchBooks(String keyword) {
-	    Connection conn = null;
-	    ArrayList<Book> books = new ArrayList<>();
-	    try {
-	    	conn = DBConnection.getConnection();
+		Connection conn = null;
+		ArrayList<Book> books = new ArrayList<>();
+		try {
+			conn = DBConnection.getConnection();
 
-	        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books WHERE Title LIKE ?");
-	        pstmt.setString(1, "%" + keyword + "%");
-	        ResultSet rs = pstmt.executeQuery();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books WHERE Title LIKE ?");
+			pstmt.setString(1, "%" + keyword + "%");
+			ResultSet rs = pstmt.executeQuery();
 
-	        // Process Result
-	        while (rs.next()) {
-	            Book book = new Book();
-	            book.setBookId(rs.getString("BookID"));
-	            book.setTitle(rs.getString("Title"));
-	            book.setAuthor(rs.getString("Author"));
-	            book.setGenreId(rs.getInt("GenreID"));
-	            book.setPrice(rs.getDouble("Price"));
-	            book.setQuantity(rs.getInt("Quantity"));
-	            book.setPublisher(rs.getString("Publisher"));
-	            book.setPublishDate(rs.getString("publishDate"));
-	            book.setIsbn(rs.getString("ISBN"));
-	            book.setRating(rs.getDouble("Rating"));
-	            book.setDescription(rs.getString("Description"));
-	            book.setImageLocation(rs.getString("ImageLocation"));
-	            book.setSold(rs.getInt("Sold"));
+			// Process Result
+			while (rs.next()) {
+				Book book = new Book();
+				book.setBookId(rs.getString("BookID"));
+				book.setTitle(rs.getString("Title"));
+				book.setAuthor(rs.getString("Author"));
+				book.setGenreId(rs.getInt("GenreID"));
+				book.setPrice(rs.getDouble("Price"));
+				book.setQuantity(rs.getInt("Quantity"));
+				book.setPublisher(rs.getString("Publisher"));
+				book.setPublishDate(rs.getString("publishDate"));
+				book.setIsbn(rs.getString("ISBN"));
+				book.setRating(rs.getDouble("Rating"));
+				book.setDescription(rs.getString("Description"));
+				book.setImageLocation(rs.getString("ImageLocation"));
+				book.setSold(rs.getInt("Sold"));
 
-	            books.add(book);
-	        }
+				books.add(book);
+			}
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }finally {
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
 			closeConnection(conn);
 		}
-	    return books;
+		return books;
 	}
-	
-	
+
 	public ArrayList<Book> getFilteredBooks(String[] genreIds, double price) {
-	    Connection conn = null;
-	    ArrayList<Book> filteredBooks = new ArrayList<>();
-	    try {
-	    	conn = DBConnection.getConnection();
+		Connection conn = null;
+		ArrayList<Book> filteredBooks = new ArrayList<>();
+		try {
+			conn = DBConnection.getConnection();
 
-	        // Modify the SQL query based on your database schema and table names
-	        String query = "SELECT b.*, g.GenreName FROM books b JOIN genres g ON b.GenreID = g.GenreID WHERE b.Price <= ?";
+			// Modify the SQL query based on your database schema and table names
+			String query = "SELECT b.*, g.GenreName FROM books b JOIN genres g ON b.GenreID = g.GenreID WHERE b.Price <= ?";
 
-	        // Check if genre is provided
-	        if (genreIds != null  && genreIds.length > 0) {
-	           query += "AND g.GenreID IN(";
-for (int i = 0; i < genreIds.length; i++) {
-    if (i > 0) {
-        query += ",";
-    }
-    query += "?";
-}
-query += ")";
-	        }   
-			 
-	        System.out.print(query);
-	        
-     PreparedStatement pstmt = conn.prepareStatement(query);
-			   pstmt.setDouble(1, price);
-			   
-			   if (genreIds != null && genreIds.length > 0) {
-		            for (int i = 0; i < genreIds.length; i++) {
-		                pstmt.setString(i + 2, genreIds[i]);
-		            }
-		        }
-			   
-	        ResultSet rs = pstmt.executeQuery();
+			// Check if genre is provided
+			if (genreIds != null && genreIds.length > 0) {
+				query += "AND g.GenreID IN(";
+				for (int i = 0; i < genreIds.length; i++) {
+					if (i > 0) {
+						query += ",";
+					}
+					query += "?";
+				}
+				query += ")";
+			}
 
-	        // Process the result
-	        while (rs.next()) {
-	            // Create a Book object and set its properties based on the result set
-	            Book book = new Book();
-	            book.setBookId(rs.getString("BookID"));
-	            book.setTitle(rs.getString("Title"));
-	            book.setAuthor(rs.getString("Author"));
-	            book.setGenreId(rs.getInt("GenreID"));
-	            book.setPrice(rs.getDouble("Price"));
-	            book.setQuantity(rs.getInt("Quantity"));
-	            book.setPublisher(rs.getString("Publisher"));
-	            book.setPublishDate(rs.getString("publishDate"));
-	            book.setIsbn(rs.getString("ISBN"));
-	            book.setRating(rs.getDouble("Rating"));
-	            book.setDescription(rs.getString("Description"));
-	            book.setImageLocation(rs.getString("ImageLocation"));
-	            book.setSold(rs.getInt("Sold"));
+			System.out.print(query);
 
-	            filteredBooks.add(book);
-	        }
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setDouble(1, price);
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
+			if (genreIds != null && genreIds.length > 0) {
+				for (int i = 0; i < genreIds.length; i++) {
+					pstmt.setString(i + 2, genreIds[i]);
+				}
+			}
+
+			ResultSet rs = pstmt.executeQuery();
+
+			// Process the result
+			while (rs.next()) {
+				// Create a Book object and set its properties based on the result set
+				Book book = new Book();
+				book.setBookId(rs.getString("BookID"));
+				book.setTitle(rs.getString("Title"));
+				book.setAuthor(rs.getString("Author"));
+				book.setGenreId(rs.getInt("GenreID"));
+				book.setPrice(rs.getDouble("Price"));
+				book.setQuantity(rs.getInt("Quantity"));
+				book.setPublisher(rs.getString("Publisher"));
+				book.setPublishDate(rs.getString("publishDate"));
+				book.setIsbn(rs.getString("ISBN"));
+				book.setRating(rs.getDouble("Rating"));
+				book.setDescription(rs.getString("Description"));
+				book.setImageLocation(rs.getString("ImageLocation"));
+				book.setSold(rs.getInt("Sold"));
+
+				filteredBooks.add(book);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
 			closeConnection(conn);
 		}
 
-	    return filteredBooks;
+		return filteredBooks;
 	}
- 
+
 	private void closeConnection(Connection conn) {
 		if (conn != null) {
 			try {
@@ -584,7 +576,4 @@ query += ")";
 		}
 	}
 
-	
-
 }
-
