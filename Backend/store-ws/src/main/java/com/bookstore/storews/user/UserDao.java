@@ -3,6 +3,7 @@ package com.bookstore.storews.user;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.*;
 
 public class UserDao {
 	private String connURL = "jdbc:mysql://localhost/ca1?user=root&password=root&serverTimezone=UTC";
@@ -240,29 +241,28 @@ public class UserDao {
 	}
 
 	public void userUpdateUser(User user) {
-	    Connection conn = null;
+		Connection conn = null;
 
-	    try {
-	        conn = getConnection();
+		try {
+			conn = getConnection();
 
-	        PreparedStatement pstmt = conn.prepareStatement(
-	                "UPDATE users SET UserName = ? , Email = ?, Address = ?, Password = ? WHERE userID = ?");
-	        pstmt.setString(1, user.getUserName());
-	        pstmt.setString(2, user.getEmail());
-	        pstmt.setString(3, user.getAddress());
-	        pstmt.setString(4, user.getPassword());
-	        pstmt.setInt(5, user.getUserID());
+			PreparedStatement pstmt = conn.prepareStatement(
+					"UPDATE users SET UserName = ? , Email = ?, Address = ?, Password = ? WHERE userID = ?");
+			pstmt.setString(1, user.getUserName());
+			pstmt.setString(2, user.getEmail());
+			pstmt.setString(3, user.getAddress());
+			pstmt.setString(4, user.getPassword());
+			pstmt.setInt(5, user.getUserID());
 
-	        pstmt.executeUpdate();
+			pstmt.executeUpdate();
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        closeConnection(conn);
-	    }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
 	}
 
-	
 	public int getTotalUsers() {
 		Connection conn = null;
 		int totalUsers = 0;
@@ -286,6 +286,119 @@ public class UserDao {
 		return totalUsers;
 	}
 
+	
+	
+	// admin customer inquiry and reporting
+	public ArrayList<User> getUserByAddress(String userChoice, String userInput) throws SQLException {
+		Connection conn = null;
+		ArrayList<User> userByAddressList = new ArrayList<User>();
+		try {
+			System.out.println("in userdao get all user by address");
+			conn = getConnection();
+			System.out.println("userChoice " + userChoice);
+			Map<String, String> columnQueries = new HashMap<>();
+			columnQueries.put("address", "SELECT * FROM users WHERE address LIKE ?");
+			columnQueries.put("city", "SELECT * FROM users WHERE city LIKE ?");
+			columnQueries.put("country", "SELECT * FROM users WHERE country LIKE ?");
+			columnQueries.put("district", "SELECT * FROM users WHERE district LIKE ?");
+			columnQueries.put("postal_code", "SELECT * FROM users WHERE postal_code LIKE ?");
+			columnQueries.put("address2", "SELECT * FROM users WHERE address2 LIKE ?");
+			// Add more entries to the map as needed
+
+			String sqlStr = columnQueries.get(userChoice);
+			PreparedStatement ps = conn.prepareStatement(sqlStr);
+
+			String searchPattern = "%" + userInput + "%";
+			ps.setString(1, searchPattern);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				User user = new User();
+				user.setUserID(rs.getInt("userID"));
+				user.setUserName(rs.getString("userName"));
+				user.setPassword(rs.getString("password"));
+				user.setEmail(rs.getString("email"));
+				user.setRole(rs.getString("role"));
+				user.setAddress(rs.getString("address"));
+				user.setAddress2(rs.getString("address2"));
+				user.setDistrict(rs.getString("district"));
+				user.setCity(rs.getString("city"));
+				user.setPostalCode(rs.getString("postal_code"));
+				user.setCountry(rs.getString("country"));
+				userByAddressList.add(user);
+			}
+
+		} catch (Exception e) {
+			System.err.println("..................UserDetailsDB :" + e);
+		} finally {
+			conn.close();
+		}
+		return userByAddressList;
+	}
+
+	public ArrayList<User> getUsersByRole(String role) throws SQLException {
+		Connection conn = null;
+		ArrayList<User> usersList = new ArrayList<User>();
+		try {
+			conn = getConnection();
+			String sqlStr = "SELECT * FROM users WHERE role = ?";
+			PreparedStatement ps = conn.prepareStatement(sqlStr);
+			ps.setString(1, role);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				User user = getUserFromResultSet(rs);
+				usersList.add(user);
+			}
+		} catch (Exception e) {
+			System.err.println("Error: " + e);
+		} finally {
+			conn.close();
+		}
+		return usersList;
+	}
+
+	private User getUserFromResultSet(ResultSet rs) throws SQLException {
+		User user = new User();
+		user.setUserID(rs.getInt("userID"));
+		user.setUserName(rs.getString("userName"));
+		user.setPassword(rs.getString("password"));
+		user.setEmail(rs.getString("email"));
+		user.setRole(rs.getString("role"));
+		user.setAddress(rs.getString("address"));
+		user.setAddress2(rs.getString("address2"));
+		user.setDistrict(rs.getString("district"));
+		user.setCity(rs.getString("city"));
+		user.setPostalCode(rs.getString("postal_code"));
+		user.setCountry(rs.getString("country"));
+		return user;
+	}
+
+	public HashMap<String, Integer> getUserCountByRole(String city) throws SQLException {
+	    Connection conn = null;
+	    HashMap<String, Integer> usersCount = new HashMap<>();
+	    try {
+	        conn = getConnection();
+	        String sqlStr = "SELECT role, COUNT(*) as count FROM users WHERE city = ? GROUP BY role";
+	        PreparedStatement ps = conn.prepareStatement(sqlStr);
+	        ps.setString(1, city);
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            String role = rs.getString("role");
+	            int count = rs.getInt("count");
+	            usersCount.put(role, count);
+	        }
+	    } catch (Exception e) {
+	        System.err.println("Error: " + e);
+	    } finally {
+	        conn.close();
+	    }
+	    return usersCount;
+	}
+
+	
 	private void closeConnection(Connection conn) {
 		if (conn != null) {
 			try {

@@ -1,7 +1,11 @@
 package com.bookstore.storews.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.bookstore.storews.user.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -111,4 +115,46 @@ public class UserController {
 		}
 		return user;
 	}
+
+	
+	
+	// admin customer inquiry and reporting
+	@RequestMapping(path = "/getUserByAddress/{userChoice}/{userInput}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<User> getUserByAddress(@PathVariable("userChoice") String userChoice,
+			@PathVariable("userInput") String userInput) {
+		System.out.println("in get all book controller");
+		ArrayList<User> userByAddressList = new ArrayList<User>();
+		try {
+			UserDao userDao = new UserDao();
+			userByAddressList = userDao.getUserByAddress(userChoice, userInput);
+		} catch (Exception e) {
+			System.out.print("Error: " + e);
+		}
+		return userByAddressList;
+	}
+
+	@RequestMapping(path = "/getUsersByRole/{role}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<User> getUsersByRole(@PathVariable("role") String role) {
+		ArrayList<User> usersList = new ArrayList<User>();
+		try {
+			UserDao userDao = new UserDao();
+			usersList = userDao.getUsersByRole(role);
+		} catch (Exception e) {
+			System.out.print("Error: " + e);
+		}
+		return usersList;
+	}
+
+	@RequestMapping(path = "/getUserCountByRole/{city}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public HashMap<String, Integer> getUserCountByRole(@PathVariable("city") String city) {
+	    HashMap<String, Integer> usersCount = new HashMap<>();
+	    try {
+	        UserDao userDao = new UserDao();
+	        usersCount = userDao.getUserCountByRole(city);
+	    } catch (Exception e) {
+	        System.out.print("Error: " + e);
+	    }
+	    return usersCount;
+	}
+
 }

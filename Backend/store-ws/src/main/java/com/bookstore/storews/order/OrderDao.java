@@ -34,36 +34,45 @@ public class OrderDao {
 		return order;
 	}
 
-	public boolean createOrder(Order order) {
-		Connection conn = null;
-		boolean created = false;
+	public int createOrder(Order order) {
+	    Connection conn = null;
+	    int generatedOrderId = -1; // Initialize to a default value
 
-		try {
-			conn = DBConnection.getConnection();
+	    try {
+	        conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement(
-					"INSERT INTO orders (UserID, TotalPrice, OrderDate, OrderStatus, ShippingAddress, BillingAddress, PostalCode, Country) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+	        PreparedStatement pstmt = conn.prepareStatement(
+	                "INSERT INTO orders (UserID, TotalPrice, OrderDate, OrderStatus, ShippingAddress, BillingAddress, PostalCode, Country) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+	                PreparedStatement.RETURN_GENERATED_KEYS);
 
-			pstmt.setInt(1, order.getUserId());
-			pstmt.setDouble(2, order.getTotalPrice());
-			pstmt.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
-			pstmt.setString(4, order.getOrderStatus());
-			pstmt.setString(5, order.getShippingAddress());
-			pstmt.setString(6, order.getBillingAddress());
-			pstmt.setString(7, order.getPostalCode());
-			pstmt.setString(8, order.getCountry());
+	        pstmt.setInt(1, order.getUserId());
+	        pstmt.setDouble(2, order.getTotalPrice());
+	        pstmt.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
+	        pstmt.setString(4, order.getOrderStatus());
+	        pstmt.setString(5, order.getShippingAddress());
+	        pstmt.setString(6, order.getBillingAddress());
+	        pstmt.setString(7, order.getPostalCode());
+	        pstmt.setString(8, order.getCountry());
 
-			int rowsAffected = pstmt.executeUpdate();
-			created = (rowsAffected > 0);
+	        int rowsAffected = pstmt.executeUpdate();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeConnection(conn);
-		}
+	        if (rowsAffected > 0) {
+	            // Retrieve the generated order ID
+	            ResultSet rs = pstmt.getGeneratedKeys();
+	            if (rs.next()) {
+	                generatedOrderId = rs.getInt(1);
+	            }
+	        }
 
-		return created;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        closeConnection(conn);
+	    }
+
+	    return generatedOrderId;
 	}
+
 
 	public List<Order> getAllOrders() {
 		List<Order> orders = new ArrayList<>();
@@ -90,36 +99,45 @@ public class OrderDao {
 	}
 
 	public boolean updateOrder(Order order) {
-		Connection conn = null;
-		boolean updated = false;
+	    Connection conn = null;
+	    boolean updated = false;
 
-		try {
-			conn = DBConnection.getConnection();
+	    try {
+	        conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement(
-					"UPDATE orders SET UserID = ?, TotalPrice = ?, OrderDate = ?, OrderStatus = ?, ShippingAddress = ?, BillingAddress = ?, PostalCode = ?, Country = ? WHERE OrderID = ?");
+	        PreparedStatement pstmt = conn.prepareStatement(
+	                "UPDATE orders SET UserID = ?, TotalPrice = ?, OrderDate = ?, OrderStatus = ?, ShippingAddress = ?, BillingAddress = ?, PostalCode = ?, Country = ? WHERE OrderID = ?");
 
-			pstmt.setInt(1, order.getUserId());
-			pstmt.setDouble(2, order.getTotalPrice());
-			pstmt.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
-			pstmt.setString(4, order.getOrderStatus());
-			pstmt.setString(5, order.getShippingAddress());
-			pstmt.setString(6, order.getBillingAddress());
-			pstmt.setString(7, order.getPostalCode());
-			pstmt.setString(8, order.getCountry());
-			pstmt.setInt(9, order.getOrderId());
+	        pstmt.setInt(1, order.getUserId());
+	        pstmt.setDouble(2, order.getTotalPrice());
+	        pstmt.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
+	        pstmt.setString(4, order.getOrderStatus());
+	        pstmt.setString(5, order.getShippingAddress());
+	        pstmt.setString(6, order.getBillingAddress());
+	        pstmt.setString(7, order.getPostalCode());
+	        pstmt.setString(8, order.getCountry());
+	        pstmt.setInt(9, order.getOrderId());
 
-			int rowsAffected = pstmt.executeUpdate();
-			updated = (rowsAffected > 0);
+	        int rowsAffected = pstmt.executeUpdate();
+	        updated = (rowsAffected > 0);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeConnection(conn);
-		}
+	        // Logging statements
+	        if (updated) {
+	            System.out.println("Order with ID " + order.getOrderId() + " updated successfully.");
+	        } else {
+	            System.out.println("Failed to update order with ID " + order.getOrderId());
+	        }
 
-		return updated;
+	    } catch (SQLException e) {
+	        System.err.println("Error updating order with ID " + order.getOrderId());
+	        e.printStackTrace();
+	    } finally {
+	        closeConnection(conn);
+	    }
+
+	    return updated;
 	}
+		
 
 	public boolean deleteOrder(int orderId) {
 		Connection conn = null;
@@ -323,18 +341,22 @@ public class OrderDao {
 	}
 
 	private Order mapResultSetToOrder(ResultSet rs) throws SQLException {
-		Order order = new Order();
-		order.setOrderId(rs.getInt("OrderID"));
-		order.setUserId(rs.getInt("UserID"));
-		order.setTotalPrice(rs.getDouble("TotalPrice"));
-		order.setOrderDate(rs.getDate("OrderDate"));
-		order.setOrderStatus(rs.getString("OrderStatus"));
-		order.setShippingAddress(rs.getString("ShippingAddress"));
-		order.setBillingAddress(rs.getString("BillingAddress"));
-		order.setPostalCode(rs.getString("PostalCode"));
-		order.setCountry(rs.getString("Country"));
+	    Order order = new Order();
+	    order.setOrderId(rs.getInt("OrderID"));
+	    order.setUserId(rs.getInt("UserID"));
+	    order.setTotalPrice(rs.getDouble("TotalPrice"));
+	    order.setOrderDate(rs.getDate("OrderDate"));
+	    order.setOrderStatus(rs.getString("OrderStatus"));
+	    order.setShippingAddress(rs.getString("ShippingAddress"));
+	    order.setBillingAddress(rs.getString("BillingAddress"));
+	    order.setPostalCode(rs.getString("PostalCode"));
+	    order.setCountry(rs.getString("Country"));
+	    
+	    OrderItemDao orderItemDao = new OrderItemDao();
+	    List<OrderItem> orderItems = orderItemDao.getOrderItemsByOrderId(order.getOrderId());
+	    order.setOrderItems(orderItems);
 
-		return order;
+	    return order;
 	}
 
 	private void closeConnection(Connection conn) {
