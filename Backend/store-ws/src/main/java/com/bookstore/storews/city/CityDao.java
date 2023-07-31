@@ -13,7 +13,7 @@ public class CityDao {
 		try {
 			conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement("SELECT city_id, city FROM city WHERE country_id = ?");
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM city WHERE country_id = ?");
 			pstmt.setInt(1, countryId);
 			ResultSet rs = pstmt.executeQuery();
 

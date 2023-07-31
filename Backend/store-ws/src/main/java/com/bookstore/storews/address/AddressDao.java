@@ -54,13 +54,13 @@ public class AddressDao {
 			System.out.println("Got connection");
 
 			PreparedStatement pstmt = conn.prepareStatement(
-					"INSERT INTO address (address, address2, district, city_id, postal_code, phone, userid) VALUES (?, ?, ?, ?, ?, ?, ?)");
+					"INSERT INTO address(address, address2, district, city_id, postal_code, phone, userid) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 			System.out.println("insert statement done");
 			pstmt.setString(1, address.getAddress());
 			pstmt.setString(2, address.getAddress2());
 			pstmt.setString(3, address.getDistrict());
-			pstmt.setInt(4, address.getCityId());
+			pstmt.setInt(4, address	.getCityId());
 			pstmt.setInt(5, address.getPostalCode());
 			pstmt.setInt(6, address.getPhone());
 			pstmt.setInt(7, address.getUserId());
@@ -93,7 +93,7 @@ public class AddressDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement(
-					"UPDATE address SET address = ?, address2 = ?, district = ?, city_id = ?, postal_code = ?, phone = ?, WHERE  address_id = ?");
+					"UPDATE address SET address = ?, address2 = ?, district = ?, city_id = ?, postal_code = ?, phone = ? WHERE  address_id = ?");
 
 			pstmt.setString(1, address.getAddress());
 			pstmt.setString(2, address.getAddress2());
