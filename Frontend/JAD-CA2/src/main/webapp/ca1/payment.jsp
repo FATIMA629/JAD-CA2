@@ -3,8 +3,6 @@
     <%
     int amount = (int) request.getAttribute("totalPrice");
     String publicKey = (String) request.getAttribute("stripePublicKey");
-    String currency = (String) request.getAttribute("currency");
-    System.out.println(currency);
     System.out.println(publicKey);
     %>
 <!DOCTYPE html>
@@ -22,7 +20,6 @@
        class='stripe-button'
        data-key=<%=publicKey %> 
        data-amount=<%=amount %> 
-       data-currency=<%=currency %>
        data-name='Baeldung'
        data-description='Spring course checkout'
        data-image

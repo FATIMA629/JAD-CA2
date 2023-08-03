@@ -119,6 +119,7 @@ int userid = (int) session.getAttribute("userId");
     Total (<%=totalCartItemsAmt %> item):
 </div>
 <div class="total-amount">
+<input type='hidden' value=<%=totalPrice %> name='amount' />
 <%=totalPrice %>
 </div>
                     </div>

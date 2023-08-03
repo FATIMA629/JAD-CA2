@@ -38,9 +38,8 @@ public class CheckoutServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("totalPrice", 10000);
+		request.setAttribute("totalPrice", request.getParameter("amount"));
 		request.setAttribute("stripePublicKey", "pk_test_51Na4b7JLhf6EaydIrHUGjamPvdvBjHGVw4p8d6cl3TRWAOVTKN9JHuvkEz3N4a1tJJsyFGg5QnWO0GXcXWAO2eUL00sAXrSuwr");
-		request.setAttribute("currency", "SGD");
 		
 		String url = "ca1/payment.jsp";
 		RequestDispatcher cd = request.getRequestDispatcher(url);
@@ -54,25 +53,31 @@ public class CheckoutServlet extends HttpServlet {
 		String token = request.getParameter("stripeToken");
 		String amount = request.getParameter("amount");
 		String email = request.getParameter("stripeEmail");
-		String currency = request.getParameter("currency");
 		System.out.println(token);
 		System.out.println(email);
 		System.out.println(amount);
-		System.out.println(currency);
 		
 		Stripe.apiKey = "sk_test_51Na4b7JLhf6EaydIh5znAlX9SUNLGuXZk8fCspGlWbgyfq3EhZ4VjvEtOh6m7p3BIaMP7tC2u6hmqocMHT0bodI100oFcYjN0V";
 		Map<String, Object> chargeParams = new HashMap<>();
 		
         chargeParams.put("amount",amount);
-        chargeParams.put("email", email);
-        chargeParams.put("token", token);
-        chargeParams.put("currency", currency);
+        chargeParams.put("description", email);
+        chargeParams.put("source", token);
+        chargeParams.put("currency", "SGD");
+        
+        try {
+			Charge.create(chargeParams);
+		} catch (AuthenticationException | InvalidRequestException | APIConnectionException | CardException
+				| APIException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         request.setAttribute("amount", amount);
         request.setAttribute("email", email);
         request.setAttribute("token", token);
-        request.setAttribute("currency", currency);
-        System.out.println("nice");
+        request.setAttribute("currency", "SGD");
+        
 		String url = "ca1/charge.jsp";
 		RequestDispatcher cd = request.getRequestDispatcher(url);
         cd.forward(request, response);
