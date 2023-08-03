@@ -3,7 +3,7 @@ package City;
 public class City {
 	private String cityId;
 	private String city;
-	private int countryId;
+	private String countryId;
 	
 	public String getCityId() {
 		return cityId;
@@ -17,10 +17,10 @@ public class City {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	public int getCountryId() {
+	public String getCountryId() {
 		return countryId;
 	}
-	public void setCountryId(int countryId) {
+	public void setCountryId(String countryId) {
 		this.countryId = countryId;
 	}
 }

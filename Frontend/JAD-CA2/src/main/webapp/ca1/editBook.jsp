@@ -95,6 +95,7 @@
 					List<Genre> genres = genreDao.getAllGenres();
 					for (Genre genre : genres) {
 						String selected = genre.getGenreId() == book.getGenreId() ? "selected" : "";
+						System.out.println(selected);
 					%>
 					<option value="<%=genre.getGenreId()%>" <%=selected%>><%=genre.getGenreName()%></option>
 					<%
