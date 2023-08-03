@@ -24,17 +24,6 @@ public class OrderController {
 	@RequestMapping(path = "/createOrder", consumes = "application/json", method = RequestMethod.POST)
 	public boolean createOrder(@RequestBody Order order) {
 		try {
-			// Print individual fields for debugging
-			System.out.println("Received Order ID: " + order.getOrderId());
-			System.out.println("Received User ID: " + order.getUserId());
-			System.out.println("Received Total Price: " + order.getTotalPrice());
-			System.out.println("Received Order Date: " + order.getOrderDate());
-			System.out.println("Received Order Status: " + order.getOrderStatus());
-			System.out.println("Received Shipping Address: " + order.getShippingAddress());
-			System.out.println("Received Billing Address: " + order.getBillingAddress());
-			System.out.println("Received Postal Code: " + order.getPostalCode());
-			System.out.println("Received Country: " + order.getCountry());
-
 			OrderDao orderDao = new OrderDao();
 
 			// First, create the order in the orders table
@@ -73,24 +62,13 @@ public class OrderController {
 		try {
 			OrderDao orderDao = new OrderDao();
 
-			// Print the received order for debugging
-			System.out.println("Received Order ID: " + order.getOrderId());
-			System.out.println("Received User ID: " + order.getUserId());
-			System.out.println("Received Total Price: " + order.getTotalPrice());
-			System.out.println("Received Order Date: " + order.getOrderDate());
-			System.out.println("Received Order Status: " + order.getOrderStatus());
-			System.out.println("Received Shipping Address: " + order.getShippingAddress());
-			System.out.println("Received Billing Address: " + order.getBillingAddress());
-			System.out.println("Received Postal Code: " + order.getPostalCode());
-			System.out.println("Received Country: " + order.getCountry());
-			
-	        // Print the order items information
-	        for (OrderItem orderItem : order.getOrderItems()) {
-	            System.out.println("Received OrderItem ID: " + orderItem.getOrderItemId());
-	            System.out.println("Received Book ID: " + orderItem.getBookId());
-	            System.out.println("Received Quantity: " + orderItem.getQuantity());
-	            System.out.println("Received Unit Price: " + orderItem.getUnitPrice());
-	        }	
+			// Print the order items information
+			for (OrderItem orderItem : order.getOrderItems()) {
+				System.out.println("Received OrderItem ID: " + orderItem.getOrderItemId());
+				System.out.println("Received Book ID: " + orderItem.getBookId());
+				System.out.println("Received Quantity: " + orderItem.getQuantity());
+				System.out.println("Received Unit Price: " + orderItem.getUnitPrice());
+			}
 
 			// First, update the order in the orders table
 			boolean orderUpdated = orderDao.updateOrder(order);
@@ -108,7 +86,8 @@ public class OrderController {
 				for (OrderItem orderItem : order.getOrderItems()) {
 					if (orderItem.getOrderItemId() > 0) {
 						orderItemDao.updateOrderItem(orderItem);
-						System.out.println("Order item with ID " + orderItem.getOrderItemId() + " updated successfully.");
+						System.out
+								.println("Order item with ID " + orderItem.getOrderItemId() + " updated successfully.");
 					} else {
 						System.out.println("Failed to update order item with invalid data: " + orderItem);
 					}

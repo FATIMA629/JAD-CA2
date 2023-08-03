@@ -1,27 +1,21 @@
 package com.bookstore.storews.user;
 
 import java.sql.*;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import com.bookstore.storews.dbaccess.DBConnection;
+import com.bookstore.storews.address.*;
 
 public class UserDao {
-	private String connURL = "jdbc:mysql://localhost/ca1?user=root&password=root&serverTimezone=UTC";
-
-	public UserDao() throws ClassNotFoundException {
-		Class.forName("com.mysql.cj.jdbc.Driver"); // Load JDBC Driver
-	}
-
-	public Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(connURL); // Establish connection to URL
-	}
 
 	public User loginUser(String username, String password) {
 		Connection conn = null;
 		User user = null;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
 			pstmt.setString(1, username);
@@ -31,12 +25,12 @@ public class UserDao {
 
 			if (rs.next()) {
 				user = new User();
-				user.setUserID(rs.getInt("userID"));
-				user.setUserName(rs.getString("userName"));
-				user.setPassword(rs.getString("password"));
-				user.setEmail(rs.getString("email"));
-				user.setRole(rs.getString("role"));
-				user.setAddress(rs.getString("address"));
+				user.setUserID(rs.getInt("UserID"));
+				user.setUserName(rs.getString("UserName"));
+				user.setPassword(rs.getString("Password"));
+				user.setEmail(rs.getString("Email"));
+				user.setRole(rs.getString("Role"));
+				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -52,19 +46,19 @@ public class UserDao {
 		List<User> users = new ArrayList<>();
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM users");
 
 			while (rs.next()) {
 				User user = new User();
-				user.setUserID(rs.getInt("userID"));
-				user.setUserName(rs.getString("userName"));
-				user.setPassword(rs.getString("password"));
-				user.setEmail(rs.getString("email"));
-				user.setRole(rs.getString("role"));
-				user.setAddress(rs.getString("address"));
+				user.setUserID(rs.getInt("UserID"));
+				user.setUserName(rs.getString("UserName"));
+				user.setPassword(rs.getString("Password"));
+				user.setEmail(rs.getString("Email"));
+				user.setRole(rs.getString("Role"));
+				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
 
 				users.add(user);
 			}
@@ -83,9 +77,9 @@ public class UserDao {
 		boolean deleted = false;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement("DELETE FROM users WHERE userID = ?");
+			PreparedStatement pstmt = conn.prepareStatement("DELETE FROM users WHERE UserID = ?");
 			pstmt.setString(1, userId);
 
 			int rowsAffected = pstmt.executeUpdate();
@@ -107,21 +101,21 @@ public class UserDao {
 		User user = null;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE userName = ?");
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE UserName = ?");
 			pstmt.setString(1, username);
 
 			ResultSet rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				user = new User();
-				user.setUserID(rs.getInt("userID"));
-				user.setUserName(rs.getString("userName"));
-				user.setPassword(rs.getString("password"));
-				user.setEmail(rs.getString("email"));
-				user.setRole(rs.getString("role"));
-				user.setAddress(rs.getString("address"));
+				user.setUserID(rs.getInt("UserID"));
+				user.setUserName(rs.getString("UserName"));
+				user.setPassword(rs.getString("Password"));
+				user.setEmail(rs.getString("Email"));
+				user.setRole(rs.getString("Role"));
+				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
 			}
 
 		} catch (SQLException e) {
@@ -138,20 +132,20 @@ public class UserDao {
 		User user = null;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE userID = ?");
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE UserID = ?");
 			pstmt.setString(1, userId);
 
 			ResultSet rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				user = new User();
-				user.setUserID(rs.getInt("userID"));
-				user.setUserName(rs.getString("userName"));
-				user.setEmail(rs.getString("email"));
-				user.setRole(rs.getString("role"));
-				user.setAddress(rs.getString("address"));
+				user.setUserID(rs.getInt("UserID"));
+				user.setUserName(rs.getString("UserName"));
+				user.setEmail(rs.getString("Email"));
+				user.setRole(rs.getString("Role"));
+				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
 			}
 
 		} catch (SQLException e) {
@@ -168,21 +162,21 @@ public class UserDao {
 		User user = null;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE Email = ?");
 			pstmt.setString(1, email);
 
 			ResultSet rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				user = new User();
-				user.setUserID(rs.getInt("userID"));
-				user.setUserName(rs.getString("userName"));
-				user.setPassword(rs.getString("password"));
-				user.setEmail(rs.getString("email"));
-				user.setRole(rs.getString("role"));
-				user.setAddress(rs.getString("address"));
+				user.setUserID(rs.getInt("UserID"));
+				user.setUserName(rs.getString("UserName"));
+				user.setPassword(rs.getString("Password"));
+				user.setEmail(rs.getString("Email"));
+				user.setRole(rs.getString("Role"));
+				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
 			}
 
 		} catch (SQLException e) {
@@ -198,14 +192,14 @@ public class UserDao {
 		Connection conn = null;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement(
-					"UPDATE users SET UserName = ? , Role = ? , Email = ?, Address = ? WHERE userID = ?");
+					"UPDATE users SET UserName = ? , Role = ? , Email = ?, DefaultAddressID = ? WHERE UserID = ?");
 			pstmt.setString(1, user.getUserName());
 			pstmt.setString(2, user.getRole());
 			pstmt.setString(3, user.getEmail());
-			pstmt.setString(4, user.getAddress());
+			pstmt.setInt(4, user.getAddress().getAddressID());
 			pstmt.setInt(5, user.getUserID());
 
 			pstmt.executeUpdate();
@@ -221,15 +215,15 @@ public class UserDao {
 		Connection conn = null;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement(
-					"INSERT INTO users (UserName, Password, Role, Email , address) VALUES (?, ?, ?, ?, ?)");
+					"INSERT INTO users (UserName, Password, Role, Email , DefaultAddressID) VALUES (?, ?, ?, ?, ?)");
 			pstmt.setString(1, user.getUserName());
 			pstmt.setString(2, user.getPassword());
 			pstmt.setString(3, user.getRole());
 			pstmt.setString(4, user.getEmail());
-			pstmt.setString(5, user.getAddress());
+			pstmt.setInt(5, user.getAddress().getAddressID());
 
 			pstmt.executeUpdate();
 
@@ -244,13 +238,13 @@ public class UserDao {
 		Connection conn = null;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement(
-					"UPDATE users SET UserName = ? , Email = ?, Address = ?, Password = ? WHERE userID = ?");
+					"UPDATE users SET UserName = ? , Email = ?, DefaultAddressID = ?, Password = ? WHERE UserID = ?");
 			pstmt.setString(1, user.getUserName());
 			pstmt.setString(2, user.getEmail());
-			pstmt.setString(3, user.getAddress());
+			pstmt.setInt(3, user.getAddress().getAddressID());
 			pstmt.setString(4, user.getPassword());
 			pstmt.setInt(5, user.getUserID());
 
@@ -268,7 +262,7 @@ public class UserDao {
 		int totalUsers = 0;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as userCount FROM users");
@@ -286,23 +280,27 @@ public class UserDao {
 		return totalUsers;
 	}
 
-	
-	
 	// admin customer inquiry and reporting
 	public ArrayList<User> getUserByAddress(String userChoice, String userInput) throws SQLException {
 		Connection conn = null;
-		ArrayList<User> userByAddressList = new ArrayList<User>();
+		ArrayList<User> userByAddressList = new ArrayList<>();
 		try {
 			System.out.println("in userdao get all user by address");
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 			System.out.println("userChoice " + userChoice);
 			Map<String, String> columnQueries = new HashMap<>();
-			columnQueries.put("address", "SELECT * FROM users WHERE address LIKE ?");
-			columnQueries.put("city", "SELECT * FROM users WHERE city LIKE ?");
-			columnQueries.put("country", "SELECT * FROM users WHERE country LIKE ?");
-			columnQueries.put("district", "SELECT * FROM users WHERE district LIKE ?");
-			columnQueries.put("postal_code", "SELECT * FROM users WHERE postal_code LIKE ?");
-			columnQueries.put("address2", "SELECT * FROM users WHERE address2 LIKE ?");
+			columnQueries.put("address",
+					"SELECT * FROM users WHERE DefaultAddressID IN (SELECT AddressID FROM address WHERE Address1 LIKE ? OR Address2 LIKE ?)");
+			columnQueries.put("city",
+					"SELECT * FROM users WHERE DefaultAddressID IN (SELECT AddressID FROM address WHERE City LIKE ?)");
+			columnQueries.put("country",
+					"SELECT * FROM users WHERE DefaultAddressID IN (SELECT AddressID FROM address WHERE Country LIKE ?)");
+			columnQueries.put("district",
+					"SELECT * FROM users WHERE DefaultAddressID IN (SELECT AddressID FROM address WHERE District LIKE ?)");
+			columnQueries.put("postal_code",
+					"SELECT * FROM users WHERE DefaultAddressID IN (SELECT AddressID FROM address WHERE PostalCode LIKE ?)");
+			columnQueries.put("address2",
+					"SELECT * FROM users WHERE DefaultAddressID IN (SELECT AddressID FROM address WHERE Address2 LIKE ?)");
 			// Add more entries to the map as needed
 
 			String sqlStr = columnQueries.get(userChoice);
@@ -310,22 +308,18 @@ public class UserDao {
 
 			String searchPattern = "%" + userInput + "%";
 			ps.setString(1, searchPattern);
+			ps.setString(2, searchPattern);
 
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				User user = new User();
-				user.setUserID(rs.getInt("userID"));
-				user.setUserName(rs.getString("userName"));
-				user.setPassword(rs.getString("password"));
-				user.setEmail(rs.getString("email"));
-				user.setRole(rs.getString("role"));
-				user.setAddress(rs.getString("address"));
-				user.setAddress2(rs.getString("address2"));
-				user.setDistrict(rs.getString("district"));
-				user.setCity(rs.getString("city"));
-				user.setPostalCode(rs.getString("postal_code"));
-				user.setCountry(rs.getString("country"));
+				user.setUserID(rs.getInt("UserID"));
+				user.setUserName(rs.getString("UserName"));
+				user.setPassword(rs.getString("Password"));
+				user.setEmail(rs.getString("Email"));
+				user.setRole(rs.getString("Role"));
+				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
 				userByAddressList.add(user);
 			}
 
@@ -339,10 +333,10 @@ public class UserDao {
 
 	public ArrayList<User> getUsersByRole(String role) throws SQLException {
 		Connection conn = null;
-		ArrayList<User> usersList = new ArrayList<User>();
+		ArrayList<User> usersList = new ArrayList<>();
 		try {
-			conn = getConnection();
-			String sqlStr = "SELECT * FROM users WHERE role = ?";
+			conn = DBConnection.getConnection();
+			String sqlStr = "SELECT * FROM users WHERE Role = ?";
 			PreparedStatement ps = conn.prepareStatement(sqlStr);
 			ps.setString(1, role);
 			ResultSet rs = ps.executeQuery();
@@ -361,44 +355,64 @@ public class UserDao {
 
 	private User getUserFromResultSet(ResultSet rs) throws SQLException {
 		User user = new User();
-		user.setUserID(rs.getInt("userID"));
-		user.setUserName(rs.getString("userName"));
-		user.setPassword(rs.getString("password"));
-		user.setEmail(rs.getString("email"));
-		user.setRole(rs.getString("role"));
-		user.setAddress(rs.getString("address"));
-		user.setAddress2(rs.getString("address2"));
-		user.setDistrict(rs.getString("district"));
-		user.setCity(rs.getString("city"));
-		user.setPostalCode(rs.getString("postal_code"));
-		user.setCountry(rs.getString("country"));
+		user.setUserID(rs.getInt("UserID"));
+		user.setUserName(rs.getString("UserName"));
+		user.setPassword(rs.getString("Password"));
+		user.setEmail(rs.getString("Email"));
+		user.setRole(rs.getString("Role"));
+		user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
 		return user;
 	}
 
-	public HashMap<String, Integer> getUserCountByRole(String city) throws SQLException {
-	    Connection conn = null;
-	    HashMap<String, Integer> usersCount = new HashMap<>();
-	    try {
-	        conn = getConnection();
-	        String sqlStr = "SELECT role, COUNT(*) as count FROM users WHERE city = ? GROUP BY role";
-	        PreparedStatement ps = conn.prepareStatement(sqlStr);
-	        ps.setString(1, city);
-	        ResultSet rs = ps.executeQuery();
+	private Address getAddressByUserId(int userId) throws SQLException {
+		Connection conn = null;
+		Address address = null;
+		try {
+			conn = DBConnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM address WHERE AddressID = ?");
+			pstmt.setInt(1, userId);
+			ResultSet rs = pstmt.executeQuery();
 
-	        while (rs.next()) {
-	            String role = rs.getString("role");
-	            int count = rs.getInt("count");
-	            usersCount.put(role, count);
-	        }
-	    } catch (Exception e) {
-	        System.err.println("Error: " + e);
-	    } finally {
-	        conn.close();
-	    }
-	    return usersCount;
+			if (rs.next()) {
+				address = new Address();
+				address.setAddressID(rs.getInt("AddressID"));
+				address.setUserID(rs.getInt("UserID"));
+				address.setAddress1(rs.getString("Address1"));
+				address.setAddress2(rs.getString("Address2"));
+				address.setDistrict(rs.getString("District"));
+				address.setCity(rs.getString("City"));
+				address.setPostalCode(rs.getString("PostalCode"));
+				address.setCountry(rs.getString("Country"));
+			}
+		} finally {
+			// Do not close the connection here as it will be closed in the calling method
+		}
+		return address;
 	}
 
-	
+	public HashMap<String, Integer> getUserCountByRole(String city) throws SQLException {
+		Connection conn = null;
+		HashMap<String, Integer> usersCount = new HashMap<>();
+		try {
+			conn = DBConnection.getConnection();
+			String sqlStr = "SELECT Role, COUNT(*) as count FROM users WHERE DefaultAddressID IN (SELECT AddressID FROM address WHERE City = ?) GROUP BY Role";
+			PreparedStatement ps = conn.prepareStatement(sqlStr);
+			ps.setString(1, city);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String role = rs.getString("Role");
+				int count = rs.getInt("count");
+				usersCount.put(role, count);
+			}
+		} catch (Exception e) {
+			System.err.println("Error: " + e);
+		} finally {
+			conn.close();
+		}
+		return usersCount;
+	}
+
 	private void closeConnection(Connection conn) {
 		if (conn != null) {
 			try {

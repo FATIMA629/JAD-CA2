@@ -14,14 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 import Books.BookDao;
 import Books.Book;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.imageio.ImageIO;
+import javax.servlet.http.Part;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
 
 @WebServlet("/AddBookServlet")
 public class AddBookServlet extends HttpServlet {
@@ -47,6 +49,23 @@ public class AddBookServlet extends HttpServlet {
 		request.getSession().removeAttribute("errors");
 		request.getSession().removeAttribute("inputData");
 		request.getSession().removeAttribute("success");
+		
+		// get the image file
+        Part imagePart = request.getPart("image");
+        InputStream imageInputStream = imagePart.getInputStream();
+        String imageName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+        String imageFormat = imageName.substring(imageName.lastIndexOf(".") + 1);
+        BufferedImage image = ImageIO.read(imageInputStream);
+
+        // Specify the absolute path to your project's images folder
+        String imagesDir = "C:\\path\\to\\your\\images\\directory"; // Change this to your path
+
+        // Use the ImageIO class to write the BufferedImage object to a file in your images folder
+        File outputFile = new File(imagesDir + File.separator + imageName);
+        ImageIO.write(image, imageFormat, outputFile);
+        
+        // Get the relative path of the saved image file
+        String imageLocation = "images" + File.separator + imageName;
 
 		System.out.println("Entered doPost method in AddBookServlet");
 		String title = request.getParameter("title");
@@ -59,7 +78,6 @@ public class AddBookServlet extends HttpServlet {
 		String isbn = request.getParameter("isbn");
 		String rating = request.getParameter("rating");
 		String description = request.getParameter("description");
-		String imageLocation = request.getParameter("imageLocation");
 		String sold = request.getParameter("sold");
 
 		Map<String, String> errors = new HashMap<>();

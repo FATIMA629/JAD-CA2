@@ -2,7 +2,7 @@ package com.bookstore.storews.order;
 
 import java.util.Date;
 import java.util.List;
-import com.bookstore.storews.order.*;
+import com.bookstore.storews.address.Address;
 
 public class Order {
 	private int orderId;
@@ -10,20 +10,8 @@ public class Order {
 	private double totalPrice;
 	private Date orderDate;
 	private String orderStatus;
-	private String shippingAddress;
-	private String billingAddress;
-	private String postalCode;
-	private String country;
-    private List<OrderItem> orderItems;
-
-    // Getter and setter for orderItems
-    public List<OrderItem> getOrderItems() {
-        return this.orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
+	private Address shippingAddress;
+	private List<OrderItem> orderItems;
 
 	// Constructors, getters, and setters
 
@@ -67,35 +55,19 @@ public class Order {
 		this.orderStatus = orderStatus;
 	}
 
-	public String getShippingAddress() {
+	public Address getShippingAddress() {
 		return shippingAddress;
 	}
 
-	public void setShippingAddress(String shippingAddress) {
+	public void setShippingAddress(Address shippingAddress) {
 		this.shippingAddress = shippingAddress;
 	}
 
-	public String getBillingAddress() {
-		return billingAddress;
+	public List<OrderItem> getOrderItems() {
+		return orderItems;
 	}
 
-	public void setBillingAddress(String billingAddress) {
-		this.billingAddress = billingAddress;
-	}
-
-	public String getPostalCode() {
-		return postalCode;
-	}
-
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 }
