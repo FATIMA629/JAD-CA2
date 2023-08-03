@@ -1,3 +1,7 @@
-/DBAccess/
-/Books/
-/servlets/
+/Address/
+/AddressServlet/
+/City/
+/CityServlet/
+/Country/
+/CountryServlet/
+/StripeServlet/

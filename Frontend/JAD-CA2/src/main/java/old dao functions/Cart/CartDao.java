@@ -1,10 +1,11 @@
-package com.bookstore.storews.cart;
+package Cart;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import com.bookstore.storews.book.*;
-
+import javax.servlet.http.HttpSession;
+import Books.Book;
+import Books.BookDao;
 
 public class CartDao {
     private String connURL = "jdbc:mysql://localhost/ca1?user=root&password=root&serverTimezone=UTC";
@@ -19,9 +20,43 @@ public class CartDao {
         return DriverManager.getConnection(connURL);
     }
 
-    public boolean addToCart(int userId, int bookId, int quantity) {
+    public List<Cart> getAllCartItems() {
         Connection conn = null;
-        boolean created = false;
+        List<Cart> carts = new ArrayList<>();
+        try {
+            conn = getConnection();
+
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM shoppingcart");
+            ResultSet rs = pstmt.executeQuery();
+
+            // Step 7: Process Result
+            while (rs.next()) {
+                Cart cart = new Cart();
+                cart.setuserid(rs.getInt("userid"));
+                cart.setbookid(rs.getInt("bookid"));
+                cart.setquantity(rs.getInt("quantity"));
+
+                carts.add(cart);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Ensure connection is closed
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return carts;
+    }
+
+    public void addToCart(int userId, int bookId, int quantity) {
+        Connection conn = null;
         try {
             conn = getConnection();
 
@@ -40,21 +75,14 @@ public class CartDao {
                 updateStmt.setInt(1, quantity);
                 updateStmt.setInt(2, userId);
                 updateStmt.setInt(3, bookId);
-                int rowsAffected =  updateStmt.executeUpdate();
-                
-                System.out.println("Executed SQL query, rows affected: " + rowsAffected);
-    			created = (rowsAffected > 0);
-    			
+                updateStmt.executeUpdate();
             } else {
                 // Book doesn't exist in the cart, insert a new row
                 PreparedStatement insertStmt = conn.prepareStatement("INSERT INTO shoppingcart (UserID, BookID, Quantity) VALUES (?, ?, ?)");
                 insertStmt.setInt(1, userId);
                 insertStmt.setInt(2, bookId);
                 insertStmt.setInt(3, quantity);
-                int rowsAffected = insertStmt.executeUpdate();
-
-    			System.out.println("Executed SQL query, rows affected: " + rowsAffected);
-    			created = (rowsAffected > 0);
+                insertStmt.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,12 +95,11 @@ public class CartDao {
                 }
             }
         }
-        return created;
     }
 
-    public ArrayList<Book> getAllBooksInCart(int userId) {
+    public List<Book> getAllBooksInCart(int userId) {
         Connection conn = null;
-        ArrayList<Book> books = new ArrayList<>();
+        List<Book> books = new ArrayList<>();
         try {
             // Retrieve the carts from the database
             conn = getConnection();
@@ -98,6 +125,8 @@ public class CartDao {
             stmt.close();
             conn.close();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return books;
@@ -132,9 +161,8 @@ public class CartDao {
         return quantity;
     }
     
-    public boolean deleteFromCart(int userId, int bookId) {
+    public void deleteFromCart(int userId, int bookId) {
         Connection conn = null;
-        boolean deleted = false;
         try {
             conn = getConnection();
 
@@ -142,11 +170,9 @@ public class CartDao {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM shoppingcart WHERE UserID = ? AND BookID = ?");
             stmt.setInt(1, userId);
             stmt.setInt(2, bookId);
-            int rowsAffected = stmt.executeUpdate();
-            
-            System.out.println("Executed SQL query, rows affected: " + rowsAffected);
-			deleted = (rowsAffected > 0);
+            stmt.executeUpdate();
 
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -158,15 +184,5 @@ public class CartDao {
                 }
             }
         }
-        return deleted;
     }
-   
-
-
-
-
-
-
-    
-    
 }

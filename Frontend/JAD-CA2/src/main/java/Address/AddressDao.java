@@ -1,157 +1,158 @@
-package Address;
+package com.bookstore.storews.address;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-
-import DBAccess.DBConnection;
-
-
+import java.util.List;
+import com.bookstore.storews.dbaccess.DBConnection;
 
 public class AddressDao {
-	public ArrayList<Address> getAddressByUserId(int userid) {
-		ArrayList<Address> addressList = new ArrayList<>();
-		Connection conn = null;
+    public Address getAddressById(int addressID) {
+        Connection conn = null;
+        Address address = null;
 
-		try {
-			conn = DBConnection.getConnection();
+        try {
+            conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM address WHERE userid = ?");
-			pstmt.setInt(1, userid);
-			ResultSet rs = pstmt.executeQuery();
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM address WHERE AddressID = ?");
+            pstmt.setInt(1, addressID);
 
-			while (rs.next()) {
-				Address address = new Address();
-				address.setAddressId(rs.getString("address_id"));
-				address.setAddress(rs.getString("address"));
-				address.setAddress2(rs.getString("address2"));
-				address.setDistrict(rs.getString("district"));
-				address.setCityId(rs.getInt("city_id"));
-				address.setPostalCode(rs.getInt("postal_code"));
-				address.setPhone(rs.getInt("phone"));
-				address.setUserId(rs.getInt("userid"));
+            ResultSet rs = pstmt.executeQuery();
 
-				addressList.add(address);
-			}
+            if (rs.next()) {
+                address = new Address();
+                address.setAddressID(rs.getInt("AddressID"));
+                address.setUserID(rs.getInt("UserID"));
+                address.setAddress1(rs.getString("Address1"));
+                address.setAddress2(rs.getString("Address2"));
+                address.setDistrict(rs.getString("District"));
+                address.setCity(rs.getString("City"));
+                address.setPostalCode(rs.getString("PostalCode"));
+                address.setCountry(rs.getString("Country"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
 
-		} catch (SQLException e) {
-			System.out.println("Error executing getAddressByUserId query: " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			closeConnection(conn);
-		}
+        return address;
+    }
 
-		return addressList;
-	}
-	
-	
-	
-	public boolean createAddress(Address address) throws SQLException, ClassNotFoundException{
-		System.out.println("Entered createAddress method");
-		Connection conn = null;
-		boolean created = false;
+    public List<Address> getAllAddresses() {
+        Connection conn = null;
+        List<Address> addresses = new ArrayList<>();
 
-		try {
-			conn = DBConnection.getConnection();
-			// Print statement after getting the connection to see if this line executes
-			System.out.println("Got connection");
+        try {
+            conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement(
-					"INSERT INTO address(address, address2, district, city_id, postal_code, phone, userid) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM address");
 
-			System.out.println("insert statement done");
-			pstmt.setString(1, address.getAddress());
-			pstmt.setString(2, address.getAddress2());
-			pstmt.setString(3, address.getDistrict());
-			pstmt.setInt(4, address	.getCityId());
-			pstmt.setInt(5, address.getPostalCode());
-			pstmt.setInt(6, address.getPhone());
-			pstmt.setInt(7, address.getUserId());
-		
-			System.out.println("insert done");
+            while (rs.next()) {
+                Address address = new Address();
+                address.setAddressID(rs.getInt("AddressID"));
+                address.setUserID(rs.getInt("UserID"));
+                address.setAddress1(rs.getString("Address1"));
+                address.setAddress2(rs.getString("Address2"));
+                address.setDistrict(rs.getString("District"));
+                address.setCity(rs.getString("City"));
+                address.setPostalCode(rs.getString("PostalCode"));
+                address.setCountry(rs.getString("Country"));
 
-			int rowsAffected = pstmt.executeUpdate();
-			
-			
-			
-			System.out.println("Executed SQL query, rows affected: " + rowsAffected);
-			created = (rowsAffected > 0);
+                addresses.add(address);
+            }
 
-			System.out.println("Insert executed, created = " + created);
-		} catch (SQLException e) {
-			// Print out any exceptions that might be thrown
-			e.printStackTrace();
-		} finally {
-			closeConnection(conn);
-		}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
 
-		return created;
-	}
-	
-	public boolean updateAddress(Address address) {
-		Connection conn = null;
-		boolean updated = false;
+        return addresses;
+    }
 
-		try {
-			conn = DBConnection.getConnection();
+    public void createAddress(Address address) {
+        Connection conn = null;
 
-			PreparedStatement pstmt = conn.prepareStatement(
-					"UPDATE address SET address = ?, address2 = ?, district = ?, city_id = ?, postal_code = ?, phone = ? WHERE  address_id = ?");
+        try {
+            conn = DBConnection.getConnection();
 
-			pstmt.setString(1, address.getAddress());
-			pstmt.setString(2, address.getAddress2());
-			pstmt.setString(3, address.getDistrict());
-			pstmt.setInt(4, address.getCityId());
-			pstmt.setInt(5, address.getPostalCode());
-			pstmt.setInt(6, address.getPhone());
-			pstmt.setString(7, address.getAddressId());
-			
-			int rowsAffected = pstmt.executeUpdate();
-			updated = (rowsAffected > 0);
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "INSERT INTO address (UserID, Address1, Address2, District, City, PostalCode, Country) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            pstmt.setInt(1, address.getUserID());
+            pstmt.setString(2, address.getAddress1());
+            pstmt.setString(3, address.getAddress2());
+            pstmt.setString(4, address.getDistrict());
+            pstmt.setString(5, address.getCity());
+            pstmt.setString(6, address.getPostalCode());
+            pstmt.setString(7, address.getCountry());
 
-		} catch (SQLException e) {
-			System.out.println("Error updating book: " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			closeConnection(conn);
-		}
+            pstmt.executeUpdate();
 
-		return updated;
-	}
-	
-	public boolean deleteAddress(String addressId) {
-		Connection conn = null;
-		boolean deleted = false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+    }
 
-		try {
-			conn = DBConnection.getConnection();
+    public void updateAddress(Address address) {
+        Connection conn = null;
 
-			PreparedStatement pstmt = conn.prepareStatement("DELETE FROM address WHERE address_id = ?");
-			pstmt.setString(1, addressId);
+        try {
+            conn = DBConnection.getConnection();
 
-			int rowsAffected = pstmt.executeUpdate();
-			deleted = (rowsAffected > 0);
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE address SET UserID = ?, Address1 = ?, Address2 = ?, District = ?, City = ?, PostalCode = ?, Country = ? WHERE AddressID = ?");
+            pstmt.setInt(1, address.getUserID());
+            pstmt.setString(2, address.getAddress1());
+            pstmt.setString(3, address.getAddress2());
+            pstmt.setString(4, address.getDistrict());
+            pstmt.setString(5, address.getCity());
+            pstmt.setString(6, address.getPostalCode());
+            pstmt.setString(7, address.getCountry());
+            pstmt.setInt(8, address.getAddressID());
 
-		} catch (SQLException e) {
-			System.out.println("Error deleting book: " + e.getMessage());
-			e.printStackTrace();
+            pstmt.executeUpdate();
 
-		} finally {
-			closeConnection(conn);
-		}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+    }
 
-		return deleted;
-	}
-	
-	private void closeConnection(Connection conn) {
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+    public boolean deleteAddress(int addressID) {
+        Connection conn = null;
+        boolean deleted = false;
+
+        try {
+            conn = DBConnection.getConnection();
+
+            PreparedStatement pstmt = conn.prepareStatement("DELETE FROM address WHERE AddressID = ?");
+            pstmt.setInt(1, addressID);
+
+            int rowsAffected = pstmt.executeUpdate();
+            deleted = (rowsAffected > 0);
+
+        } catch (SQLException e) {
+            System.out.println("Error deleting address: " + e.getMessage());
+            e.printStackTrace();
+
+        } finally {
+            closeConnection(conn);
+        }
+
+        return deleted;
+    }
+
+    private void closeConnection(Connection conn) {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

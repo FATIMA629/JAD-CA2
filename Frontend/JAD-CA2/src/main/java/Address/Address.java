@@ -1,62 +1,77 @@
-package Address;
+package com.bookstore.storews.address;
 
 public class Address {
-	private String addressId;
-	private String address;
+	private int addressID;
+	private int userID;
+	private String address1;
 	private String address2;
 	private String district;
-	private int cityId;
-	private int postalCode;
-	private int phone;
-	private int userId ;
-	public String getAddressId() {
-		return addressId;
+	private String city;
+	private String postalCode;
+	private String country;
+
+	public int getAddressID() {
+		return addressID;
 	}
-	public void setAddressId(String addressId) {
-		this.addressId = addressId;
+
+	public void setAddressID(int addressID) {
+		this.addressID = addressID;
 	}
-	public String getAddress() {
-		return address;
+
+	public int getUserID() {
+		return userID;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
+
+	public String getAddress1() {
+		return address1;
+	}
+
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+
 	public String getAddress2() {
 		return address2;
 	}
+
 	public void setAddress2(String address2) {
 		this.address2 = address2;
 	}
+
 	public String getDistrict() {
 		return district;
 	}
+
 	public void setDistrict(String district) {
 		this.district = district;
 	}
-	public int getCityId() {
-		return cityId;
+
+	public String getCity() {
+		return city;
 	}
-	public void setCityId(int cityId) {
-		this.cityId = cityId;
+
+	public void setCity(String city) {
+		this.city = city;
 	}
-	public int getPostalCode() {
+
+	public String getPostalCode() {
 		return postalCode;
 	}
-	public void setPostalCode(int postalCode) {
+
+	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 	}
-	public int getPhone() {
-		return phone;
+
+	public String getCountry() {
+		return country;
 	}
-	public void setPhone(int phone) {
-		this.phone = phone;
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
-	public int getUserId() {
-		return userId;
-	}
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-	
-	
+
 }

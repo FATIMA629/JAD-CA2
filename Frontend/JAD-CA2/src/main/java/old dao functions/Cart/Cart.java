@@ -1,10 +1,10 @@
-package com.bookstore.storews.cart;
+package Cart;
 
 public class Cart {
 	private int userid;
 	private int bookid;
 	private int quantity;
-	
+
 	public int getuserid() {
 		return userid;
 	}
