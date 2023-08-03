@@ -1,4 +1,4 @@
-<%@page import="Books.Book , Books.BookDao"%>
+<%@page import="book.* "%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 
 <%

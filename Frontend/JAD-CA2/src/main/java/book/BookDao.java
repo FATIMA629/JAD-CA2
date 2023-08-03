@@ -1,4 +1,4 @@
-package com.bookstore.storews.book;
+package book;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import com.bookstore.storews.dbaccess.DBConnection;
+import dbaccess.*;
 
 public class BookDao {
 

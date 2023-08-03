@@ -1,4 +1,4 @@
-package com.bookstore.storews.address;
+package address;
 
 public class Address {
 	private int addressID;

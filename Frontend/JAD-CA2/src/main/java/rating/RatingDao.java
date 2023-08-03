@@ -1,4 +1,4 @@
-package com.bookstore.storews.rating;
+package rating;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

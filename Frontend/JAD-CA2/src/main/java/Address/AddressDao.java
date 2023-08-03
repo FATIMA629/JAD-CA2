@@ -1,9 +1,9 @@
-package com.bookstore.storews.address;
+package address;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import com.bookstore.storews.dbaccess.DBConnection;
+import dbaccess.*;
 
 public class AddressDao {
     public Address getAddressById(int addressID) {

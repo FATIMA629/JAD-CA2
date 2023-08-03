@@ -1,4 +1,4 @@
-package com.bookstore.storews.rating;
+package rating;
 
 public class Rating {
 	private int ratingId;

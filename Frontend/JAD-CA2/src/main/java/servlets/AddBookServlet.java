@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Books.BookDao;
-import Books.Book;
+import book.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.Part;
@@ -20,9 +19,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.lang.ClassNotFoundException;
 
 
 @WebServlet("/AddBookServlet")
@@ -32,11 +33,7 @@ public class AddBookServlet extends HttpServlet {
 
 	public AddBookServlet() {
 		super();
-		try {
-			bookDao = new BookDao();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		bookDao = new BookDao();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -152,7 +149,12 @@ public class AddBookServlet extends HttpServlet {
 			book.setImageLocation(imageLocation);
 			book.setSold(Integer.parseInt(sold));
 
-			bookDao.createBook(book);
+			try {
+				bookDao.createBook(book);
+			} catch (ClassNotFoundException | SQLException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			request.getSession().setAttribute("success", "Book created successfully!");
 		} else {

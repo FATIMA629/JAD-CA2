@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Users.UserDao;
-import Users.User;
+import user.*;
 
 @WebServlet("/UserUpdateUserServlet")
 public class UserUpdateUserServlet extends HttpServlet {
@@ -21,11 +20,7 @@ public class UserUpdateUserServlet extends HttpServlet {
 
 	public UserUpdateUserServlet() {
 		super();
-		try {
-			userDao = new UserDao();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		userDao = new UserDao();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

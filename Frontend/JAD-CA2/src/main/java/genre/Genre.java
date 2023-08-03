@@ -1,4 +1,4 @@
-package com.bookstore.storews.genre;
+package genre;
 
 public class Genre {
 	private int genreId;

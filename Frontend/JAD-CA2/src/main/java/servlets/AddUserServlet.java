@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Users.UserDao;
-import Users.User;
+import user.*;
 
 /**
  * Servlet implementation class AddUserServlet
@@ -27,11 +26,7 @@ public class AddUserServlet extends HttpServlet {
 	 */
 	public AddUserServlet() {
 		super();
-		try {
-			userDao = new UserDao();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		userDao = new UserDao();
 	}
 
 	/**

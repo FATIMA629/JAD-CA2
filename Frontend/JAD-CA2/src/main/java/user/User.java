@@ -1,5 +1,5 @@
-package com.bookstore.storews.user;
-import com.bookstore.storews.address.*;
+package user;
+import address.*;
 
 public class User {
     private int userID;

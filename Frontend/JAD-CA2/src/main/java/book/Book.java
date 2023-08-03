@@ -1,4 +1,4 @@
-package com.bookstore.storews.book;
+package book;
 
 public class Book {
 	private String bookId;

@@ -1,4 +1,4 @@
-package com.bookstore.storews.city;
+package city;
 
 public class City {
 	private String cityId;

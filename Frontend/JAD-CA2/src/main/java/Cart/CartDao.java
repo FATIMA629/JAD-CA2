@@ -1,9 +1,9 @@
-package com.bookstore.storews.cart;
+package cart;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import com.bookstore.storews.book.*;
+import book.*;
 
 
 public class CartDao {

@@ -1,4 +1,4 @@
-package com.bookstore.storews.order;
+package order;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import com.bookstore.storews.dbaccess.DBConnection;
-import com.bookstore.storews.address.*;
+import dbaccess.DBConnection;
+import address.*;
 
 public class OrderDao {
 

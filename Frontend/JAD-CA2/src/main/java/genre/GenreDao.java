@@ -1,4 +1,4 @@
-package com.bookstore.storews.genre;
+package genre;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-import com.bookstore.storews.dbaccess.DBConnection;
+import dbaccess.DBConnection;
 
 public class GenreDao {
 

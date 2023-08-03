@@ -1,10 +1,10 @@
-package com.bookstore.storews.sales;
+package sales;
 
-import com.bookstore.storews.dbaccess.DBConnection;
-import com.bookstore.storews.user.User;
-import com.bookstore.storews.order.Order;
-import com.bookstore.storews.book.Book;
-import com.bookstore.storews.address.*;
+import dbaccess.DBConnection;
+import user.User;
+import order.Order;
+import book.Book;
+import address.*;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
-package com.bookstore.storews.order;
+package order;
 
 import java.util.Date;
 import java.util.List;
-import com.bookstore.storews.address.Address;
+import address.Address;
 
 public class Order {
 	private int orderId;

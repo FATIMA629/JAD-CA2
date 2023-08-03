@@ -1,8 +1,8 @@
-package com.bookstore.storews.city;
+package city;
 
 import java.sql.*;
 import java.util.ArrayList;
-import com.bookstore.storews.dbaccess.DBConnection;
+import dbaccess.DBConnection;
 
 public class CityDao {
 

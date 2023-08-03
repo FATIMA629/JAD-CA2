@@ -1,4 +1,4 @@
-package com.bookstore.storews.order;
+package order;
 
 public class OrderItem {
 	private int orderItemId;

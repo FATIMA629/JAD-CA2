@@ -1,4 +1,4 @@
-package com.bookstore.storews.country;
+package country;
 
 public class Country {
 	private String countryId;

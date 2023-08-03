@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="Books.*"%>
-<%@ page import="Geners.*"%>
+<%@ page import="book.*"%>
+<%@ page import="genre.*"%>
 <%@ page import="java.util.*"%>
-<%@ page import="Books.*, java.util.HashMap, java.util.Map"%>
+<%@ page import="java.util.HashMap, java.util.Map"%>
 <!DOCTYPE html>
 <html>
 <head>

@@ -2,10 +2,8 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import Books.BookDao;
-import Books.Book;
-import Cart.Cart;
-import Cart.CartDao;
+import book.*;
+import cart.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
