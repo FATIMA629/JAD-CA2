@@ -1,11 +1,16 @@
-package com.bookstore.storews.address;
+package Address;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import com.bookstore.storews.dbaccess.DBConnection;
+
+import DBAccess.DBConnection;
+
+
 
 public class AddressDao {
-
 	public ArrayList<Address> getAddressByUserId(int userid) {
 		ArrayList<Address> addressList = new ArrayList<>();
 		Connection conn = null;

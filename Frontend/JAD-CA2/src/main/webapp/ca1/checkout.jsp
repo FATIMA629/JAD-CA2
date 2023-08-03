@@ -1,5 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@page import="Country.*"%>
+    <%@page import="City.*" %>
+    <%@ page import="java.util.List"%>
+<%
+CountryDao countryDao = new CountryDao();
+CityDao cityDao = new CityDao();
+String selected = null;
+String countryId = null;
+
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,49 +25,13 @@
 </head>
 <body>
 
+
 		<div class="col-md-4 container bg-default">
 			
 			<h4 class="my-4">
 					Billing Address
 			</h4>
 			
-			<form>
-				<div class="form-row">
-					<div class="col-md-6 form-group">
-						<label for="firstname">First Name</label>
-						<input type="text" class="form-control" id="firstname" placeholder="First Name">
-						<div class="invalid-feedback">
-							Valid first name is required.
-						</div>
-					</div>
-
-					<div class="col-md-6 form-group">
-						<label for="lastname">Last Name</label>
-						<input type="text" class="form-control" id="lastname" placeholder="Last Name">
-						<div class="invalid-feedback">
-							Valid last name is required.
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label for="username">Username</label>
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span class="input-group-text">@</span>
-							</div>	
-							<input type="text" class="form-control" id="username" placeholder="Username" required>
-							<div class="invalid-feedback">
-								Your username is required.
-							</div>
-						</div>
-				</div>
-
-				<div class="form-group">
-						<label for="email">Email</label>
-						<input type="email" class="form-control" id="email" placeholder="you@example.com" required>
-				</div>
-
 				<div class="form-group">
 					<label for="adress">Address</label>
 					<input type="text" class="form-control" id="adress" placeholder="1234 Main Street" required>
@@ -70,40 +44,75 @@
 					<label for="address2">Address 2
 						<span class="text-muted">(Optional)</span>
 					</label>
-					<input type="text" class="form-control" id="adress2" placeholder="Flat No">
+					<input type="text" class="form-control" id="address2" placeholder="Flat No">
 				</div>
-
-				<div class="row">
+				
+				
 					<div class="col-md-4 form-group">
-						<label for="country">Country</label>
-						<select type="text" class="form-control" id="country">
-							<option value>Choose...</option>
-							<option>United Kingdom</option>
-						</select>
-						<div class="invalid-feedback">
-							Please select a valid country.
+							<label for="country">Country</label>
+							<select class="form-control" id="countryId" name="countryId">
+								<%
+								List<Country> countryList = countryDao.getCountry();
+								for(Country country : countryList) {
+									City city = cityDao.getCountryId(country.getCountryId());
+									 selected = country.getCountryId().equals(city.getCountryId()) ? "selected" : "";
+								%>	
+								<option value="<%=country.getCountryId() %>" <%=selected %>><%=country.getCountry() %></option>							
+								<%	
+								}
+								%>
+							</select>
+							<div class="invalid-feedback">
+								Please select a valid country.
+							</div>	
 						</div>
-					</div>
-
-					<div class="col-md-4 form-group">
+	
+	<div class="col-md-4 form-group">
 						<label for="city">City</label>
-						<select type="text" class="form-control" id="city">
-							<option value>Choose...</option>
-							<option>London</option>
+						<select class="form-control" id="cityId" name="cityId">
+							<%
+							List<City> cityList = cityDao.getCity(countryId);
+							for(City city : cityList) {
+							%>	
+							<option value="<%=city.getCityId() %>" ><%=city.getCity() %></option>							
+							<%
+							}
+							%>
 						</select>
 						<div class="invalid-feedback">
 							Please provide a valid city.
 						</div>
 					</div>
-						
-					<div class="col-md-4 form-group">
-						<label for="postcode">Postcode</label>
-						<select type="text" class="form-control" id="postcode">
-							<option value>Choose...</option>
-							<option>NW6 2LS</option>
-						</select>
+					
+
+
+				
+				<div class="row">
+				<div class="col-md-4 form-group">
+						<label for="district">District</label>
+					<input type="text" class="form-control" id="district" placeholder="Singapore" name="district">
 						<div class="invalid-feedback">
-							Postcode required.
+							District required.
+						</div>
+					</div>
+			
+			
+					
+					
+					<div class="row">
+					<div class="col-md-6 form-group">
+						<label for="postalCode">Postal Code</label>
+						<input type="text" class="form-control" id="postalCode" placeholder="092342" name="postalCode">
+						<div class="invalid-feedback">
+							Valid postal code is required.
+						</div>
+					</div>
+
+					<div class="col-md-6 form-group">
+						<label for="phone">Phone Number</label>
+						<input type="text" class="form-control" id="phone" placeholder="09009121" name="phone">
+						<div class="invalid-feedback">
+							Valid phone number is required.
 						</div>
 					</div>
 				</div>
@@ -179,9 +188,12 @@
 				</div>
 
 					<hr class="mb-4">
-				
-					<button class="btn btn-primary bt-lg btn-block" type="submit">Continue to Checkout</button>
+					
+				<form action="../CheckoutServlet" method="GET">
+					<button class="btn btn-primary bt-lg btn-block" type="submit">Continue to Payment</button>
 			</form>
 		</div>
+		</div>
+		
 </body>
 </html>

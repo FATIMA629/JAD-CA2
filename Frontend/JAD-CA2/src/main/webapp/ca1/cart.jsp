@@ -127,9 +127,12 @@ int userid = (int) session.getAttribute("userId");
      
                 <div class="cc"></div>
             </div>
+            
+            <a href="checkout.jsp">
             <button class="checkout-btn-solid checkout-btn-solid--primary">
                 <span style="width: 100%">Check out</span>
             </button>
+            </a>
 </div>
         </section>
 	</div>
