@@ -46,7 +46,7 @@ public class OrderDao {
 
 			pstmt.setInt(1, order.getUserId());
 			pstmt.setDouble(2, order.getTotalPrice());
-			pstmt.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
+			//pstmt.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
 			pstmt.setString(4, order.getOrderStatus());
 			pstmt.setString(5, order.getShippingAddress());
 			pstmt.setString(6, order.getBillingAddress());
@@ -101,7 +101,7 @@ public class OrderDao {
 
 			pstmt.setInt(1, order.getUserId());
 			pstmt.setDouble(2, order.getTotalPrice());
-			pstmt.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
+			//pstmt.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
 			pstmt.setString(4, order.getOrderStatus());
 			pstmt.setString(5, order.getShippingAddress());
 			pstmt.setString(6, order.getBillingAddress());
@@ -327,7 +327,7 @@ public class OrderDao {
 		order.setOrderId(rs.getInt("OrderID"));
 		order.setUserId(rs.getInt("UserID"));
 		order.setTotalPrice(rs.getDouble("TotalPrice"));
-		order.setOrderDate(rs.getDate("OrderDate"));
+		//order.setOrderDate(rs.getDate("OrderDate"));
 		order.setOrderStatus(rs.getString("OrderStatus"));
 		order.setShippingAddress(rs.getString("ShippingAddress"));
 		order.setBillingAddress(rs.getString("BillingAddress"));
