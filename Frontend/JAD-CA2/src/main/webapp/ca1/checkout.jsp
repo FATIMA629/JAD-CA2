@@ -32,22 +32,29 @@ System.out.println(addressList);
 		<div class="col-md-4 container bg-default">
 			<h4 class="my-4">Billing Address</h4>
 			
-			  <% if (addressList != null) { %>
+			  <% if (!addressList.isEmpty()) { %>
             
-            <form action="AddressServlet" method="GET">
+            <form action="../AddressServlet" method="GET">
                
                 <% for (Address address : addressList) { %>
                     <input type="radio" name="selectedAddress" value="<%= address.getAddressId() %>">
                     <%= address.getAddress() %><br>
                 <% } %>
-                
+                	<hr>
+				
+					<div class="form-check">
+						<input type="checkbox" class="form-check-input" id="shipping-adress"> 
+							Shipping address is the same as my billing address
+						<label for="shipping-address" class="form-check-label"></label>
+					</div>
+					<hr> 
                 <button class="btn btn-primary bt-lg btn-block" type="submit">Continue to Payment</button>
             </form>
         <% } else { %>
-			  <form action="AddressServlet" method="post">
+			  <form action="../AddressServlet" method="post">
 				<div class="form-group">
 					<label for="address">Address</label>
-					<input type="text" class="form-control" id="adress" placeholder="1234 Main Street" required>
+					<input type="text" name="address" class="form-control" id="address" placeholder="1234 Main Street" required>
 					<div class="invalid-feedback">
 						Please enter your shipping address.
 					</div>
@@ -57,7 +64,7 @@ System.out.println(addressList);
 					<label for="address2">Address 2
 						<span class="text-muted">(Optional)</span>
 					</label>
-					<input type="text" class="form-control" id="address2" placeholder="Flat No">
+					<input type="text" name="address2" class="form-control" id="address2" placeholder="Flat No">
 				</div>
 				
 					<div class="row">
@@ -67,10 +74,8 @@ System.out.println(addressList);
 								<%
 								List<Country> countryList = countryDao.getCountry();
 								for(Country country : countryList) {
-									City city = cityDao.getCountryId(country.getCountryId());
-									 selected = country.getCountryId().equals(city.getCountryId()) ? "selected" : "";
 								%>	
-								<option value="<%=country.getCountryId() %>" <%=selected %>><%=country.getCountry() %></option>							
+								<option value="<%=country.getCountryId() %>" ><%=country.getCountry() %></option>							
 								<%	
 								}
 								%>
@@ -84,7 +89,7 @@ System.out.println(addressList);
 						<label for="city">City</label>
 						<select class="form-control" id="cityId" name="cityId">
 							<%
-							List<City> cityList = cityDao.getCity(countryId);
+							List<City> cityList = cityDao.getCity("1");
 							for(City city : cityList) {
 							%>	
 							<option value="<%=city.getCityId() %>" ><%=city.getCity() %></option>							
@@ -96,24 +101,24 @@ System.out.println(addressList);
 							Please provide a valid city.
 						</div>
 					</div>
-</div>
+
 				
 			
 				<div class="col-md-4 form-group">
 						<label for="district">District</label>
-					<input type="text" class="form-control" id="district" placeholder="Singapore" name="district">
+					<input type="text" name="district" class="form-control" id="district" placeholder="Singapore" name="district">
 						<div class="invalid-feedback">
 							District required.
 						</div>
 					</div>
-			
+			</div>
 			
 					
 					
 					<div class="row">
 					<div class="col-md-6 form-group">
 						<label for="postalCode">Postal Code</label>
-						<input type="text" class="form-control" id="postalCode" placeholder="092342" name="postalCode">
+						<input type="text" name="postalCode" class="form-control" id="postalCode" placeholder="092342" name="postalCode">
 						<div class="invalid-feedback">
 							Valid postal code is required.
 						</div>
@@ -121,7 +126,7 @@ System.out.println(addressList);
 
 					<div class="col-md-6 form-group">
 						<label for="phone">Phone Number</label>
-						<input type="text" class="form-control" id="phone" placeholder="09009121" name="phone">
+						<input type="text" name="phone" class="form-control" id="phone" placeholder="09009121" name="phone">
 						<div class="invalid-feedback">
 							Valid phone number is required.
 						</div>
@@ -133,20 +138,20 @@ System.out.println(addressList);
 					<div class="form-check">
 						<input type="checkbox" class="form-check-input" id="shipping-adress"> 
 							Shipping address is the same as my billing address
-						<label for="shipping-adress" class="form-check-label"></label>
+						<label for="shipping-address" class="form-check-label"></label>
 					</div>
 
 				<div class="form-check">
 					<input type="checkbox" class="form-check-input" id="same-adress">
 						Save this information for next time
-					<label for="same-adress" class="form-check-label"></label>					
+					<label for="same-address" class="form-check-label"></label>					
 					</div>
 
 
 				<hr>
 
-					<hr class="mb-4">
-						<button class="btn btn-primary bt-lg btn-block" type="submit">Continue to Payment</button>
+				
+						<button class="btn btn-primary bt-lg btn-block" type="submit">Add address</button>
 						</form>
 		<%
 			}

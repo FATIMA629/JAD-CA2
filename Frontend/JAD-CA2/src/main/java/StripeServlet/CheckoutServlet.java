@@ -38,7 +38,7 @@ public class CheckoutServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("totalPrice", request.getParameter("amount"));
+		request.setAttribute("totalPrice", 10000);
 		request.setAttribute("stripePublicKey", "pk_test_51Na4b7JLhf6EaydIrHUGjamPvdvBjHGVw4p8d6cl3TRWAOVTKN9JHuvkEz3N4a1tJJsyFGg5QnWO0GXcXWAO2eUL00sAXrSuwr");
 		
 		String url = "ca1/payment.jsp";
