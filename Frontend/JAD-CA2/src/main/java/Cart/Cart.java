@@ -1,4 +1,4 @@
-package cart;
+package Cart;
 
 public class Cart {
 	private int userid;

@@ -25,6 +25,7 @@ public class AddToCartServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	HttpSession session = request.getSession();
+        System.out.println("Total Price from addtocartservlet" + request.getParameter("amount"));
     
     	session.setAttribute("totalPrice", request.getParameter("amount"));
     	System.out.println("totalPrice");

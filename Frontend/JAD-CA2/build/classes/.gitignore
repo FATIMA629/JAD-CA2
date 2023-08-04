@@ -1,9 +1,6 @@
-/DBAccess/
-/book/
 /servlets/
 /user/
-/Address/
-/Country/
-/City/
-/order/
 /StripeServlet/
+/order/
+/Cart/
+/Payment/

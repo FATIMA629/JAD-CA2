@@ -33,10 +33,15 @@ public class AddressServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String addressId = request.getParameter("selectedAddress");
+		int addressId = Integer.parseInt(request.getParameter("selectedAddress"));
 		System.out.println(addressId);
+		AddressDao addressDao = new AddressDao();
+		Address address = new Address();
+		
+		address = addressDao.getAddressById(addressId);
+		
 		HttpSession session = request.getSession();
-		session.setAttribute("selectedAddress", addressId);
+		session.setAttribute("selectedAddress", address);
 
 		response.sendRedirect(request.getContextPath() + "/CheckoutServlet");	
 		}

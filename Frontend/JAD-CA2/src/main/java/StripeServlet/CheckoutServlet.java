@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.stripe.Stripe;
 import com.stripe.exception.APIConnectionException;
@@ -38,7 +39,9 @@ public class CheckoutServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("totalPrice", 10000);
+		HttpSession session = request.getSession();
+		request.setAttribute("totalPrice", session.getAttribute("totalPrice"));
+		System.out.println("Total price from checkoutservlet " + session.getAttribute("totalPrice"));
 		request.setAttribute("stripePublicKey", "pk_test_51Na4b7JLhf6EaydIrHUGjamPvdvBjHGVw4p8d6cl3TRWAOVTKN9JHuvkEz3N4a1tJJsyFGg5QnWO0GXcXWAO2eUL00sAXrSuwr");
 		
 		String url = "ca1/payment.jsp";
@@ -51,7 +54,12 @@ public class CheckoutServlet extends HttpServlet {
 	 */	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String token = request.getParameter("stripeToken");
-		String amount = request.getParameter("amount");
+		String amountStr = request.getParameter("amount");
+		String paymentType = request.getParameter("paymentType");
+		double amountDouble = Double.parseDouble(amountStr);
+
+		// Convert amount to smallest currency unit (cents for SGD)
+		int amount = (int) (amountDouble * 100);
 		String email = request.getParameter("stripeEmail");
 		System.out.println(token);
 		System.out.println(email);
@@ -78,8 +86,9 @@ public class CheckoutServlet extends HttpServlet {
         request.setAttribute("token", token);
         request.setAttribute("currency", "SGD");
         request.setAttribute("status", "success");
+        request.setAttribute("paymentType", paymentType);
         
-		String url = "ca1/charge.jsp";
+		String url = request.getContextPath() + "/OrderServlet";
 		RequestDispatcher cd = request.getRequestDispatcher(url);
         cd.forward(request, response);
 	}
