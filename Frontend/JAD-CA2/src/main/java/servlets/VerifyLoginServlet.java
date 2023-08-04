@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import book.*;
-import cart.*;
+import Cart.*;
 import user.*;
 
 @WebServlet("/VerifyLoginServlet")

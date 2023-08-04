@@ -37,8 +37,8 @@ System.out.println(addressList);
             <form action="../AddressServlet" method="GET">
                
                 <% for (Address address : addressList) { %>
-                    <input type="radio" name="selectedAddress" value="<%= address.getAddressId() %>">
-                    <%= address.getAddress() %><br>
+                    <input type="radio" name="selectedAddress" value="<%= address.getAddressID() %>">
+                    <%=address.getAddress1() %><br>
                 <% } %>
                 	<hr>
 				
@@ -46,6 +46,11 @@ System.out.println(addressList);
 						<input type="checkbox" class="form-check-input" id="shipping-adress"> 
 							Shipping address is the same as my billing address
 						<label for="shipping-address" class="form-check-label"></label>
+					</div>
+					<div class="form-check">
+					<input type="checkbox" class="form-check-input" id="same-adress">
+						Save this information for next time
+					<label for="same-address" class="form-check-label"></label>					
 					</div>
 					<hr> 
                 <button class="btn btn-primary bt-lg btn-block" type="submit">Continue to Payment</button>
@@ -68,54 +73,46 @@ System.out.println(addressList);
 				</div>
 				
 					<div class="row">
-					<div class="col-md-4 form-group">
-							<label for="country">Country</label>
-							<select class="form-control" id="countryId" name="countryId">
-								<%
-								List<Country> countryList = countryDao.getCountry();
-								for(Country country : countryList) {
-								%>	
-								<option value="<%=country.getCountryId() %>" ><%=country.getCountry() %></option>							
-								<%	
-								}
-								%>
-							</select>
-							<div class="invalid-feedback">
-								Please select a valid country.
-							</div>	
+					<div class="col-md-6 form-group">
+						<label for="country">Country</label>
+						<select type="text" name="country" class="form-control" id="country">
+							<option value>Choose...</option>
+							<option>United Kingdom</option>
+							<option>Canada</option>
+							<option>USA</option>
+						</select>
+						<div class="invalid-feedback">
+							Please select a valid country.
 						</div>
-	
-	<div class="col-md-4 form-group">
+					</div>
+
+					<div class="col-md-6 form-group">
 						<label for="city">City</label>
-						<select class="form-control" id="cityId" name="cityId">
-							<%
-							List<City> cityList = cityDao.getCity("1");
-							for(City city : cityList) {
-							%>	
-							<option value="<%=city.getCityId() %>" ><%=city.getCity() %></option>							
-							<%
-							}
-							%>
+						<select type="text" name="city" class="form-control" id="city">
+							<option value>Choose...</option>
+							<option>London</option>
+							<option>Las Vegas</option>
+							<option>Texas</option>
 						</select>
 						<div class="invalid-feedback">
 							Please provide a valid city.
 						</div>
 					</div>
-
+</div>
 				
-			
-				<div class="col-md-4 form-group">
+			<div class="row">
+				<div class="col-md-6 form-group">
 						<label for="district">District</label>
 					<input type="text" name="district" class="form-control" id="district" placeholder="Singapore" name="district">
 						<div class="invalid-feedback">
 							District required.
 						</div>
 					</div>
-			</div>
+			
 			
 					
 					
-					<div class="row">
+					
 					<div class="col-md-6 form-group">
 						<label for="postalCode">Postal Code</label>
 						<input type="text" name="postalCode" class="form-control" id="postalCode" placeholder="092342" name="postalCode">
@@ -124,13 +121,6 @@ System.out.println(addressList);
 						</div>
 					</div>
 
-					<div class="col-md-6 form-group">
-						<label for="phone">Phone Number</label>
-						<input type="text" name="phone" class="form-control" id="phone" placeholder="09009121" name="phone">
-						<div class="invalid-feedback">
-							Valid phone number is required.
-						</div>
-					</div>
 				</div>
 
 				<hr>

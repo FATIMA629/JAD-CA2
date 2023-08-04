@@ -35,6 +35,8 @@ public class AddressServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String addressId = request.getParameter("selectedAddress");
 		System.out.println(addressId);
+		HttpSession session = request.getSession();
+		session.setAttribute("selectedAddress", addressId);
 
 		response.sendRedirect(request.getContextPath() + "/CheckoutServlet");	
 		}
@@ -47,29 +49,25 @@ public class AddressServlet extends HttpServlet {
 		String Address = request.getParameter("address");
 		String address2 = request.getParameter("address2");
 		String district = request.getParameter("district");
-		int cityId = Integer.parseInt(request.getParameter("cityId"));
-		int postalCode = Integer.parseInt(request.getParameter("postalCode"));
-		int phone = Integer.parseInt(request.getParameter("phone"));
+		String country = request.getParameter("country");
+		String city = request.getParameter("city");
+		String postalCode = request.getParameter("postalCode");
         int userid = (int) session.getAttribute("userId");
         
-
+      
+        
         Address address = new Address();
-        address.setAddress(Address);
+        address.setAddress1(Address);
         address.setAddress2(address2);
         address.setDistrict(district);
-        address.setCityId(cityId);
+        address.setCountry(country);
+        address.setCity(city);
         address.setPostalCode(postalCode);
-        address.setPhone(phone);
-        address.setUserId(userid);
+        address.setUserID(userid);
 		
         AddressDao addressDao = new AddressDao();
-        try {
-			addressDao.createAddress(address);
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
+		addressDao.createAddress(address);
+
         response.sendRedirect(request.getContextPath() + "/ca1/checkout.jsp");
 	}
 

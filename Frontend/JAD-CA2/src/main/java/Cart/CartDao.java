@@ -1,4 +1,4 @@
-package cart;
+package Cart;
 
 import java.sql.*;
 import java.util.ArrayList;

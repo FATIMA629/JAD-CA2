@@ -1,5 +1,5 @@
 package user;
-import address.*;
+import Address.*;
 
 public class User {
     private int userID;

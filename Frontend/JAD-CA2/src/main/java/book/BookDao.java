@@ -7,7 +7,8 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import dbaccess.*;
+
+import DBAccess.*;
 
 public class BookDao {
 

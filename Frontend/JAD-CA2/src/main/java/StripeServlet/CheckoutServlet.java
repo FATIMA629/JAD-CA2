@@ -77,6 +77,7 @@ public class CheckoutServlet extends HttpServlet {
         request.setAttribute("email", email);
         request.setAttribute("token", token);
         request.setAttribute("currency", "SGD");
+        request.setAttribute("status", "success");
         
 		String url = "ca1/charge.jsp";
 		RequestDispatcher cd = request.getRequestDispatcher(url);
