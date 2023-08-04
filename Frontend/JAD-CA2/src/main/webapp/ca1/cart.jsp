@@ -122,7 +122,7 @@ int userid = (int) session.getAttribute("userId");
 </div>
 <div class="total-amount">
 <input type='hidden' value=<%=totalPrice %> name='amount' />
-<%=totalPrice %>
+<%=String.format("%.2f", totalPrice) %>
 </div>
                     </div>
                 </div>

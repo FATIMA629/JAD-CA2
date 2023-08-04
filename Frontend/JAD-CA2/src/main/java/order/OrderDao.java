@@ -71,15 +71,16 @@ public class OrderDao {
 
 		return generatedOrderId;
 	}
+	
 
-	public List<Order> getAllOrders() {
+	public List<Order> getAllOrders(int userId) {
 		List<Order> orders = new ArrayList<>();
 		Connection conn = null;
 
 		try {
 			conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM orders");
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM orders WHERE UserID = ? ORDER BY OrderID DESC");
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {

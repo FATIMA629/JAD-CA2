@@ -124,10 +124,10 @@
 								src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png">
 						</button>
 					</form>
-
 					<a href="cart.jsp"> <img src="../images/cart.png"
 						class="img-fluid" id="cartImage">
 					</a>
+					
 					<div class="cart-drawer">
 						<div class="profile-icon">
 							<img src="../images/profile.png" class="img-fluid" id="profileImage">

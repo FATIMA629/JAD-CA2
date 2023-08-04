@@ -56,6 +56,7 @@ public class CheckoutServlet extends HttpServlet {
 		String token = request.getParameter("stripeToken");
 		String amountStr = request.getParameter("amount");
 		String paymentType = request.getParameter("paymentType");
+		System.out.println("paymentType in checkout servlet is: " + paymentType);
 		double amountDouble = Double.parseDouble(amountStr);
 
 		// Convert amount to smallest currency unit (cents for SGD)
@@ -85,10 +86,10 @@ public class CheckoutServlet extends HttpServlet {
         request.setAttribute("email", email);
         request.setAttribute("token", token);
         request.setAttribute("currency", "SGD");
-        request.setAttribute("status", "success");
+        request.setAttribute("status", "Paid");
         request.setAttribute("paymentType", paymentType);
         
-		String url = request.getContextPath() + "/OrderServlet";
+		String url = "/OrderServlet";
 		RequestDispatcher cd = request.getRequestDispatcher(url);
         cd.forward(request, response);
 	}

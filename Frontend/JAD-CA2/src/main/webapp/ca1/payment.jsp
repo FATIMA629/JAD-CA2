@@ -13,13 +13,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-<input type="radio" name="paymentType" value="Cash">
-                   Cash<br>
-<input type="radio" name="paymentType" value="Cash">
-                   Stripe<br>
 	<form action="CheckoutServlet" method="post">
+	<input type="radio" name="paymentType" value="Cash">
+                   Cash<br>
+<input type="radio" name="paymentType" value="Stripe">
+                   Stripe<br>
     <input type='hidden' value=<%=Double.toString(amount) %> name='amount' />
-    <label>Price:<span><%= amount %></span></label>
+    <label>Price:<span><%= String.format("%.2f",amount) %></span></label>
     <script
        src='https://checkout.stripe.com/checkout.js' 
        class='stripe-button'
