@@ -1,4 +1,4 @@
-package Ratings;
+package rating;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,9 +19,9 @@ public class RatingDao {
 		return DriverManager.getConnection(connURL); // Establish connection to URL
 	}
 
-	public List<Rating> getRatingsForBook(int bookId) {
+	public ArrayList<Rating> getRatingsForBook(int bookId) {
 		Connection conn = null;
-		List<Rating> ratings = new ArrayList<>();
+		ArrayList<Rating> ratings = new ArrayList<>();
 
 		try {
 			conn = getConnection();
@@ -33,8 +33,10 @@ public class RatingDao {
 
 			while (rs.next()) {
 				Rating rating = new Rating();
+				rating.setRatingId(rs.getInt("ratingId"));
 				rating.setBookId(rs.getInt("bookId"));
 				rating.setUserId(rs.getInt("userId"));
+				rating.setRating(rs.getDouble("rating"));
 				rating.setHelpful(rs.getInt("helpful"));
 				rating.setComment(rs.getString("comment"));
 
@@ -74,8 +76,9 @@ public class RatingDao {
 		return averageRating;
 	}
 
-	public void incrementHelpfulCount(int ratingId) {
+	public boolean incrementHelpfulCount(int ratingId) {
 		Connection conn = null;
+		boolean updated = false;
 
 		try {
 			conn = getConnection();
@@ -83,34 +86,42 @@ public class RatingDao {
 			PreparedStatement pstmt = conn
 					.prepareStatement("UPDATE ratings SET helpful = helpful + 1 WHERE ratingId = ?");
 			pstmt.setInt(1, ratingId);
-
-			pstmt.executeUpdate();
+			int rowsAffected = pstmt.executeUpdate();
+			
+            System.out.println("Executed SQL query, rows affected: " + rowsAffected);
+			updated = (rowsAffected > 0);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			closeConnection(conn);
 		}
+		return updated;
 	}
 
-	public void addRating(Rating rating) {
+	public boolean addRating(Rating rating) {
 		Connection conn = null;
+		boolean created = false;
 
 		try {
 			conn = getConnection();
-
-			PreparedStatement pstmt = conn
-					.prepareStatement("INSERT INTO ratings (bookId, userId, helpful, comment) VALUES (?, ?, ?, ?)");
+			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ratings (bookId, userId, rating, helpful, comment) VALUES (?, ?, ?, ?, ?)");
 			pstmt.setInt(1, rating.getBookId());
 			pstmt.setInt(2, rating.getUserId());
-			pstmt.setInt(3, rating.getHelpful());
-			pstmt.setString(4, rating.getComment());
+			pstmt.setDouble(3, rating.getRating());
+			pstmt.setInt(4, rating.getHelpful());
+			pstmt.setString(5, rating.getComment());
+			int rowsAffected = pstmt.executeUpdate();
 
-			pstmt.executeUpdate();
+            System.out.println("Executed SQL query, rows affected: " + rowsAffected);
+			created = (rowsAffected > 0);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			closeConnection(conn);
 		}
+		return created;
 	}
 
 	public void closeConnection(Connection conn) {

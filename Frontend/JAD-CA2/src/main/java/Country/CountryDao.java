@@ -1,9 +1,8 @@
-package Country;
+package country;
 
 import java.sql.*;
 import java.util.ArrayList;
-import DBAccess.DBConnection;
-
+import dbaccess.DBConnection;
 
 public class CountryDao {
 
@@ -24,7 +23,6 @@ public class CountryDao {
 				
 				countryList.add(country);
 			}
-			System.out.println(countryList);
 
 		} catch (SQLException e) {
 			System.out.println("Error executing getCountry query: " + e.getMessage());
@@ -36,35 +34,6 @@ public class CountryDao {
 		return countryList;
 	}
 	
-//	public String getCountryId() {
-//		Connection conn = null;
-//		String country = request.getParameter("countryId");
-//
-//		try {
-//			conn = DBConnection.getConnection();
-//
-//		
-//			PreparedStatement pstmt = conn.prepareStatement("SELECT country_id FROM country WHERE country = ?");
-//
-//			pstmt.setString(1, );
-//			while (rs.next()) {
-//				Country country = new Country();
-//				country.setCountryId(rs.getString("country_id"));
-//				country.setCountry(rs.getString("country"));
-//				
-//				countryList.add(country);
-//			}
-//
-//		} catch (SQLException e) {
-//			System.out.println("Error executing getCountry query: " + e.getMessage());
-//			e.printStackTrace();
-//		} finally {
-//			closeConnection(conn);
-//		}
-//		
-//		return countryId;
-//	}
-//	
 	private void closeConnection(Connection conn) {
 		if (conn != null) {
 			try {

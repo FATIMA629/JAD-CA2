@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Books.BookDao;
-import Books.Book;
+import book.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,11 +31,7 @@ public class UpdateBookServlet extends HttpServlet {
 	 */
 	public UpdateBookServlet() {
 		super();
-		try {
-			bookDao = new BookDao();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		bookDao = new BookDao();
 	}
 
 	/**

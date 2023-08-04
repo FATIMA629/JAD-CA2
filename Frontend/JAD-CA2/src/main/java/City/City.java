@@ -1,9 +1,9 @@
-package City;
+package city;
 
 public class City {
 	private String cityId;
 	private String city;
-	private String countryId;
+	private int countryId;
 	
 	public String getCityId() {
 		return cityId;
@@ -17,10 +17,10 @@ public class City {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	public String getCountryId() {
+	public int getCountryId() {
 		return countryId;
 	}
-	public void setCountryId(String countryId) {
+	public void setCountryId(int countryId) {
 		this.countryId = countryId;
 	}
 }

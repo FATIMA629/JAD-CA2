@@ -1,8 +1,6 @@
-package Books;
+package book;
 
-import java.io.Serializable;
-
-public class Book implements Serializable{
+public class Book {
 	private String bookId;
 	private String title;
 	private String author;
@@ -18,7 +16,7 @@ public class Book implements Serializable{
 	private String publishDate;
 	
 	public String getPublishDate() {
-		return publishDate;
+		return publishDate;	
 	}
 
 	public void setPublishDate(String publishDate) {
@@ -121,4 +119,7 @@ public class Book implements Serializable{
 		this.imageLocation = imageLocation;
 	}
 
+
+
 }
+

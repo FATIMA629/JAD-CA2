@@ -18,7 +18,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import City.City;
+import city.City;
 
 /**
  * Servlet implementation class GetCity

@@ -1,19 +1,28 @@
 package com.bookstore.storews.user;
+import com.bookstore.storews.address.*;
 
 public class User {
     private int userID;
     private String userName;
     private String password;
-    private String email;
     private String role;
-    private String address;
-    private String address2;
-    private String district;
-    private String city;
-    private String postal_code;
-    private String country;
+    private String email;
+    private Address address;
 
-    // Getters and setters
+    // Constructor, getters, and setters
+
+    public User() {
+    }
+
+    public User(int userID, String userName, String password, String role, String email, Address address) {
+        this.userID = userID;
+        this.userName = userName;
+        this.password = password;
+        this.role = role;
+        this.email = email;
+        this.address = address;
+    }
+
     public int getUserID() {
         return userID;
     }
@@ -38,14 +47,6 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getRole() {
         return role;
     }
@@ -54,51 +55,25 @@ public class User {
         this.role = role;
     }
 
-    public String getAddress() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
-    public String getAddress2() {
-        return address2;
-    }
-
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getPostalCode() {
-        return postal_code;
-    }
-
-    public void setPostalCode(String postal_code) {
-        this.postal_code = postal_code;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    @Override
+    public String toString() {
+        return "User [userID=" + userID + ", userName=" + userName + ", password=" + password + ", role=" + role
+                + ", email=" + email + ", address=" + address + "]";
     }
 }

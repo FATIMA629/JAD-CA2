@@ -11,10 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Books.Book;
-import Cart.CartDao;
-import Users.User;
-import Users.UserDao;
+import book.*;
+import cart.*;
+import user.*;
 
 @WebServlet("/VerifyLoginServlet")
 public class VerifyLoginServlet extends HttpServlet {

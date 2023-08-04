@@ -1,4 +1,4 @@
-package Ratings;
+package rating;
 
 public class Rating {
 	private int ratingId;

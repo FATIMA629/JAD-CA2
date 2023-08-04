@@ -2,8 +2,7 @@ package servlets;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
-import Books.BookDao;
-import Books.Book;
+import book.*;
 import javax.servlet.RequestDispatcher;
 
 
@@ -54,11 +53,7 @@ public class FilterResultsServlet extends HttpServlet {
         
      // Create an instance of the BookDao class
         BookDao bookDao = null;
-        try {
-            bookDao = new BookDao();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        bookDao = new BookDao();
 
         // Check if the bookDao object was successfully initialized
         if (bookDao != null) {

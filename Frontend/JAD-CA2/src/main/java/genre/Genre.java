@@ -1,4 +1,4 @@
-package Geners;
+package genre;
 
 public class Genre {
 	private int genreId;
@@ -22,3 +22,4 @@ public class Genre {
 		this.genreName = genreName;
 	}
 }
+

@@ -1,41 +1,12 @@
-package City;
+package city;
 
 import java.sql.*;
 import java.util.ArrayList;
-
-import Books.Book;
-import DBAccess.DBConnection;
+import dbaccess.DBConnection;
 
 public class CityDao {
-	
-	public City getCountryId(String countryId) {
-		Connection conn = null;
-		City city = null;
-		try {
-			conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM city WHERE country_id = ?");
-			pstmt.setString(1, countryId);
-			ResultSet rs = pstmt.executeQuery();
-
-			// Step 7: Process Result
-			if (rs.next()) {
-				city = new City();
-				city.setCityId(rs.getString("city_id"));
-				city.setCity(rs.getString("city"));
-				city.setCountryId(rs.getString("country_id"));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeConnection(conn);
-		}
-
-		return city;
-	}
-
-	public ArrayList<City> getCity(String countryId) {
+	public ArrayList<City> getCity(int countryId) {
 		ArrayList<City> cityList = new ArrayList<>();
 		Connection conn = null;
 
@@ -43,14 +14,14 @@ public class CityDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM city WHERE country_id = ?");
-			pstmt.setString(1, countryId);
+			pstmt.setInt(1, countryId);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				City city = new City();
 				city.setCityId(rs.getString("city_id"));
 				city.setCity(rs.getString("city"));
-				city.setCountryId(rs.getString("country_id"));
+				city.setCountryId(rs.getInt("country_id"));
 				
 				cityList.add(city);
 			}
@@ -75,4 +46,3 @@ public class CityDao {
 		}
 	}
 }
-

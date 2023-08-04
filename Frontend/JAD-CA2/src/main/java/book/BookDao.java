@@ -1,31 +1,21 @@
-package Books;
+package book;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
-import java.util.List;
 import java.util.ArrayList;
-import Geners.Genre;
-import javax.servlet.http.HttpSession;
-
-
+import javax.imageio.ImageIO;
+import dbaccess.*;
 
 public class BookDao {
-	private String connURL = "jdbc:mysql://localhost/ca1?user=root&password=root&serverTimezone=UTC";
-
-	public BookDao() throws ClassNotFoundException {
-		// Load JDBC Driver
-		Class.forName("com.mysql.cj.jdbc.Driver"); // Updated JDBC driver class
-	}
-
-	public Connection getConnection() throws SQLException {
-		// Establish connection to URL
-		return DriverManager.getConnection(connURL);
-	}
 
 	public Book getBookById(String bookId) {
 		Connection conn = null;
 		Book book = null;
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books WHERE BookID = ?");
 			pstmt.setString(1, bookId);
@@ -58,15 +48,13 @@ public class BookDao {
 		return book;
 	}
 
-		public boolean createBook(Book book) {
+	public boolean createBook(Book book) throws SQLException, ClassNotFoundException, IOException {
 		System.out.println("Entered createBook method");
 		Connection conn = null;
 		boolean created = false;
 
 		try {
-			conn = getConnection();
-			// Print statement after getting the connection to see if this line executes
-			System.out.println("Got connection");
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement(
 					"INSERT INTO books (Title, Author, GenreID, Price, Quantity, Publisher, PublishDate ,ISBN, Rating, Description, ImageLocation, Sold) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -85,12 +73,11 @@ public class BookDao {
 			pstmt.setInt(12, book.getSold());
 
 			int rowsAffected = pstmt.executeUpdate();
-			System.out.println("Executed SQL query, rows affected: " + rowsAffected);
+
 			created = (rowsAffected > 0);
 
 			System.out.println("Insert executed, created = " + created);
 		} catch (SQLException e) {
-			// Print out any exceptions that might be thrown
 			e.printStackTrace();
 		} finally {
 			closeConnection(conn);
@@ -99,12 +86,12 @@ public class BookDao {
 		return created;
 	}
 
-	public List<Book> readAllBooks() {
+	public ArrayList<Book> readAllBooks() {
+		ArrayList<Book> books = new ArrayList<>();
 		Connection conn = null;
-		List<Book> books = new ArrayList<>();
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM books");
@@ -143,7 +130,7 @@ public class BookDao {
 		boolean deleted = false;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("DELETE FROM books WHERE BookID = ?");
 			pstmt.setString(1, bookId);
@@ -166,7 +153,7 @@ public class BookDao {
 		Connection conn = null;
 		Book book = null;
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books WHERE ISBN = ?");
 			pstmt.setString(1, isbn);
@@ -203,7 +190,7 @@ public class BookDao {
 		boolean updated = false;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement(
 					"UPDATE books SET Title = ?, Author = ?, GenreID = ?, Price = ?, Quantity = ?, Publisher = ?, PublishDate = ?, ISBN = ?, Rating = ?, Description = ?, ImageLocation = ?, Sold = ? WHERE BookID = ?");
@@ -235,12 +222,12 @@ public class BookDao {
 		return updated;
 	}
 
-	public List<Book> getTopSellingBooks(int limit) {
+	public ArrayList<Book> getTopSellingBooks(int limit) {
 		Connection conn = null;
-		List<Book> topSellingBooks = new ArrayList<>();
+		ArrayList<Book> topSellingBooks = new ArrayList<>();
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books ORDER BY sold DESC LIMIT ?");
 			pstmt.setInt(1, limit);
@@ -264,12 +251,12 @@ public class BookDao {
 		return topSellingBooks;
 	}
 
-	public List<Book> getNewestBooks(int limit) {
+	public ArrayList<Book> getNewestBooks(int limit) {
 		Connection conn = null;
-		List<Book> newestBooks = new ArrayList<>();
+		ArrayList<Book> newestBooks = new ArrayList<>();
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books ORDER BY publishDate DESC LIMIT ?");
 			pstmt.setInt(1, limit);
@@ -293,12 +280,12 @@ public class BookDao {
 		return newestBooks;
 	}
 
-	public List<Book> getHighestRatedBooks(int limit) {
+	public ArrayList<Book> getHighestRatedBooks(int limit) {
 		Connection conn = null;
-		List<Book> highestRatedBooks = new ArrayList<>();
+		ArrayList<Book> highestRatedBooks = new ArrayList<>();
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books ORDER BY rating DESC LIMIT ?");
 			pstmt.setInt(1, limit);
@@ -328,7 +315,7 @@ public class BookDao {
 		double totalRevenue = 0;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT SUM(price * sold) as revenue FROM books");
@@ -351,7 +338,7 @@ public class BookDao {
 		int totalBooks = 0;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as total FROM books");
@@ -374,7 +361,7 @@ public class BookDao {
 		int totalBooks = 0;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT SUM(Quantity) as total FROM books");
@@ -397,7 +384,7 @@ public class BookDao {
 		int totalBooksSold = 0;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT SUM(Sold) AS totalSold FROM books");
@@ -415,12 +402,12 @@ public class BookDao {
 		return totalBooksSold;
 	}
 
-	public List<Book> getLowestStockBooks(int limit) {
+	public ArrayList<Book> getLowestStockBooks(int limit) {
 		Connection conn = null;
-		List<Book> lowestStockBooks = new ArrayList<>();
+		ArrayList<Book> lowestStockBooks = new ArrayList<>();
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books ORDER BY Quantity ASC LIMIT ?");
 			pstmt.setInt(1, limit);
@@ -459,7 +446,7 @@ public class BookDao {
 		double averageRating = 0;
 
 		try {
-			conn = getConnection();
+			conn = DBConnection.getConnection();
 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT AVG(rating) AS averageRating FROM books");
@@ -477,111 +464,108 @@ public class BookDao {
 		return averageRating;
 	}
 
-	public List<Book> searchBooks(String keyword) {
-	    Connection conn = null;
-	    List<Book> books = new ArrayList<>();
-	    try {
-	        conn = getConnection();
+	public ArrayList<Book> searchBooks(String keyword) {
+		Connection conn = null;
+		ArrayList<Book> books = new ArrayList<>();
+		try {
+			conn = DBConnection.getConnection();
 
-	        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books WHERE Title LIKE ?");
-	        pstmt.setString(1, "%" + keyword + "%");
-	        ResultSet rs = pstmt.executeQuery();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books WHERE Title LIKE ?");
+			pstmt.setString(1, "%" + keyword + "%");
+			ResultSet rs = pstmt.executeQuery();
 
-	        // Process Result
-	        while (rs.next()) {
-	            Book book = new Book();
-	            book.setBookId(rs.getString("BookID"));
-	            book.setTitle(rs.getString("Title"));
-	            book.setAuthor(rs.getString("Author"));
-	            book.setGenreId(rs.getInt("GenreID"));
-	            book.setPrice(rs.getDouble("Price"));
-	            book.setQuantity(rs.getInt("Quantity"));
-	            book.setPublisher(rs.getString("Publisher"));
-	            book.setPublishDate(rs.getString("publishDate"));
-	            book.setIsbn(rs.getString("ISBN"));
-	            book.setRating(rs.getDouble("Rating"));
-	            book.setDescription(rs.getString("Description"));
-	            book.setImageLocation(rs.getString("ImageLocation"));
-	            book.setSold(rs.getInt("Sold"));
+			// Process Result
+			while (rs.next()) {
+				Book book = new Book();
+				book.setBookId(rs.getString("BookID"));
+				book.setTitle(rs.getString("Title"));
+				book.setAuthor(rs.getString("Author"));
+				book.setGenreId(rs.getInt("GenreID"));
+				book.setPrice(rs.getDouble("Price"));
+				book.setQuantity(rs.getInt("Quantity"));
+				book.setPublisher(rs.getString("Publisher"));
+				book.setPublishDate(rs.getString("publishDate"));
+				book.setIsbn(rs.getString("ISBN"));
+				book.setRating(rs.getDouble("Rating"));
+				book.setDescription(rs.getString("Description"));
+				book.setImageLocation(rs.getString("ImageLocation"));
+				book.setSold(rs.getInt("Sold"));
 
-	            books.add(book);
-	        }
+				books.add(book);
+			}
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }finally {
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
 			closeConnection(conn);
 		}
-	    return books;
+		return books;
 	}
-	
-	
+
 	public ArrayList<Book> getFilteredBooks(String[] genreIds, double price) {
-	    Connection conn = null;
-	    ArrayList<Book> filteredBooks = new ArrayList<>();
-	    try {
-	    	conn = getConnection();
+		Connection conn = null;
+		ArrayList<Book> filteredBooks = new ArrayList<>();
+		try {
+			conn = DBConnection.getConnection();
 
-	        // Modify the SQL query based on your database schema and table names
-	        String query = "SELECT b.*, g.GenreName FROM books b JOIN genres g ON b.GenreID = g.GenreID WHERE b.Price <= ?";
+			// Modify the SQL query based on your database schema and table names
+			String query = "SELECT b.*, g.GenreName FROM books b JOIN genres g ON b.GenreID = g.GenreID WHERE b.Price <= ?";
 
-	        // Check if genre is provided
-	        if (genreIds != null  && genreIds.length > 0) {
-	           query += " AND g.GenreID IN(";
-for (int i = 0; i < genreIds.length; i++) {
-    if (i > 0) {
-        query += ",";
-    }
-    query += "?";
-}
-query += ")";
-	        }   
-			 
-	        System.out.print(query);
-	        
-     PreparedStatement pstmt = conn.prepareStatement(query);
-               System.out.print(price);
-			   pstmt.setDouble(1, price);
-			   
-			   if (genreIds != null && genreIds.length > 0) {
-		            for (int i = 0; i < genreIds.length; i++) {
-		            	System.out.print(genreIds[i]);
-		                pstmt.setString(i + 2, genreIds[i]);
-		            }
-		        }
-			   
-	        ResultSet rs = pstmt.executeQuery();
+			// Check if genre is provided
+			if (genreIds != null && genreIds.length > 0) {
+				query += "AND g.GenreID IN(";
+				for (int i = 0; i < genreIds.length; i++) {
+					if (i > 0) {
+						query += ",";
+					}
+					query += "?";
+				}
+				query += ")";
+			}
 
-	        // Process the result
-	        while (rs.next()) {
-	            // Create a Book object and set its properties based on the result set
-	            Book book = new Book();
-	            book.setBookId(rs.getString("BookID"));
-	            book.setTitle(rs.getString("Title"));
-	            book.setAuthor(rs.getString("Author"));
-	            book.setGenreId(rs.getInt("GenreID"));
-	            book.setPrice(rs.getDouble("Price"));
-	            book.setQuantity(rs.getInt("Quantity"));
-	            book.setPublisher(rs.getString("Publisher"));
-	            book.setPublishDate(rs.getString("publishDate"));
-	            book.setIsbn(rs.getString("ISBN"));
-	            book.setRating(rs.getDouble("Rating"));
-	            book.setDescription(rs.getString("Description"));
-	            book.setImageLocation(rs.getString("ImageLocation"));
-	            book.setSold(rs.getInt("Sold"));
+			System.out.print(query);
 
-	            filteredBooks.add(book);
-	        }
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setDouble(1, price);
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
+			if (genreIds != null && genreIds.length > 0) {
+				for (int i = 0; i < genreIds.length; i++) {
+					pstmt.setString(i + 2, genreIds[i]);
+				}
+			}
+
+			ResultSet rs = pstmt.executeQuery();
+
+			// Process the result
+			while (rs.next()) {
+				// Create a Book object and set its properties based on the result set
+				Book book = new Book();
+				book.setBookId(rs.getString("BookID"));
+				book.setTitle(rs.getString("Title"));
+				book.setAuthor(rs.getString("Author"));
+				book.setGenreId(rs.getInt("GenreID"));
+				book.setPrice(rs.getDouble("Price"));
+				book.setQuantity(rs.getInt("Quantity"));
+				book.setPublisher(rs.getString("Publisher"));
+				book.setPublishDate(rs.getString("publishDate"));
+				book.setIsbn(rs.getString("ISBN"));
+				book.setRating(rs.getDouble("Rating"));
+				book.setDescription(rs.getString("Description"));
+				book.setImageLocation(rs.getString("ImageLocation"));
+				book.setSold(rs.getInt("Sold"));
+
+				filteredBooks.add(book);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
 			closeConnection(conn);
 		}
 
-	    return filteredBooks;
+		return filteredBooks;
 	}
- 
+
 	private void closeConnection(Connection conn) {
 		if (conn != null) {
 			try {

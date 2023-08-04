@@ -4,6 +4,7 @@ import com.bookstore.storews.dbaccess.DBConnection;
 import com.bookstore.storews.user.User;
 import com.bookstore.storews.order.Order;
 import com.bookstore.storews.book.Book;
+import com.bookstore.storews.address.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,12 +19,12 @@ public class SalesDao {
 		user.setPassword(rs.getString("password"));
 		user.setEmail(rs.getString("email"));
 		user.setRole(rs.getString("role"));
-		user.setAddress(rs.getString("address"));
-		user.setAddress2(rs.getString("address2"));
-		user.setDistrict(rs.getString("district"));
-		user.setCity(rs.getString("city"));
-		user.setPostalCode(rs.getString("postal_code"));
-		user.setCountry(rs.getString("country"));
+
+        // Fetch the Shipping Address using AddressDao
+        int shippingAddressId = rs.getInt("ShippingAddressID");
+        AddressDao addressDao = new AddressDao();
+        Address shippingAddress = addressDao.getAddressById(shippingAddressId);
+        user.setAddress(shippingAddress);
 		return user;
 	}
 
@@ -34,10 +35,12 @@ public class SalesDao {
 		order.setTotalPrice(rs.getDouble("totalPrice"));
 		order.setOrderDate(rs.getDate("orderDate"));
 		order.setOrderStatus(rs.getString("orderStatus"));
-		order.setShippingAddress(rs.getString("shippingAddress"));
-		order.setBillingAddress(rs.getString("billingAddress"));
-		order.setPostalCode(rs.getString("postalCode"));
-		order.setCountry(rs.getString("country"));
+		
+        // Fetch the Shipping Address using AddressDao
+        int shippingAddressId = rs.getInt("ShippingAddressID");
+        AddressDao addressDao = new AddressDao();
+        Address shippingAddress = addressDao.getAddressById(shippingAddressId);
+        order.setShippingAddress(shippingAddress);
 		return order;
 	}
 

@@ -1,4 +1,4 @@
-package DBAccess;
+package order;
 
 public class OrderItem {
 	private int orderItemId;

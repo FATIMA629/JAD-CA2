@@ -1,6 +1,5 @@
 <%@ page import="java.util.List"%>
-<%@ page import="Books.BookDao , Geners.*"%>
-<%@ page import="Books.Book"%>
+<%@ page import="book.* ,genre.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
