@@ -299,10 +299,10 @@
 		<h1 class="mb-5">Admin Dashboard</h1>
 
 		<div class="dashboard-buttons">
-			<a href="#manage-books-section">Manage Books</a> <a
-				href="#add-book-section">Add Book</a> <a
+			<a href="#statistics-section">Reporting & Inquiry</a> <a
+				href="#manage-books-section">Manage Books</a> <a
 				href="#manage-users-section">Manage Users</a> <a
-				href="#add-user-section">Add User</a>
+				href="#manage-orders-section">Manage Orders</a>
 		</div>
 
 		<%
@@ -310,7 +310,7 @@
 		UserDao userDao = new UserDao();
 		GenreDao genreDao = new GenreDao();
 		%>
-		<h3 class="mt-5">Statistics</h3>
+		<h3 class="mt-5">Reporting & Inquiry</h3>
 		<div id="statistics-section">
 			<div class="statistics-card">
 				<h3 class="statistics-header">Total Users</h3>
@@ -741,7 +741,10 @@
 						<td><%=user.getUserID()%></td>
 						<td><%=user.getUserName()%></td>
 						<td><%=user.getEmail()%></td>
-						<td><%=user.getAddress()%></td>
+						<td>Country: <%=user.getAddress().getCountry()%><br>
+							Address1: <%=user.getAddress().getAddress1()%><br> Address2:
+							<%=user.getAddress().getAddress2()%><br> District: <%=user.getAddress().getDistrict()%><br>
+							City: <%=user.getAddress().getCity()%><br> Postal Code: <%=user.getAddress().getPostalCode()%><br></td>
 						<td><%=user.getRole()%></td>
 						<td><a href="editUser.jsp?id=<%=user.getUserID()%>">Update</a></td>
 					</tr>
@@ -865,34 +868,34 @@
 			<!-- Submit button -->
 			<button type="submit" class="btn btn-primary">Add User</button>
 		</form>
-		
-		
+
+
 		<hr />
 
-	<%
-	// Assuming you have a method in your OrderDAO to fetch all orders from the database
-	OrderDao orderDAO = new OrderDao();
-	List<Order> orders = orderDAO.getAllOrders();
-	
-	String orderIdsToDelete = request.getParameter("delete");
-	if (orderIdsToDelete != null) {
-		String[] orderIds = orderIdsToDelete.split(",");
-		for (String orderId : orderIds) {
-			orderDAO.deleteOrder(Integer.parseInt(orderId));
+		<%
+		// Assuming you have a method in your OrderDAO to fetch all orders from the database
+		OrderDao orderDAO = new OrderDao();
+		List<Order> orders = orderDAO.getAllOrders();
+
+		String orderIdsToDelete = request.getParameter("delete");
+		if (orderIdsToDelete != null) {
+			String[] orderIds = orderIdsToDelete.split(",");
+			for (String orderId : orderIds) {
+				orderDAO.deleteOrder(Integer.parseInt(orderId));
+			}
+			orders = orderDAO.getAllOrders(); // Refresh the list after deletion
 		}
-		orders = orderDAO.getAllOrders(); // Refresh the list after deletion
-	}
-	%>
+		%>
 
-	<hr />
+		<hr />
 
-	<h2 class="mb-4" id="manage-orders-section">Manage Orders</h2>
-	<form id="order-management-form" action="adminDashboard.jsp"
-		method="post">
-		<button type="submit" class="btn btn-danger mb-2" id="order-delete-btn">Delete
-			Selected</button>
-		<input type="hidden" id="order-delete-input" name="delete" value="">
-	</form>
+		<h2 class="mb-4" id="manage-orders-section">Manage Orders</h2>
+		<form id="order-management-form" action="adminDashboard.jsp"
+			method="post">
+			<button type="submit" class="btn btn-danger mb-2"
+				id="order-delete-btn">Delete Selected</button>
+			<input type="hidden" id="order-delete-input" name="delete" value="">
+		</form>
 		<div class="table-responsive">
 			<table class="table table-bordered order-table">
 				<thead>
@@ -943,8 +946,7 @@
 								%>
 							</ul>
 						</td>
-						<td><a
-							href="updateOrderStatus.jsp?id=<%=order.getOrderId()%>">Update</a></td>
+						<td><a href="updateOrder.jsp?id=<%=order.getOrderId()%>">Update</a></td>
 					</tr>
 					<%
 					}
@@ -953,10 +955,10 @@
 			</table>
 		</div>
 
-		
+
 	</div>
 
-	
+
 	<%
 	} else {
 	// User is not an admin

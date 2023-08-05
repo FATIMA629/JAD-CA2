@@ -9,8 +9,30 @@ import java.util.Map;
 import DBAccess.DBConnection;
 import Address.*;
 
-
 public class UserDao {
+	public boolean isUserExist(int userId) {
+		Connection conn = null;
+		boolean exists = false;
+
+		try {
+			conn = DBConnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) AS count FROM users WHERE UserID = ?");
+			pstmt.setInt(1, userId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				int count = rs.getInt("count");
+				exists = count > 0;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
+
+		return exists;
+	}
 
 	public User loginUser(String username, String password) {
 		Connection conn = null;
@@ -196,15 +218,19 @@ public class UserDao {
 		try {
 			conn = DBConnection.getConnection();
 
+			// Updating the user details
 			PreparedStatement pstmt = conn.prepareStatement(
-					"UPDATE users SET UserName = ? , Role = ? , Email = ?, DefaultAddressID = ? WHERE UserID = ?");
+					"UPDATE users SET UserName = ? , Role = ? , Email = ? WHERE UserID = ?");
 			pstmt.setString(1, user.getUserName());
 			pstmt.setString(2, user.getRole());
 			pstmt.setString(3, user.getEmail());
-			pstmt.setInt(4, user.getAddress().getAddressID());
-			pstmt.setInt(5, user.getUserID());
+			pstmt.setInt(4, user.getUserID());
 
 			pstmt.executeUpdate();
+
+			// Updating the address details using AddressDao
+			AddressDao addressDao = new AddressDao();
+			addressDao.updateAddress(user.getAddress());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -212,6 +238,7 @@ public class UserDao {
 			closeConnection(conn);
 		}
 	}
+
 
 	public void createUser(User user) {
 		Connection conn = null;

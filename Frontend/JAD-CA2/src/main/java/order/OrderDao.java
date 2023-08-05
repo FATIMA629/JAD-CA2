@@ -105,22 +105,33 @@ public class OrderDao {
 		try {
 			conn = DBConnection.getConnection();
 
+			// Update the main Order
 			PreparedStatement pstmt = conn.prepareStatement(
 					"UPDATE orders SET UserID = ?, TotalPrice = ?, OrderDate = ?, OrderStatus = ?, ShippingAddressID = ? WHERE OrderID = ?");
-
 			pstmt.setInt(1, order.getUserId());
 			pstmt.setDouble(2, order.getTotalPrice());
 			pstmt.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
 			pstmt.setString(4, order.getOrderStatus());
 			pstmt.setInt(5, order.getShippingAddress().getAddressID());
 			pstmt.setInt(6, order.getOrderId());
-
 			int rowsAffected = pstmt.executeUpdate();
 			updated = (rowsAffected > 0);
 
-			// Logging statements
+			// If the main Order update was successful, update OrderItems
 			if (updated) {
 				System.out.println("Order with ID " + order.getOrderId() + " updated successfully.");
+				OrderItemDao orderItemDao = new OrderItemDao();
+				for (OrderItem orderItem : order.getOrderItems()) { // Assuming you have a getOrderItems method
+					if (!orderItemDao.updateOrderItem(orderItem)) {
+						System.out.println("Failed to update order item with ID " + orderItem.getOrderItemId());
+						// Handle this case as needed
+					}
+				}
+
+				// Update the Shipping Address
+				AddressDao addressDao = new AddressDao();
+				addressDao.updateAddress(order.getShippingAddress());
+
 			} else {
 				System.out.println("Failed to update order with ID " + order.getOrderId());
 			}

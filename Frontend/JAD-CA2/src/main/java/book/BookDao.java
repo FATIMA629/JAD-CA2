@@ -11,6 +11,29 @@ import javax.imageio.ImageIO;
 import DBAccess.DBConnection;
 
 public class BookDao {
+	public boolean isBookExist(int bookId) {
+		Connection conn = null;
+		boolean exists = false;
+
+		try {
+			conn = DBConnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) AS count FROM books WHERE BookID = ?");
+			pstmt.setInt(1, bookId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				int count = rs.getInt("count");
+				exists = count > 0;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
+
+		return exists;
+	}
 
 	public Book getBookById(int bookId) {
 		Connection conn = null;
@@ -93,7 +116,6 @@ public class BookDao {
 
 		return created;
 	}
-
 
 	public ArrayList<Book> readAllBooks() {
 		ArrayList<Book> books = new ArrayList<>();
