@@ -33,6 +33,7 @@ public class UserDao {
 				user.setEmail(rs.getString("Email"));
 				user.setRole(rs.getString("Role"));
 				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
+				user.setPhone(rs.getString("PhoneNumber"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -61,6 +62,7 @@ public class UserDao {
 				user.setEmail(rs.getString("Email"));
 				user.setRole(rs.getString("Role"));
 				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
+				user.setPhone(rs.getString("PhoneNumber"));
 
 				users.add(user);
 			}
@@ -118,6 +120,7 @@ public class UserDao {
 				user.setEmail(rs.getString("Email"));
 				user.setRole(rs.getString("Role"));
 				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
+				user.setPhone(rs.getString("PhoneNumber"));
 			}
 
 		} catch (SQLException e) {
@@ -148,6 +151,7 @@ public class UserDao {
 				user.setEmail(rs.getString("Email"));
 				user.setRole(rs.getString("Role"));
 				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
+				user.setPhone(rs.getString("PhoneNumber"));
 			}
 
 		} catch (SQLException e) {
@@ -179,6 +183,7 @@ public class UserDao {
 				user.setEmail(rs.getString("Email"));
 				user.setRole(rs.getString("Role"));
 				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
+				user.setPhone(rs.getString("PhoneNumber"));
 			}
 
 		} catch (SQLException e) {
@@ -197,12 +202,13 @@ public class UserDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement(
-					"UPDATE users SET UserName = ? , Role = ? , Email = ?, DefaultAddressID = ? WHERE UserID = ?");
+					"UPDATE users SET UserName = ? , Role = ? , Email = ?, DefaultAddressID = ?, PhoneNumber = ? WHERE UserID = ?");
 			pstmt.setString(1, user.getUserName());
 			pstmt.setString(2, user.getRole());
 			pstmt.setString(3, user.getEmail());
 			pstmt.setInt(4, user.getAddress().getAddressID());
 			pstmt.setInt(5, user.getUserID());
+			pstmt.setString(6, user.getPhone());
 
 			pstmt.executeUpdate();
 
@@ -226,6 +232,7 @@ public class UserDao {
 			pstmt.setString(3, user.getRole());
 			pstmt.setString(4, user.getEmail());
 			pstmt.setInt(5, user.getAddress().getAddressID());
+			pstmt.setString(6, user.getPhone());
 
 			pstmt.executeUpdate();
 
@@ -249,6 +256,7 @@ public class UserDao {
 			pstmt.setInt(3, user.getAddress().getAddressID());
 			pstmt.setString(4, user.getPassword());
 			pstmt.setInt(5, user.getUserID());
+			pstmt.setString(6, user.getPhone());
 
 			pstmt.executeUpdate();
 

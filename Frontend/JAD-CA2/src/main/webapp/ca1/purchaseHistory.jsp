@@ -8,7 +8,7 @@
 	String phone = (String) session.getAttribute("phone");
 	
 	OrderDao orderDao = new OrderDao();
-	List<Order> orderList = orderDao.getAllOrders(userId);
+	List<Order> orderList = orderDao.getAllOrdersByUserId(userId);
     %>
 <!DOCTYPE html>
 <html>

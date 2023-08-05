@@ -75,8 +75,8 @@ int userid = (int) session.getAttribute("userId");
 			</div>
 			<%
 			for (Book item : cartItems) {
-				 totalCartItemsAmt += cartDao.getQuantity(userid, Integer.parseInt(item.getBookId()));
-				 double totalPriceOfEachBook = item.getPrice() * cartDao.getQuantity(userid, Integer.parseInt(item.getBookId()));
+				 totalCartItemsAmt += cartDao.getQuantity(userid,item.getBookId());
+				 double totalPriceOfEachBook = item.getPrice() * cartDao.getQuantity(userid,item.getBookId());
 				 totalPrice += totalPriceOfEachBook;
 			%>
 			<div class="item-container"
@@ -93,7 +93,7 @@ int userid = (int) session.getAttribute("userId");
 					<div class="col-3 center">
 						<button class="minus-button">-</button>
 						<input type="text"
-							value="<%=cartDao.getQuantity(userid, Integer.parseInt(item.getBookId()))%>"
+							value="<%=cartDao.getQuantity(userid, item.getBookId()) %>"
 							class="quantity-input">
 						<button class="plus-button">+</button>
 					</div>

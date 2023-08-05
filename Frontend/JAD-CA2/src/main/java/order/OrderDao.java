@@ -98,8 +98,30 @@ public class OrderDao {
 		return orders;
 	}
 	
-	
-		
+	public List<Order> getAllOrdersByUserId(int userId) {
+		List<Order> orders = new ArrayList<>();
+		Connection conn = null;
+
+		try {
+			conn = DBConnection.getConnection();
+
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM orders WHERE UserID = ? ORDER BY OrderID DESC");
+			pstmt.setInt(1, userId);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Order order = mapResultSetToOrder(rs);
+				orders.add(order);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
+
+		return orders;
+	}
 
 	public boolean updateOrder(Order order) {
 		Connection conn = null;

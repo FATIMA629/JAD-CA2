@@ -48,6 +48,10 @@ public class BookDao {
 
 		return book;
 	}
+	
+	public boolean updateAmount() {
+		
+	}
 
 	public boolean createBook(Book book) throws SQLException, ClassNotFoundException, IOException {
 		System.out.println("Entered createBook method");

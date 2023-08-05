@@ -3,3 +3,10 @@
 /sales/
 /servlets/
 /order/
+/DBAccess/
+/book/
+/Cart/
+/Payment/
+/AddressServlet/
+/CityServlet/
+/user/
