@@ -1,5 +1,5 @@
 <%@ page import="java.util.List"%>
-<%@page import="book.* , cart.*"%>
+<%@page import="book.* , Cart.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -110,8 +110,10 @@ int userid = (int) session.getAttribute("userId");
 			}
 			%>
 		</div>
+		
 		<section class="checkout-section">
             <div class="grid-container">
+                <form action="../AddToCartServlet" method="get">
 <div class="ff">
                 <div class="aa">
                     <div class="bb">
@@ -119,7 +121,8 @@ int userid = (int) session.getAttribute("userId");
     Total (<%=totalCartItemsAmt %> item):
 </div>
 <div class="total-amount">
-<%=totalPrice %>
+<input type='hidden' value=<%=totalPrice %> name='amount' />
+<%=String.format("%.2f", totalPrice) %>
 </div>
                     </div>
                 </div>
@@ -128,11 +131,11 @@ int userid = (int) session.getAttribute("userId");
                 <div class="cc"></div>
             </div>
             
-            <a href="checkout.jsp">
+        
             <button class="checkout-btn-solid checkout-btn-solid--primary">
                 <span style="width: 100%">Check out</span>
             </button>
-            </a>
+            </form>
 </div>
         </section>
 	</div>

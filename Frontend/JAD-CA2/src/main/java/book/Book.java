@@ -1,7 +1,7 @@
 package book;
 
 public class Book {
-	private String bookId;
+	private int bookId;
 	private String title;
 	private String author;
 	private int genreId;
@@ -31,11 +31,11 @@ public class Book {
 		this.sold = sold;
 	}
 
-	public String getBookId() {
+	public int getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(String bookId) {
+	public void setBookId(int bookId) {
 		this.bookId = bookId;
 	}
 

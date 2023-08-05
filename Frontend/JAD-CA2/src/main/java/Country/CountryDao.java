@@ -1,8 +1,9 @@
-package country;
+package Country;
 
 import java.sql.*;
 import java.util.ArrayList;
-import dbaccess.DBConnection;
+
+import DBAccess.DBConnection;
 
 public class CountryDao {
 

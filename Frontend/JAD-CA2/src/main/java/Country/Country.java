@@ -1,4 +1,4 @@
-package country;
+package Country;
 
 public class Country {
 	private String countryId;

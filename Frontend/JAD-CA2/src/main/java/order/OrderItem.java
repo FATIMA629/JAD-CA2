@@ -1,9 +1,11 @@
 package order;
 
+import book.*;
+
 public class OrderItem {
 	private int orderItemId;
 	private int orderId;
-	private int bookId;
+	private Book book;
 	private int quantity;
 	private double unitPrice;
 
@@ -25,12 +27,12 @@ public class OrderItem {
 		this.orderId = orderId;
 	}
 
-	public int getBookId() {
-		return bookId;
+	public Book getBook() {
+		return book;
 	}
 
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
+	public void setBook(Book book) {
+		this.book = book;
 	}
 
 	public int getQuantity() {

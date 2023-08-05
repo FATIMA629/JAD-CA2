@@ -1,0 +1,105 @@
+@charset "ISO-8859-1";
+
+body {
+	background-color: white;
+	color: #777777;
+	font-family: "Open Sans", Arial, sans-serif;
+	font-size: 14px;
+	line-height: 22px;
+	margin: 0;
+}
+
+
+h4 {
+	color: #cc3b33;
+	font-size: 1.4em;
+    font-weight: 400;
+    letter-spacing: normal;
+    line-height: 27px;
+    margin: 0 0 14px 0;
+}
+
+h5 {
+	color: #cc3b33;
+	font-size: 1em;
+    font-weight: 600;
+    letter-spacing: normal;
+    line-height: 18px;
+    margin: 0 0 14px 0;
+    text-transform: uppercase;
+}
+
+h6 {
+	color: #333;
+    font-size: 1em;
+    font-weight: 400;
+    letter-spacing: normal;
+    line-height: 18px;
+    margin: 0 0 14px 0;
+}
+
+.tabs {
+    border-radius: 4px;
+    margin-bottom: 35px;
+}
+
+.tab-content {
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.04);
+    background-color: #FFF;
+    border: 1px solid #EEE;
+    border-top: 0;
+    padding: 15px;
+}
+
+@media (max-width: 991px)
+.featured-boxes .featured-box {
+    max-width: 100%;
+}
+
+.featured-boxes .featured-box-cart {
+    margin-top: 0;
+}
+
+.featured-boxes .featured-box {
+    margin-bottom: 30px;
+}
+
+.featured-box {
+    background: linear-gradient(to bottom, white 1%, #f9f9f9 98%) repeat scroll 0 0 transparent;
+    box-sizing: border-box;
+    border-bottom: 1px solid #DFDFDF;
+    border-left: 1px solid #ECECEC;
+    border-radius: 8px;
+    border-right: 1px solid #ECECEC;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.04);
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 100px;
+    position: relative;
+    text-align: center;
+    z-index: 1;
+}
+
+.btn--primary {
+	background-color: #ee4d2d;
+    border-color: #cd3011;
+    color: #fff;
+}
+
+.btn {
+	border: 1px solid rgba(0,0,0,.26);
+    padding: 8px 10px;
+    font-weight: 400;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.position {
+	min-width: 150px;
+    min-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+    outline: 0;
+}

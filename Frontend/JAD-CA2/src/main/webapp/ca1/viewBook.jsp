@@ -3,7 +3,7 @@
 
 <%
 // Hardcoded book ID for testing
-String bookId = request.getParameter("id");
+int bookId = Integer.parseInt(request.getParameter("id"));
 
 // Create a BookDao and get the book
 BookDao bookDao = new BookDao();

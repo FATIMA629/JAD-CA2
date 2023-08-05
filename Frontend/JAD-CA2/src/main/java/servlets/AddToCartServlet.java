@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import book.*;
-import cart.*;
+import Cart.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +24,13 @@ public class AddToCartServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	HttpSession session = request.getSession();
+        System.out.println("Total Price from addtocartservlet" + request.getParameter("amount"));
+    
+    	session.setAttribute("totalPrice", request.getParameter("amount"));
+    	System.out.println("totalPrice");
     	
+    	response.sendRedirect("ca1/checkout.jsp");
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        String action = request.getParameter("action");

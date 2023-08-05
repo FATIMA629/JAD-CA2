@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%
-    String id = (String) request.getAttribute("amount");
+    int id = (int) request.getAttribute("amount");
     String status = (String) request.getAttribute("email");
     String chargeId = (String) request.getAttribute("token");
     String balance = (String) request.getAttribute("currency");

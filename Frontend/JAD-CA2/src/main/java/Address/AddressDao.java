@@ -1,12 +1,13 @@
-package address;
+package Address;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import dbaccess.*;
+
+import DBAccess.DBConnection;
 
 public class AddressDao {
-    public Address getAddressById(int addressID) {
+    public Address getAddressById(int addressId) {
         Connection conn = null;
         Address address = null;
 
@@ -14,7 +15,7 @@ public class AddressDao {
             conn = DBConnection.getConnection();
 
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM address WHERE AddressID = ?");
-            pstmt.setInt(1, addressID);
+            pstmt.setInt(1, addressId);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -36,6 +37,40 @@ public class AddressDao {
         }
 
         return address;
+    }
+    
+    public List<Address> getAddressByUserId(int userId) {
+        Connection conn = null;
+        List<Address> addressList = new ArrayList<>();
+
+        try {
+            conn = DBConnection.getConnection();
+
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM address WHERE UserID = ?");
+            pstmt.setInt(1, userId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Address address = new Address();
+                address.setAddressID(rs.getInt("AddressID"));
+                address.setUserID(rs.getInt("UserID"));
+                address.setAddress1(rs.getString("Address1"));
+                address.setAddress2(rs.getString("Address2"));
+                address.setDistrict(rs.getString("District"));
+                address.setCity(rs.getString("City"));
+                address.setPostalCode(rs.getString("PostalCode"));
+                address.setCountry(rs.getString("Country"));
+                
+                addressList.add(address);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+        return addressList;
     }
 
     public List<Address> getAllAddresses() {
