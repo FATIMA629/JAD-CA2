@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Address.*;
+import book.*;
 import DBAccess.DBConnection;
 
 public class OrderItemDao {
@@ -22,7 +24,7 @@ public class OrderItemDao {
                     "INSERT INTO orderitems (OrderID, BookID, Quantity, UnitPrice) VALUES (?, ?, ?, ?)");
 
             pstmt.setInt(1, orderItem.getOrderId());
-            pstmt.setInt(2, orderItem.getBookId());
+            pstmt.setInt(2, orderItem.getBook().getBookId());
             pstmt.setInt(3, orderItem.getQuantity());
             pstmt.setDouble(4, orderItem.getUnitPrice());
 
@@ -48,7 +50,7 @@ public class OrderItemDao {
             PreparedStatement pstmt = conn.prepareStatement(
                     "UPDATE orderitems SET BookID = ?, Quantity = ?, UnitPrice = ? WHERE OrderItemID = ?");
 
-            pstmt.setInt(1, orderItem.getBookId());
+            pstmt.setInt(1, orderItem.getBook().getBookId());
             pstmt.setInt(2, orderItem.getQuantity());
             pstmt.setDouble(3, orderItem.getUnitPrice());
             pstmt.setInt(4, orderItem.getOrderItemId());
@@ -111,7 +113,10 @@ public class OrderItemDao {
                 OrderItem orderItem = new OrderItem();
                 orderItem.setOrderItemId(rs.getInt("OrderItemID"));
                 orderItem.setOrderId(rs.getInt("OrderID"));
-                orderItem.setBookId(rs.getInt("BookID"));
+                int bookId = rs.getInt("BookID");
+                BookDao bookDao = new BookDao();
+                Book book = bookDao.getBookById(bookId);
+                orderItem.setBook(book);
                 orderItem.setQuantity(rs.getInt("Quantity"));
                 orderItem.setUnitPrice(rs.getDouble("UnitPrice"));
 

@@ -85,6 +85,8 @@
 										href="./userEditUser"><span class="profile-status">Admin</span></a>
 								</div>
 								<hr>
+								<span><a href="purchaseHistory.jsp">My Purchases</a></span>
+								<hr>
 								<button
 									style="background: transparent; cursor: pointer; border: none;">
 									<a href="logout.jsp">Log Out</a>
@@ -137,6 +139,8 @@
 										src="../images/image-removebg-preview (39).png" /></span> <a
 										href="./userEditUser"><span class="profile-status">User</span></a>
 								</div>
+								<hr>
+								<span><a href="purchaseHistory.jsp">My Purchases</a></span>
 								<hr>
 								<button
 									style="background: transparent; cursor: pointer; border: none;">

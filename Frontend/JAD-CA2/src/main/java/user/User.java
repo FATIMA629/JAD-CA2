@@ -25,14 +25,6 @@ public class User {
         this.phone = phone;
     }
 
-    public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
 	public int getUserID() {
         return userID;
     }
@@ -80,10 +72,18 @@ public class User {
     public void setAddress(Address address) {
         this.address = address;
     }
+    
+    public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
     @Override
     public String toString() {
         return "User [userID=" + userID + ", userName=" + userName + ", password=" + password + ", role=" + role
-                + ", email=" + email + ", address=" + address + "]";
+                + ", email=" + email + ", address=" + address + ", phone=" + phone + "]";
     }
 }

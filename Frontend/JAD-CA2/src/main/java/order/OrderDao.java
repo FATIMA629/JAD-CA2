@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 import DBAccess.DBConnection;
+import book.Book;
+import book.BookDao;
 import Address.*;
 
 public class OrderDao {
@@ -81,6 +83,7 @@ public class OrderDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM orders WHERE UserID = ? ORDER BY OrderID DESC");
+			pstmt.setInt(1, userId);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -171,7 +174,10 @@ public class OrderDao {
 				OrderItem orderItem = new OrderItem();
 				orderItem.setOrderItemId(rs.getInt("OrderItemID"));
 				orderItem.setOrderId(rs.getInt("OrderID"));
-				orderItem.setBookId(rs.getInt("BookID"));
+				int bookId = rs.getInt("BookID");
+                BookDao bookDao = new BookDao();
+                Book book = bookDao.getBookById(bookId);
+                orderItem.setBook(book);
 				orderItem.setQuantity(rs.getInt("Quantity"));
 				orderItem.setUnitPrice(rs.getDouble("UnitPrice"));
 
