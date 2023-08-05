@@ -5,6 +5,8 @@
 <%@ page import="user.*"%>
 <%@ page import="order.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="order.Order"%>
+
 
 <!DOCTYPE html>
 <html>
@@ -863,83 +865,98 @@
 			<!-- Submit button -->
 			<button type="submit" class="btn btn-primary">Add User</button>
 		</form>
-	</div>
-
-	<hr />
+		
+		
+		<hr />
 
 	<%
 	// Assuming you have a method in your OrderDAO to fetch all orders from the database
 	OrderDao orderDAO = new OrderDao();
 	List<Order> orders = orderDAO.getAllOrders();
+	
+	String orderIdsToDelete = request.getParameter("delete");
+	if (orderIdsToDelete != null) {
+		String[] orderIds = orderIdsToDelete.split(",");
+		for (String orderId : orderIds) {
+			orderDAO.deleteOrder(Integer.parseInt(orderId));
+		}
+		orders = orderDAO.getAllOrders(); // Refresh the list after deletion
+	}
 	%>
 
 	<hr />
 
-<h2 class="mb-4" id="manage-orders-section">Manage Orders</h2>
-<form id="order-management-form" action="deleteOrders" method="post">
-    <button type="submit" class="btn btn-danger mb-2">Delete Selected</button>
-    <input type="hidden" id="order-delete-input" name="delete" value="">
-    <div class="table-responsive">
-        <table class="table table-bordered order-table">
-            <thead>
-                <tr>
-                    <th class="col-select-all"><input type="checkbox" id="order-select-all-checkbox" /></th>
-                    <th class="col-order-id">Order ID</th>
-                    <th class="col-user-id">User ID</th>
-                    <th class="col-total-price">Total Price</th>
-                    <th class="col-order-date">Order Date</th>
-                    <th class="col-order-status">Order Status</th>
-                    <th class="col-shipping-address">Shipping Address</th>
-                    <th class="col-order-items">Order Items</th>
-                    <th class="col-update">Update</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%-- Loop through the orders and display them in the table --%>
-                <%
-                for (Order order : orders) {
-                %>
-                <tr>
-                    <td><input type="checkbox" class="order-checkbox" value="<%=order.getOrderId()%>" data-order-id="<%=order.getOrderId()%>"></td>
-                    <td><%=order.getOrderId()%></td>
-                    <td><%=order.getUserId()%></td>
-                    <td><%=order.getTotalPrice()%></td>
-                    <td><%=order.getOrderDate()%></td>
-                    <td><%=order.getOrderStatus()%></td>
-                    <td>
-                        Country: <%=order.getShippingAddress().getCountry()%><br>
-                        Address1: <%=order.getShippingAddress().getAddress1()%><br>
-                        Address2: <%=order.getShippingAddress().getAddress2()%><br>
-                        District: <%=order.getShippingAddress().getDistrict()%><br>
-                        City: <%=order.getShippingAddress().getCity()%><br>
-                        Postal Code: <%=order.getShippingAddress().getPostalCode()%><br>
-                    </td>
-                    <td>
-                        <ul>
-                            <%
-                            for (OrderItem item : order.getOrderItems()) {
-                            %>
-                            <li>
-                                Order Item ID: <%=item.getOrderItemId()%><br>
-                                Book ID: <%=item.getBookId()%><br>
-                                Quantity: <%=item.getQuantity()%><br>
-                                Unit Price: <%=item.getUnitPrice()%><br>
-                            </li>
-                            <%
-                            }
-                            %>
-                        </ul>
-                    </td>
-                    <td><a href="updateOrderStatus.jsp?id=<%=order.getOrderId()%>">Update</a></td>
-                </tr>
-                <%
-                }
-                %>
-            </tbody>
-        </table>
-    </div>
-</form>
+	<h2 class="mb-4" id="manage-orders-section">Manage Orders</h2>
+	<form id="order-management-form" action="adminDashboard.jsp"
+		method="post">
+		<button type="submit" class="btn btn-danger mb-2" id="order-delete-btn">Delete
+			Selected</button>
+		<input type="hidden" id="order-delete-input" name="delete" value="">
+	</form>
+		<div class="table-responsive">
+			<table class="table table-bordered order-table">
+				<thead>
+					<tr>
+						<th class="col-order-id">Multi-Select</th>
+						<th class="col-order-id">Order ID</th>
+						<th class="col-user-id">User ID</th>
+						<th class="col-total-price">Total Price</th>
+						<th class="col-order-date">Order Date</th>
+						<th class="col-order-status">Order Status</th>
+						<th class="col-shipping-address">Shipping Address</th>
+						<th class="col-order-items">Order Items</th>
+						<th class="col-update">Update</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%-- Loop through the orders and display them in the table --%>
+					<%
+					for (Order order : orders) {
+					%>
+					<tr>
+						<td><input type="checkbox" class="order-checkbox"
+							value="<%=order.getOrderId()%>"
+							data-order-id="<%=order.getOrderId()%>"></td>
+						<td><%=order.getOrderId()%></td>
+						<td><%=order.getUserId()%></td>
+						<td><%=order.getTotalPrice()%></td>
+						<td><%=order.getOrderDate()%></td>
+						<td><%=order.getOrderStatus()%></td>
+						<td>Country: <%=order.getShippingAddress().getCountry()%><br>
+							Address1: <%=order.getShippingAddress().getAddress1()%><br>
+							Address2: <%=order.getShippingAddress().getAddress2()%><br>
+							District: <%=order.getShippingAddress().getDistrict()%><br>
+							City: <%=order.getShippingAddress().getCity()%><br> Postal
+							Code: <%=order.getShippingAddress().getPostalCode()%><br>
+						</td>
+						<td>
+							<ul>
+								<%
+								for (OrderItem item : order.getOrderItems()) {
+								%>
+								<li>Order Item ID: <%=item.getOrderItemId()%><br> Book
+									ID: <%=item.getBook().getBookId()%><br> Quantity: <%=item.getQuantity()%><br>
+									Unit Price: <%=item.getUnitPrice()%><br>
+								</li>
+								<%
+								}
+								%>
+							</ul>
+						</td>
+						<td><a
+							href="updateOrderStatus.jsp?id=<%=order.getOrderId()%>">Update</a></td>
+					</tr>
+					<%
+					}
+					%>
+				</tbody>
+			</table>
+		</div>
 
+		
+	</div>
+
+	
 	<%
 	} else {
 	// User is not an admin
@@ -1028,7 +1045,7 @@
 		
 		 var orderCheckboxes = document.querySelectorAll('.order-checkbox');
 		    var orderDeleteInput = document.getElementById('order-delete-input');
-		    var orderDeleteBtn = document.querySelector('.btn-danger');
+		    var orderDeleteBtn = document.getElementById('order-delete-btn');
 
 		    orderDeleteBtn.addEventListener('click', function(event) {
 		        var orderIds = [];
