@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%
-    int amount = (int) request.getAttribute("totalPrice");
+    String amountStr = (String) session.getAttribute("totalPrice");
+    double amount = Double.parseDouble(amountStr);
     String publicKey = (String) request.getAttribute("stripePublicKey");
-    String currency = (String) request.getAttribute("currency");
-    System.out.println(currency);
     System.out.println(publicKey);
     %>
 <!DOCTYPE html>
@@ -15,14 +14,17 @@
 </head>
 <body>
 	<form action="CheckoutServlet" method="post">
-    <input type='hidden' value=<%=amount %> name='amount' />
-    <label>Price:<span><%= amount/100 %></span></label>
+	<input type="radio" name="paymentType" value="Cash">
+                   Cash<br>
+<input type="radio" name="paymentType" value="Stripe">
+                   Stripe<br>
+    <input type='hidden' value=<%=Double.toString(amount) %> name='amount' />
+    <label>Price:<span><%= String.format("%.2f",amount) %></span></label>
     <script
        src='https://checkout.stripe.com/checkout.js' 
        class='stripe-button'
        data-key=<%=publicKey %> 
        data-amount=<%=amount %> 
-       data-currency=<%=currency %>
        data-name='Baeldung'
        data-description='Spring course checkout'
        data-image

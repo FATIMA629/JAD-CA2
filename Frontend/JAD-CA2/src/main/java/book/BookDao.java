@@ -7,24 +7,25 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import dbaccess.*;
+
+import DBAccess.*;
 
 public class BookDao {
 
-	public Book getBookById(String bookId) {
+	public Book getBookById(int bookId) {
 		Connection conn = null;
 		Book book = null;
 		try {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books WHERE BookID = ?");
-			pstmt.setString(1, bookId);
+			pstmt.setInt(1, bookId);
 			ResultSet rs = pstmt.executeQuery();
 
 			// Step 7: Process Result
 			if (rs.next()) {
 				book = new Book();
-				book.setBookId(rs.getString("BookID"));
+				book.setBookId(rs.getInt("BookID"));
 				book.setTitle(rs.getString("Title"));
 				book.setAuthor(rs.getString("Author"));
 				book.setGenreId(rs.getInt("GenreID"));
@@ -106,7 +107,7 @@ public class BookDao {
 
 			while (rs.next()) {
 				Book book = new Book();
-				book.setBookId(rs.getString("BookID"));
+				book.setBookId(rs.getInt("BookID"));
 				book.setTitle(rs.getString("Title"));
 				book.setAuthor(rs.getString("Author"));
 				book.setGenreId(rs.getInt("GenreID"));
@@ -169,7 +170,7 @@ public class BookDao {
 
 			if (rs.next()) {
 				book = new Book();
-				book.setBookId(rs.getString("BookID"));
+				book.setBookId(rs.getInt("BookID"));
 				book.setTitle(rs.getString("Title"));
 				book.setAuthor(rs.getString("Author"));
 				book.setGenreId(rs.getInt("GenreID"));
@@ -215,7 +216,7 @@ public class BookDao {
 			pstmt.setString(10, book.getDescription());
 			pstmt.setString(11, book.getImageLocation());
 			pstmt.setInt(12, book.getSold());
-			pstmt.setString(13, book.getBookId());
+			pstmt.setInt(13, book.getBookId());
 
 			int rowsAffected = pstmt.executeUpdate();
 			updated = (rowsAffected > 0);
@@ -244,7 +245,7 @@ public class BookDao {
 
 			while (rs.next()) {
 				Book book = new Book();
-				book.setBookId(rs.getString("bookId"));
+				book.setBookId(rs.getInt("bookId"));
 				book.setTitle(rs.getString("title"));
 				book.setAuthor(rs.getString("author"));
 				book.setSold(rs.getInt("sold"));
@@ -273,7 +274,7 @@ public class BookDao {
 
 			while (rs.next()) {
 				Book book = new Book();
-				book.setBookId(rs.getString("bookId"));
+				book.setBookId(rs.getInt("bookId"));
 				book.setTitle(rs.getString("title"));
 				book.setAuthor(rs.getString("author"));
 				// Set other properties as needed
@@ -302,7 +303,7 @@ public class BookDao {
 
 			while (rs.next()) {
 				Book book = new Book();
-				book.setBookId(rs.getString("bookId"));
+				book.setBookId(rs.getInt("bookId"));
 				book.setTitle(rs.getString("title"));
 				book.setAuthor(rs.getString("author"));
 				book.setRating(rs.getDouble("rating"));
@@ -424,7 +425,7 @@ public class BookDao {
 
 			while (rs.next()) {
 				Book book = new Book();
-				book.setBookId(rs.getString("BookID"));
+				book.setBookId(rs.getInt("BookID"));
 				book.setTitle(rs.getString("Title"));
 				book.setAuthor(rs.getString("Author"));
 				book.setGenreId(rs.getInt("GenreID"));
@@ -485,7 +486,7 @@ public class BookDao {
 			// Process Result
 			while (rs.next()) {
 				Book book = new Book();
-				book.setBookId(rs.getString("BookID"));
+				book.setBookId(rs.getInt("BookID"));
 				book.setTitle(rs.getString("Title"));
 				book.setAuthor(rs.getString("Author"));
 				book.setGenreId(rs.getInt("GenreID"));
@@ -548,7 +549,7 @@ public class BookDao {
 			while (rs.next()) {
 				// Create a Book object and set its properties based on the result set
 				Book book = new Book();
-				book.setBookId(rs.getString("BookID"));
+				book.setBookId(rs.getInt("BookID"));
 				book.setTitle(rs.getString("Title"));
 				book.setAuthor(rs.getString("Author"));
 				book.setGenreId(rs.getInt("GenreID"));

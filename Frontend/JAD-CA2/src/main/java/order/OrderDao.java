@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import dbaccess.DBConnection;
-import address.*;
+
+import DBAccess.DBConnection;
+import book.Book;
+import book.BookDao;
+import Address.*;
 
 public class OrderDao {
 
@@ -169,7 +172,10 @@ public class OrderDao {
 				OrderItem orderItem = new OrderItem();
 				orderItem.setOrderItemId(rs.getInt("OrderItemID"));
 				orderItem.setOrderId(rs.getInt("OrderID"));
-				orderItem.setBookId(rs.getInt("BookID"));
+				int bookId = rs.getInt("BookID");
+				BookDao bookDao = new BookDao();
+				Book book = bookDao.getBookById(bookId);
+				orderItem.setBook(book);
 				orderItem.setQuantity(rs.getInt("Quantity"));
 				orderItem.setUnitPrice(rs.getDouble("UnitPrice"));
 

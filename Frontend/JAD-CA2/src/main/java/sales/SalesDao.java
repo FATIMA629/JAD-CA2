@@ -1,14 +1,15 @@
 package sales;
 
-import dbaccess.DBConnection;
 import user.User;
 import order.Order;
 import book.Book;
-import address.*;
+import Address.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import DBAccess.DBConnection;
 
 public class SalesDao {
 

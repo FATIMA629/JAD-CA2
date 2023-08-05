@@ -1,4 +1,4 @@
-package cart;
+package Cart;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public class CartDao {
                 int bookId = rs.getInt("BookID");
                 // Retrieve the book from the database using the bookId
                 BookDao bookDao = new BookDao(); // Create an instance of the BookDao
-                Book book = bookDao.getBookById(Integer.toString(bookId)); // Retrieve the book using the BookDao
+                Book book = bookDao.getBookById(bookId); // Retrieve the book using the BookDao
 
                 // Add the book to the list of books
                 	if (book != null) {

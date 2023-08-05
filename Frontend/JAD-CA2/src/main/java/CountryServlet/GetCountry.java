@@ -18,7 +18,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import country.Country;
+import Country.Country;
 
 /**
  * Servlet implementation class GetCountry

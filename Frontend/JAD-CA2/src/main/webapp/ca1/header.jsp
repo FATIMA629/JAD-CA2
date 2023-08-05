@@ -85,6 +85,8 @@
 										href="./userEditUser"><span class="profile-status">Admin</span></a>
 								</div>
 								<hr>
+								<span><a href="purchaseHistory.jsp">My Purchases</a></span>
+								<hr>
 								<button
 									style="background: transparent; cursor: pointer; border: none;">
 									<a href="logout.jsp">Log Out</a>
@@ -124,10 +126,10 @@
 								src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png">
 						</button>
 					</form>
-
 					<a href="cart.jsp"> <img src="../images/cart.png"
 						class="img-fluid" id="cartImage">
 					</a>
+					
 					<div class="cart-drawer">
 						<div class="profile-icon">
 							<img src="../images/profile.png" class="img-fluid" id="profileImage">
@@ -137,6 +139,8 @@
 										src="../images/image-removebg-preview (39).png" /></span> <a
 										href="./userEditUser"><span class="profile-status">User</span></a>
 								</div>
+								<hr>
+								<span><a href="purchaseHistory.jsp">My Purchases</a></span>
 								<hr>
 								<button
 									style="background: transparent; cursor: pointer; border: none;">

@@ -1,4 +1,4 @@
-package city;
+package City;
 
 public class City {
 	private String cityId;

@@ -2,7 +2,7 @@ package order;
 
 import java.util.Date;
 import java.util.List;
-import address.Address;
+import Address.*;
 
 public class Order {
 	private int orderId;

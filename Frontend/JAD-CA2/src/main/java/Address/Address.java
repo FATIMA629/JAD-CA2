@@ -1,4 +1,4 @@
-package address;
+package Address;
 
 public class Address {
 	private int addressID;

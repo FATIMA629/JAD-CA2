@@ -1,4 +1,4 @@
-package dbaccess;
+package DBAccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,7 +20,7 @@ public class DBConnection {
 		String dbUrl = "jdbc:mysql://localhost/jad-ca2";
 		String dbUser = "root";
 		String dbPassword = "root";
-		String dbClass = "com.mysql.cj.jdbc.Driver";
+		String dbClass = "com.mysql.jdbc.Driver";
 
 		// Initialize connection object to null
 		Connection connection = null;

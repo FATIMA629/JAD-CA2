@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import book.*;
-import cart.CartDao;
+import Cart.*;
 import user.*;
 
 @WebServlet("/VerifyLoginServlet")
@@ -40,6 +40,9 @@ public class VerifyLoginServlet extends HttpServlet {
 			if (user != null) {
 				session.setAttribute("userId", user.getUserID());
 				session.setAttribute("role", user.getRole());
+				session.setAttribute("username", user.getUserName());
+				session.setAttribute("phone", user.getPhone());
+				System.out.println("VerifyLoginServlet phone is " + user.getPhone());
 				session.setAttribute("loggedIn", true);
 				List<Book> cartItems = cartDao.getAllBooksInCart(user.getUserID());
 				session.setAttribute("cartItems", cartItems);

@@ -134,7 +134,7 @@ List<Book> allBooks = bookDao.readAllBooks();
 									<span class="fa fa-star"></span>
 									<%
 									}
-									%>
+									 %>
 								</div>
 								<h4 style="color: black; display: block;"><%=book.getRating()%></h4>
 							</div>

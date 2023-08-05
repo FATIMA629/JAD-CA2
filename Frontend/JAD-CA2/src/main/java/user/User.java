@@ -1,5 +1,5 @@
 package user;
-import address.*;
+import Address.*;
 
 public class User {
     private int userID;
@@ -8,22 +8,24 @@ public class User {
     private String role;
     private String email;
     private Address address;
+    private String phone;
 
     // Constructor, getters, and setters
 
     public User() {
     }
 
-    public User(int userID, String userName, String password, String role, String email, Address address) {
+    public User(int userID, String userName, String password, String role, String email, Address address, String phone) {
         this.userID = userID;
         this.userName = userName;
         this.password = password;
         this.role = role;
         this.email = email;
         this.address = address;
+        this.phone = phone;
     }
 
-    public int getUserID() {
+	public int getUserID() {
         return userID;
     }
 
@@ -70,10 +72,18 @@ public class User {
     public void setAddress(Address address) {
         this.address = address;
     }
+    
+    public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
     @Override
     public String toString() {
         return "User [userID=" + userID + ", userName=" + userName + ", password=" + password + ", role=" + role
-                + ", email=" + email + ", address=" + address + "]";
+                + ", email=" + email + ", address=" + address + ", phone=" + phone + "]";
     }
 }
