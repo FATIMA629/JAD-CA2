@@ -58,7 +58,7 @@
 
 	<div class="container mt-5">
 		<h2 class="mb-4">Edit Book</h2>
-		<form method="post" action="../UpdateBook">
+		<form method="post" action="../UpdateBookServlet" enctype="multipart/form-data">
 			<input type="hidden" name="bookId" value="<%=book.getBookId()%>">
 
 			<div class="mb-3">
@@ -205,7 +205,7 @@
 
 			<div class="mb-3">
 				<label for="imageLocation" class="form-label">Image
-					Location:</label> <input type="text" class="form-control"
+					Location:</label> <input type="file" class="form-control"
 					id="imageLocation" name="imageLocation"
 					value="<%=inputData.getOrDefault("imageLocation", book.getImageLocation())%>">
 				<%

@@ -7,7 +7,7 @@ import book.*;
 
 
 public class CartDao {
-    private String connURL = "jdbc:mysql://localhost/ca1?user=root&password=root&serverTimezone=UTC";
+    private String connURL = "jdbc:mysql://localhost/jad-ca2?user=root&password=root&serverTimezone=UTC";
 
     public CartDao() throws ClassNotFoundException {
         // Load JDBC Driver

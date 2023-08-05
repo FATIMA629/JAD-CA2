@@ -56,7 +56,7 @@ Book book = bookDao.getBookById(bookId);
 			style="background-color: white; height: 100%;">
 			<div class="row" style="height: 100%;">
 				<div class="col-4 p-3" style="height: 100%;">
-					<img src=<%=book.getImageLocation()%> alt="book"
+					<img src="<%=request.getContextPath()%>/<%=book.getImageLocation()%>" alt="book"
 						style="height: 100%; width: 100%;" />
 				</div>
 				<div class="col-8 p-4">
