@@ -28,11 +28,7 @@ public class RegisterUserServlet extends HttpServlet {
 	 */
 	public RegisterUserServlet() {
 		super();
-		try {
-			userDao = new UserDao();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		userDao = new UserDao();
 	}
 
 	/**

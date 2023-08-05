@@ -55,11 +55,14 @@ public class BookDao {
 		boolean created = false;
 
 		try {
+			System.out.println("Attempting to connect to the database");
 			conn = DBConnection.getConnection();
+			System.out.println("Connection successful");
 
 			PreparedStatement pstmt = conn.prepareStatement(
 					"INSERT INTO books (Title, Author, GenreID, Price, Quantity, Publisher, PublishDate ,ISBN, Rating, Description, ImageLocation, Sold) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
+			System.out.println("Setting parameters for prepared statement");
 			pstmt.setString(1, book.getTitle());
 			pstmt.setString(2, book.getAuthor());
 			pstmt.setInt(3, book.getGenreId());
@@ -72,20 +75,25 @@ public class BookDao {
 			pstmt.setString(10, book.getDescription());
 			pstmt.setString(11, book.getImageLocation());
 			pstmt.setInt(12, book.getSold());
+			System.out.println("Parameters set");
 
+			System.out.println("Executing update");
 			int rowsAffected = pstmt.executeUpdate();
 
 			created = (rowsAffected > 0);
-
 			System.out.println("Insert executed, created = " + created);
 		} catch (SQLException e) {
+			System.out.println("Exception caught during execution");
 			e.printStackTrace();
 		} finally {
+			System.out.println("Closing connection");
 			closeConnection(conn);
+			System.out.println("Connection closed");
 		}
 
 		return created;
 	}
+
 
 	public ArrayList<Book> readAllBooks() {
 		ArrayList<Book> books = new ArrayList<>();

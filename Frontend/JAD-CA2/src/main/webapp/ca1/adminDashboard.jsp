@@ -3,6 +3,7 @@
 <%@ page import="book.*"%>
 <%@ page import="genre.*"%>
 <%@ page import="user.*"%>
+<%@ page import="order.*"%>
 <%@ page import="java.util.*"%>
 
 <!DOCTYPE html>
@@ -14,7 +15,7 @@
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link
+<link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
@@ -31,6 +32,65 @@
 	crossorigin="anonymous"></script>
 
 <style>
+/* Additional styles for order management section */
+.order-table th, .order-table td {
+	vertical-align: middle;
+}
+
+.col-select-all {
+	width: 50px;
+}
+
+.col-order-id {
+	width: 100px;
+}
+
+.col-user-id {
+	width: 100px;
+}
+
+.col-total-price {
+	width: 100px;
+}
+
+.col-order-date {
+	width: 150px;
+}
+
+.col-order-status {
+	width: 150px;
+}
+
+.col-shipping-address {
+	width: 200px;
+}
+
+.col-order-items {
+	width: 250px;
+}
+
+.col-update {
+	width: 80px;
+}
+
+.order-checkbox {
+	margin: 0 auto;
+	display: block;
+}
+
+/* Delete button styling */
+#delete-selected-button {
+	margin-top: 20px;
+}
+
+/* Adjust table styles */
+.table {
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 1rem;
+	background-color: transparent;
+}
+
 .error {
 	color: red;
 }
@@ -222,7 +282,7 @@
 
 </head>
 <body>
- <jsp:include page="header.jsp"/>
+	<jsp:include page="header.jsp" />
 	<%
 	if (session != null && session.getAttribute("loggedIn") != null) {
 		// User is logged in
@@ -371,9 +431,6 @@
 		</div>
 
 
-
-
-
 		<%
 		List<Book> books = bookDao.readAllBooks();
 		String bookIdsToDelete = request.getParameter("delete");
@@ -465,7 +522,8 @@
 		%>
 
 		<h2 class="mb-4" id="add-book-section">Add Book</h2>
-		<form action="../CreateNewBook" method="post">
+		<form action="../AddBookServlet" method="post"
+			enctype="multipart/form-data">
 			<!-- Title field -->
 			<div class="mb-3">
 				<label for="title" class="form-label">Title</label> <input
@@ -606,9 +664,8 @@
 			<!-- Image Location field -->
 			<div class="mb-3">
 				<label for="imageLocation" class="form-label">Image Location</label>
-				<input type="text" class="form-control" id="imageLocation"
-					name="imageLocation"
-					value="<%=inputData != null ? inputData.get("imageLocation") : ""%>">
+				<input type="file" class="form-control" id="imageLocation"
+					name="imageLocation">
 				<%
 				if (errors != null && errors.containsKey("imageLocation")) {
 					out.println("<div class='error'>" + errors.get("imageLocation") + "</div>");
@@ -807,6 +864,82 @@
 			<button type="submit" class="btn btn-primary">Add User</button>
 		</form>
 	</div>
+
+	<hr />
+
+	<%
+	// Assuming you have a method in your OrderDAO to fetch all orders from the database
+	OrderDao orderDAO = new OrderDao();
+	List<Order> orders = orderDAO.getAllOrders();
+	%>
+
+	<hr />
+
+<h2 class="mb-4" id="manage-orders-section">Manage Orders</h2>
+<form id="order-management-form" action="deleteOrders" method="post">
+    <button type="submit" class="btn btn-danger mb-2">Delete Selected</button>
+    <input type="hidden" id="order-delete-input" name="delete" value="">
+    <div class="table-responsive">
+        <table class="table table-bordered order-table">
+            <thead>
+                <tr>
+                    <th class="col-select-all"><input type="checkbox" id="order-select-all-checkbox" /></th>
+                    <th class="col-order-id">Order ID</th>
+                    <th class="col-user-id">User ID</th>
+                    <th class="col-total-price">Total Price</th>
+                    <th class="col-order-date">Order Date</th>
+                    <th class="col-order-status">Order Status</th>
+                    <th class="col-shipping-address">Shipping Address</th>
+                    <th class="col-order-items">Order Items</th>
+                    <th class="col-update">Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%-- Loop through the orders and display them in the table --%>
+                <%
+                for (Order order : orders) {
+                %>
+                <tr>
+                    <td><input type="checkbox" class="order-checkbox" value="<%=order.getOrderId()%>" data-order-id="<%=order.getOrderId()%>"></td>
+                    <td><%=order.getOrderId()%></td>
+                    <td><%=order.getUserId()%></td>
+                    <td><%=order.getTotalPrice()%></td>
+                    <td><%=order.getOrderDate()%></td>
+                    <td><%=order.getOrderStatus()%></td>
+                    <td>
+                        Country: <%=order.getShippingAddress().getCountry()%><br>
+                        Address1: <%=order.getShippingAddress().getAddress1()%><br>
+                        Address2: <%=order.getShippingAddress().getAddress2()%><br>
+                        District: <%=order.getShippingAddress().getDistrict()%><br>
+                        City: <%=order.getShippingAddress().getCity()%><br>
+                        Postal Code: <%=order.getShippingAddress().getPostalCode()%><br>
+                    </td>
+                    <td>
+                        <ul>
+                            <%
+                            for (OrderItem item : order.getOrderItems()) {
+                            %>
+                            <li>
+                                Order Item ID: <%=item.getOrderItemId()%><br>
+                                Book ID: <%=item.getBookId()%><br>
+                                Quantity: <%=item.getQuantity()%><br>
+                                Unit Price: <%=item.getUnitPrice()%><br>
+                            </li>
+                            <%
+                            }
+                            %>
+                        </ul>
+                    </td>
+                    <td><a href="updateOrderStatus.jsp?id=<%=order.getOrderId()%>">Update</a></td>
+                </tr>
+                <%
+                }
+                %>
+            </tbody>
+        </table>
+    </div>
+</form>
+
 	<%
 	} else {
 	// User is not an admin
@@ -817,6 +950,7 @@
 	response.sendRedirect("home.jsp"); // Redirect to the home page
 	}
 	%>
+
 
 
 	<script
@@ -890,6 +1024,34 @@
 								}
 							}
 						});
+		
+		
+		 var orderCheckboxes = document.querySelectorAll('.order-checkbox');
+		    var orderDeleteInput = document.getElementById('order-delete-input');
+		    var orderDeleteBtn = document.querySelector('.btn-danger');
+
+		    orderDeleteBtn.addEventListener('click', function(event) {
+		        var orderIds = [];
+
+		        orderCheckboxes.forEach(function(checkbox) {
+		            if (checkbox.checked) {
+		                orderIds.push(checkbox.value);
+		            }
+		        });
+		        orderDeleteInput.value = orderIds.join(',');
+
+		        if (orderIds.length === 0) {
+		            alert("No order is selected for deletion!");
+		            event.preventDefault();
+		        } else {
+		            var confirmMessage = "Are you sure you want to delete the following orders?\n\n"
+		                    + orderIds.join('\n');
+		            var result = confirm(confirmMessage);
+		            if (!result) {
+		                event.preventDefault();
+		            }
+		        }
+		    });
 	</script>
 
 

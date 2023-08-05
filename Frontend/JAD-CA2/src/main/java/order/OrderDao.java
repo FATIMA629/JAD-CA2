@@ -73,17 +73,15 @@ public class OrderDao {
 
 		return generatedOrderId;
 	}
-	
 
-	public List<Order> getAllOrders(int userId) {
+	public List<Order> getAllOrders() {
 		List<Order> orders = new ArrayList<>();
 		Connection conn = null;
 
 		try {
 			conn = DBConnection.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM orders WHERE UserID = ? ORDER BY OrderID DESC");
-			pstmt.setInt(1, userId);
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM orders");
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -178,9 +176,9 @@ public class OrderDao {
 				orderItem.setOrderItemId(rs.getInt("OrderItemID"));
 				orderItem.setOrderId(rs.getInt("OrderID"));
 				int bookId = rs.getInt("BookID");
-                BookDao bookDao = new BookDao();
-                Book book = bookDao.getBookById(bookId);
-                orderItem.setBook(book);
+				BookDao bookDao = new BookDao();
+				Book book = bookDao.getBookById(bookId);
+				orderItem.setBook(book);
 				orderItem.setQuantity(rs.getInt("Quantity"));
 				orderItem.setUnitPrice(rs.getDouble("UnitPrice"));
 

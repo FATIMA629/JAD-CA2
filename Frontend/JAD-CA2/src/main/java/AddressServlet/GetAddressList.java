@@ -18,7 +18,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import address.Address;
+import Address.Address;
 
 /**
  * Servlet implementation class GetAddressList

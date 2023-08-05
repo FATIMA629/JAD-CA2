@@ -1,10 +1,5 @@
-/servlets/
-/user/
-/StripeServlet/
-/order/
-/Cart/
-/Payment/
-/BookServlet/
-/CartServlet/
-/book/
+/Country/
+/CountryServlet/
 /sales/
+/servlets/
+/order/

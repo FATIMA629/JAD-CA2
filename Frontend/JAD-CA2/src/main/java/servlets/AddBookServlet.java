@@ -24,9 +24,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.lang.ClassNotFoundException;
-
+import javax.servlet.annotation.MultipartConfig;
 
 @WebServlet("/AddBookServlet")
+@MultipartConfig
 public class AddBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BookDao bookDao;
@@ -46,23 +47,28 @@ public class AddBookServlet extends HttpServlet {
 		request.getSession().removeAttribute("errors");
 		request.getSession().removeAttribute("inputData");
 		request.getSession().removeAttribute("success");
-		
+
 		// get the image file
-        Part imagePart = request.getPart("image");
-        InputStream imageInputStream = imagePart.getInputStream();
-        String imageName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-        String imageFormat = imageName.substring(imageName.lastIndexOf(".") + 1);
-        BufferedImage image = ImageIO.read(imageInputStream);
+		Part imagePart = request.getPart("imageLocation");
+		InputStream imageInputStream = imagePart.getInputStream();
+		String imageName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+		String imageFormat = imageName.substring(imageName.lastIndexOf(".") + 1);
+		BufferedImage image = ImageIO.read(imageInputStream);
 
-        // Specify the absolute path to your project's images folder
-        String imagesDir = "C:\\path\\to\\your\\images\\directory"; // Change this to your path
+		// Specify the absolute path to your project's images folder
+		String imagesDir = "C:\\Users\\DC\\eclipse-workspace\\JAD-Assignement-2\\Frontend\\JAD-CA2\\src\\main\\webapp\\images";
 
-        // Use the ImageIO class to write the BufferedImage object to a file in your images folder
-        File outputFile = new File(imagesDir + File.separator + imageName);
-        ImageIO.write(image, imageFormat, outputFile);
-        
-        // Get the relative path of the saved image file
-        String imageLocation = "images" + File.separator + imageName;
+		// Use the ImageIO class to write the BufferedImage object to a file in your
+		// images folder
+		File outputFile = new File(imagesDir + File.separator + imageName);
+		ImageIO.write(image, imageFormat, outputFile);
+
+		// Get the relative path of the saved image file
+		String imageLocation = "images" + File.separator + imageName;
+
+		System.out.println("Image Part received");
+		System.out.println("Image Name: " + imageName);
+		System.out.println("Image Format: " + imageFormat);
 
 		System.out.println("Entered doPost method in AddBookServlet");
 		String title = request.getParameter("title");
@@ -77,6 +83,18 @@ public class AddBookServlet extends HttpServlet {
 		String description = request.getParameter("description");
 		String sold = request.getParameter("sold");
 
+		System.out.println("Title: " + title);
+		System.out.println("Author: " + author);
+		System.out.println("GenreId: " + genreId);
+		System.out.println("Price: " + price);
+		System.out.println("Quantity: " + quantity);
+		System.out.println("Publisher: " + publisher);
+		System.out.println("PublishDate: " + publishDate);
+		System.out.println("ISBN: " + isbn);
+		System.out.println("Rating: " + rating);
+		System.out.println("Description: " + description);
+		System.out.println("Sold: " + sold);
+
 		Map<String, String> errors = new HashMap<>();
 		Pattern decimalPattern = Pattern.compile("\\d+(\\.\\d+)?");
 		Pattern integerPattern = Pattern.compile("\\d+");
@@ -88,7 +106,7 @@ public class AddBookServlet extends HttpServlet {
 		if (author == null || author.isEmpty()) {
 			errors.put("author", "Author is required");
 		}
-		if (genreId == null || genreId.trim().isEmpty()){
+		if (genreId == null || genreId.trim().isEmpty()) {
 			errors.put("genreId", "Genre must be selected");
 		}
 		if (!decimalPattern.matcher(price).matches()) {
@@ -130,11 +148,17 @@ public class AddBookServlet extends HttpServlet {
 			errors.put("publishDate", "Invalid date format");
 		}
 
-		if (publishLocalDate != null && (publishLocalDate.isEqual(now) || publishLocalDate.isAfter(now))) {
+        System.out.println("Errors: " + errors);
+
+        		if (publishLocalDate != null && (publishLocalDate.isEqual(now) || publishLocalDate.isAfter(now))) {
 			errors.put("publishDate", "Publish date should be in the past");
+            System.out.println("Publish date is in the future");
+
 		}
 
 		if (errors.isEmpty()) {
+            System.out.println("No validation errors found. Creating book.");
+
 			Book book = new Book();
 			book.setTitle(title);
 			book.setAuthor(author);
@@ -158,6 +182,8 @@ public class AddBookServlet extends HttpServlet {
 
 			request.getSession().setAttribute("success", "Book created successfully!");
 		} else {
+            System.out.println("Validation errors found. Not creating book.");
+
 			Map<String, String> inputData = new HashMap<>();
 			inputData.put("title", title);
 			inputData.put("author", author);
@@ -174,7 +200,9 @@ public class AddBookServlet extends HttpServlet {
 
 			request.getSession().setAttribute("inputData", inputData);
 			request.getSession().setAttribute("errors", errors);
+
 		}
+        System.out.println("Redirecting to admin dashboard");
 
 		response.sendRedirect(request.getContextPath() + "/ca1/adminDashboard.jsp");
 	}

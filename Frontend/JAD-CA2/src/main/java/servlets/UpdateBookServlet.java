@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,10 +19,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import book.*; 
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.Part;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.lang.ClassNotFoundException;
+import javax.servlet.annotation.MultipartConfig;
+
 /**
  * Servlet implementation class UpdateBookServlet
  */
 @WebServlet("/UpdateBookServlet")
+@MultipartConfig
 public class UpdateBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BookDao bookDao;
@@ -54,6 +77,26 @@ public class UpdateBookServlet extends HttpServlet {
 		request.getSession().removeAttribute("inputData");
 		request.getSession().removeAttribute("success");
 
+	    Part imagePart = request.getPart("imageLocation");
+	    String imageName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+
+	    // Specify the relative path to your project's images folder
+	    String imagesDir = "images"; // Assuming the "images" folder is in your web application's root directory
+
+	    // Use the ServletContext to get the real path of the images directory
+	    String realImagesDir = getServletContext().getRealPath(imagesDir);
+
+	    // Use the ImageIO class to write the InputStream from the Part to a file in your images folder
+	    File outputFile = new File(realImagesDir + File.separator + imageName);
+	    try (InputStream imageInputStream = imagePart.getInputStream()) {
+	        BufferedImage image = ImageIO.read(imageInputStream);
+	        String imageFormat = imageName.substring(imageName.lastIndexOf(".") + 1);
+	        ImageIO.write(image, imageFormat, outputFile);
+	    }
+
+	    // Get the relative path of the saved image file
+	    String imageLocation = imagesDir + File.separator + imageName;
+		
 		System.out.println("Entered doPost method in UpdateBookServlet");
 		String bookId = request.getParameter("bookId");
 		String title = request.getParameter("title");
@@ -66,7 +109,6 @@ public class UpdateBookServlet extends HttpServlet {
 		String isbn = request.getParameter("isbn");
 		String rating = request.getParameter("rating");
 		String description = request.getParameter("description");
-		String imageLocation = request.getParameter("imageLocation");
 		String sold = request.getParameter("sold");
 
 		Map<String, String> errors = new HashMap<>();
