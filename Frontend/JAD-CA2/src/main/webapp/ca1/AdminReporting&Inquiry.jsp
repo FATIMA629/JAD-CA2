@@ -4,6 +4,7 @@
 <%@ page import="genre.*"%>
 <%@ page import="user.*"%>
 <%@ page import="order.*"%>
+<%@ page import="sales.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="order.Order"%>
 
@@ -31,8 +32,8 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 	crossorigin="anonymous"></script>
-	
-	<style>
+
+<style>
 /* Additional styles for order management section */
 .order-table th, .order-table td {
 	vertical-align: middle;
@@ -186,7 +187,7 @@
 	background-color: #0056b3;
 }
 
-#statistics-section {
+#books-section, #users-section, #sales-section {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -273,31 +274,26 @@
 		// Check if the user is an admin
 		String role = (String) session.getAttribute("role");
 		if (role.equals("admin")) {
+
+			BookDao bookDao = new BookDao();
+			UserDao userDao = new UserDao();
+			GenreDao genreDao = new GenreDao();
 	%>
+
+
 
 	<div class="container py-5">
 
 		<h1 class="mb-5">Reporting and Inquiry Dashboard</h1>
 
 		<div class="dashboard-buttons">
-			<a href="#statistics-section">Reporting & Inquiry</a> <a
-				href="#manage-books-section">Manage Books</a> <a
-				href="#manage-users-section">Manage Users</a> <a
-				href="#manage-orders-section">Manage Orders</a>
+			<a href="#books-section">Books Report</a> <a href="#users-section">Users
+				Report</a> <a href="#sales-section">Sales Report</a>
 		</div>
-		<%
-		BookDao bookDao = new BookDao();
-		UserDao userDao = new UserDao();
-		GenreDao genreDao = new GenreDao();
-		%>
-		<h3 class="mt-5">Reporting & Inquiry</h3>
-		<div id="statistics-section">
-			<div class="statistics-card">
-				<h3 class="statistics-header">Total Users</h3>
-				<p class="statistics-value">
-					<%=userDao.getTotalUsers()%>
-				</p>
-			</div>
+
+		<h3 class="mt-5">Books Report</h3>
+		<div id="books-section">
+			<!-- Books Report Section -->
 			<div class="statistics-card">
 				<h3 class="statistics-header">Total Type Of Books</h3>
 				<p class="statistics-value">
@@ -308,12 +304,6 @@
 				<h3 class="statistics-header">Total Number Of Books</h3>
 				<p class="statistics-value">
 					<%=bookDao.getTotalBooks()%>
-				</p>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Total Revenue</h3>
-				<p class="statistics-value">
-					$<%=String.format("%.2f", bookDao.getTotalRevenue())%>
 				</p>
 			</div>
 			<div class="statistics-card">
@@ -411,6 +401,122 @@
 				</ul>
 			</div>
 		</div>
+
+		<h3 class="mt-5">Users Report</h3>
+		<div id="users-section">
+			<!-- Users Report Section -->
+			<div class="statistics-card">
+				<h3 class="statistics-header">Total Users</h3>
+				<p class="statistics-value">
+					<%=userDao.getTotalUsers()%>
+				</p>
+			</div>
+		</div>
+
+		<h3 class="mt-5">Sales Report</h3>
+		<div id="sales-section">
+
+			<!-- Sales Report Section -->
+			<div class="statistics-card">
+				<h3 class="statistics-header">Total Revenue</h3>
+				<p class="statistics-value">
+					$<%=String.format("%.2f", bookDao.getTotalRevenue())%>
+				</p>
+			</div>
+
+			<div class="statistics-card">
+				<h3 class="statistics-header">Top Selling Books</h3>
+				<ul>
+					<%
+					SalesDao salesDao = new SalesDao();
+					List<Book> topSellingBooks2 = salesDao.fetchTopBooks(5);
+					for (Book book : topSellingBooks2) {
+					%>
+					<li><%=book.getTitle()%> - <%=book.getSold()%> copies sold</li>
+					<%
+					}
+					%>
+				</ul>
+			</div>
+
+			<div class="statistics-card">
+				<h3 class="statistics-header">Top Orders</h3>
+				<ul>
+					<%
+					List<Order> topOrders = salesDao.fetchTopOrders(5);
+					for (Order order : topOrders) {
+					%>
+					<li>Order ID: <%=order.getOrderId()%>, Total Price: $<%=order.getTotalPrice()%></li>
+					<%
+					}
+					%>
+				</ul>
+			</div>
+
+			<div class="statistics-card">
+				<h3 class="statistics-header">Top Customers</h3>
+				<ul>
+					<%
+					List<User> topCustomers = salesDao.fetchTopCustomers(5);
+					for (User customer : topCustomers) {
+					%>
+					<li><%=customer.getUserName()%> - Total Spending: $<%=String.format("%.2f", userDao.getTotalSpendingByUserId(customer.getUserID()))%></li>
+					<%
+					}
+					%>
+				</ul>
+			</div>
+
+			<!-- Display Book Sales by Date -->
+			<div class="statistics-card">
+				<h3 class="statistics-header">Book Sales by Date</h3>
+				<ul>
+					<%
+					String targetDate = "2023-08-01"; // Replace with the desired date
+					List<Book> bookSalesByDate = salesDao.fetchBookSaleByDate(targetDate);
+					for (Book book : bookSalesByDate) {
+					%>
+					<li><%=book.getTitle()%> - Quantity Sold: <%=book.getSold()%></li>
+					<%
+					}
+					%>
+				</ul>
+			</div>
+
+			<!-- Display Book Sales by Period -->
+			<div class="statistics-card">
+				<h3 class="statistics-header">Book Sales by Period</h3>
+				<ul>
+					<%
+					String startDate = "2023-07-01"; // Replace with the desired start date
+					String endDate = "2023-07-31"; // Replace with the desired end date
+					List<Book> bookSalesByPeriod = salesDao.fetchBookSaleByPeriod(startDate, endDate);
+					for (Book book : bookSalesByPeriod) {
+					%>
+					<li><%=book.getTitle()%> - Quantity Sold: <%=book.getSold()%></li>
+					<%
+					}
+					%>
+				</ul>
+			</div>
+
+			<!-- Display Book Sales by Genre -->
+			<div class="statistics-card">
+				<h3 class="statistics-header">Book Sales by Genre</h3>
+				<ul>
+					<%
+					int targetGenreId = 1; // Replace with the desired genre ID
+					List<Book> bookSalesByGenre = salesDao.fetchSalesByGenre(targetGenreId);
+					for (Book book : bookSalesByGenre) {
+					%>
+					<li><%=book.getTitle()%> - Quantity Sold: <%=book.getSold()%></li>
+					<%
+					}
+					%>
+				</ul>
+			</div>
+		</div>
+
 	</div>
 
 	<%

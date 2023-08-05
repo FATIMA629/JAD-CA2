@@ -441,6 +441,36 @@ public class UserDao {
 		}
 		return usersCount;
 	}
+	
+
+    public double getTotalSpendingByUserId(int userId) {
+        Connection conn = null;
+        double totalSpending = 0;
+
+        try {
+            conn = DBConnection.getConnection();
+
+            String sql = "SELECT SUM(TotalPrice) AS TotalSpending "
+                       + "FROM orders "
+                       + "WHERE UserID = ?";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                totalSpending = rs.getDouble("TotalSpending");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+        return totalSpending;
+    }
 
 	private void closeConnection(Connection conn) {
 		if (conn != null) {

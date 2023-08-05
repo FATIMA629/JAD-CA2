@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import com.bookstore.storews.book.*;
 import java.util.ArrayList;
 
+@CrossOrigin(origins = "http://localhost:3001")
 @RestController
 @RequestMapping("books")
 public class BookController {

@@ -21,11 +21,11 @@ public class SalesDao {
 		user.setEmail(rs.getString("email"));
 		user.setRole(rs.getString("role"));
 
-        // Fetch the Shipping Address using AddressDao
-        int shippingAddressId = rs.getInt("ShippingAddressID");
-        AddressDao addressDao = new AddressDao();
-        Address shippingAddress = addressDao.getAddressById(shippingAddressId);
-        user.setAddress(shippingAddress);
+		// Fetch the Shipping Address using AddressDao
+		int shippingAddressId = rs.getInt("DefaultAddressID");
+		AddressDao addressDao = new AddressDao();
+		Address shippingAddress = addressDao.getAddressById(shippingAddressId);
+		user.setAddress(shippingAddress);
 		return user;
 	}
 
@@ -36,18 +36,18 @@ public class SalesDao {
 		order.setTotalPrice(rs.getDouble("totalPrice"));
 		order.setOrderDate(rs.getDate("orderDate"));
 		order.setOrderStatus(rs.getString("orderStatus"));
-		
-        // Fetch the Shipping Address using AddressDao
-        int shippingAddressId = rs.getInt("ShippingAddressID");
-        AddressDao addressDao = new AddressDao();
-        Address shippingAddress = addressDao.getAddressById(shippingAddressId);
-        order.setShippingAddress(shippingAddress);
+
+		// Fetch the Shipping Address using AddressDao
+		int shippingAddressId = rs.getInt("ShippingAddressID");
+		AddressDao addressDao = new AddressDao();
+		Address shippingAddress = addressDao.getAddressById(shippingAddressId);
+		order.setShippingAddress(shippingAddress);
 		return order;
 	}
 
 	private Book getBookFromResultSet(ResultSet rs) throws SQLException {
 		Book book = new Book();
-		book.setBookId(rs.getString("bookId"));
+		book.setBookId(Integer.parseInt(rs.getString("bookId")));
 		book.setTitle(rs.getString("title"));
 		book.setAuthor(rs.getString("author"));
 		book.setGenreId(rs.getInt("genreId"));

@@ -299,8 +299,7 @@
 		<h1 class="mb-5">Admin Dashboard</h1>
 
 		<div class="dashboard-buttons">
-			<a href="#statistics-section">Reporting & Inquiry</a> <a
-				href="#manage-books-section">Manage Books</a> <a
+			<a href="#manage-books-section">Manage Books</a> <a
 				href="#manage-users-section">Manage Users</a> <a
 				href="#manage-orders-section">Manage Orders</a>
 		</div>
@@ -310,128 +309,6 @@
 		UserDao userDao = new UserDao();
 		GenreDao genreDao = new GenreDao();
 		%>
-		<h3 class="mt-5">Reporting & Inquiry</h3>
-		<div id="statistics-section">
-			<div class="statistics-card">
-				<h3 class="statistics-header">Total Users</h3>
-				<p class="statistics-value">
-					<%=userDao.getTotalUsers()%>
-				</p>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Total Type Of Books</h3>
-				<p class="statistics-value">
-					<%=bookDao.getTotalTypeOfBooks()%>
-				</p>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Total Number Of Books</h3>
-				<p class="statistics-value">
-					<%=bookDao.getTotalBooks()%>
-				</p>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Total Revenue</h3>
-				<p class="statistics-value">
-					$<%=String.format("%.2f", bookDao.getTotalRevenue())%>
-				</p>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Total Number of Books Sold</h3>
-				<p class="statistics-value">
-					<%=bookDao.getTotalBooksSold()%>
-				</p>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Average Rating of All Books</h3>
-				<p class="statistics-value">
-					<%=String.format("%.1f", (float) bookDao.getAverageRatingOfAllBooks())%>
-					stars
-				</p>
-			</div>
-
-			<div class="statistics-card">
-				<h3 class="statistics-header">Books Low Instock</h3>
-				<ul>
-					<%
-					List<Book> lowestStock = bookDao.getLowestStockBooks(3);
-					for (Book book : lowestStock) {
-					%>
-					<li><%=book.getTitle()%></li>
-					<%
-					}
-					%>
-				</ul>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Newest Books</h3>
-				<ul>
-					<%
-					List<Book> newestBooks = bookDao.getNewestBooks(3);
-					for (Book book : newestBooks) {
-					%>
-					<li><%=book.getTitle()%></li>
-					<%
-					}
-					%>
-				</ul>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Highest Rated Books</h3>
-				<ul>
-					<%
-					List<Book> highestRatedBooks = bookDao.getHighestRatedBooks(3);
-					for (Book book : highestRatedBooks) {
-					%>
-					<li><%=book.getTitle()%> - <%=book.getRating()%> stars</li>
-					<%
-					}
-					%>
-				</ul>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Popular Genres</h3>
-				<ul>
-					<%
-					Map<Genre, Integer> popularGenres = genreDao.getPopularGenres(3);
-					for (Map.Entry<Genre, Integer> entry : popularGenres.entrySet()) {
-						Genre genre = entry.getKey();
-						int genreCount = entry.getValue();
-					%>
-					<li><%=genre.getGenreName()%> - <%=genreCount%> books</li>
-					<%
-					}
-					%>
-				</ul>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Top Rated Genres</h3>
-				<ul>
-					<%
-					List<Genre> topRatedGenres = genreDao.getTopRatedGenres(3);
-					for (Genre genre : topRatedGenres) {
-					%>
-					<li><%=genre.getGenreName()%></li>
-					<%
-					}
-					%>
-				</ul>
-			</div>
-			<div class="statistics-card">
-				<h3 class="statistics-header">Top Selling Books</h3>
-				<ul>
-					<%
-					List<Book> topSellingBooks = bookDao.getTopSellingBooks(3);
-					for (Book book : topSellingBooks) {
-					%>
-					<li><%=book.getTitle()%> - <%=book.getSold()%> copies sold</li>
-					<%
-					}
-					%>
-				</ul>
-			</div>
-		</div>
-
 
 		<%
 		List<Book> books = bookDao.readAllBooks();
