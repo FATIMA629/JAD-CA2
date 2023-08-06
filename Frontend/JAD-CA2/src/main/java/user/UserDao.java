@@ -151,7 +151,7 @@ public class UserDao {
 		return user;
 	}
 
-	public User getUserById(String userId) {
+	public User getUserById(int i) {
 		Connection conn = null;
 		User user = null;
 
@@ -159,7 +159,7 @@ public class UserDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE UserID = ?");
-			pstmt.setString(1, userId);
+			pstmt.setInt(1, i);
 
 			ResultSet rs = pstmt.executeQuery();
 

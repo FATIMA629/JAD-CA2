@@ -190,11 +190,15 @@ public class BookDao {
 		boolean updated = false;
 
 		try {
+			System.out.println("Getting DB connection...");
 			conn = DBConnection.getConnection();
+			System.out.println("Successfully got DB connection.");
 
+			System.out.println("Preparing SQL statement for book update...");
 			PreparedStatement pstmt = conn.prepareStatement(
 					"UPDATE books SET Title = ?, Author = ?, GenreID = ?, Price = ?, Quantity = ?, Publisher = ?, PublishDate = ?, ISBN = ?, Rating = ?, Description = ?, ImageLocation = ?, Sold = ? WHERE BookID = ?");
 
+			System.out.println("Setting prepared statement parameters...");
 			pstmt.setString(1, book.getTitle());
 			pstmt.setString(2, book.getAuthor());
 			pstmt.setInt(3, book.getGenreId());
@@ -208,19 +212,27 @@ public class BookDao {
 			pstmt.setString(11, book.getImageLocation());
 			pstmt.setInt(12, book.getSold());
 			pstmt.setString(13, book.getBookId());
+			System.out.println("Parameters set for prepared statement.");
 
+			System.out.println("Executing update...");
 			int rowsAffected = pstmt.executeUpdate();
+			System.out.println("Update executed. Rows affected: " + rowsAffected);
+
 			updated = (rowsAffected > 0);
+			System.out.println("Update result: " + updated);
 
 		} catch (SQLException e) {
 			System.out.println("Error updating book: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
+			System.out.println("Closing DB connection...");
 			closeConnection(conn);
+			System.out.println("DB connection closed.");
 		}
 
 		return updated;
 	}
+
 
 	public ArrayList<Book> getTopSellingBooks(int limit) {
 		Connection conn = null;

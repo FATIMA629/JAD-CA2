@@ -603,21 +603,7 @@
 
 
 			<div id="sales-section">
-
-				<!-- Display Message Section -->
-				<div class="statistics-card">
-					<h3 class="statistics-header">Messages</h3>
-					<p class="statistics-value">
-						<%
-						String message = (String) session.getAttribute("message");
-						if (message != null) {
-							out.print(message);
-							session.removeAttribute("message"); // remove message after displaying
-						}
-						%>
-					</p>
-				</div>
-
+			
 				<!-- Total Revenue Section -->
 				<div class="statistics-card">
 					<h3 class="statistics-header">Total Revenue</h3>
