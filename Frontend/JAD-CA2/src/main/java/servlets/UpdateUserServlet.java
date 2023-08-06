@@ -34,11 +34,23 @@ public class UpdateUserServlet extends HttpServlet {
 		request.getSession().removeAttribute("inputData");
 		request.getSession().removeAttribute("success");
 
+		String country = request.getParameter("country");
+		System.out.println("country: " + country);
+		String address1 = request.getParameter("address1");
+		System.out.println("address1: " + address1);
+		String address2 = request.getParameter("address2");
+		System.out.println("address2: " + address2);
+		String district = request.getParameter("district");
+		System.out.println("district: " + district);
+		String city = request.getParameter("city");
+		System.out.println("city: " + city);
+		String postalCode = request.getParameter("postalCode");
+		System.out.println("postalCode: " + postalCode);
+
 		System.out.println("Entered doPost method in UpdateUserServlet");
 		String userId = request.getParameter("userId");
 		String username = request.getParameter("username");
 		String email = request.getParameter("email");
-		String address = request.getParameter("address");
 		String role = request.getParameter("role");
 
 		Map<String, String> errors = new HashMap<>();
@@ -52,11 +64,16 @@ public class UpdateUserServlet extends HttpServlet {
 		} else if (!emailPattern.matcher(email).matches()) {
 			errors.put("email", "Invalid email format");
 		}
-		if (address == null || address.isEmpty()) {
-			errors.put("address", "Address is required");
-		}
 		if (role == null || role.isEmpty()) {
 			errors.put("role", "Role is required");
+		}
+		if (isNullOrEmpty(request.getParameter("country")) || isNullOrEmpty(request.getParameter("address1"))
+				|| isNullOrEmpty(request.getParameter("address2")) || isNullOrEmpty(request.getParameter("district"))
+				|| isNullOrEmpty(request.getParameter("city"))) {
+			errors.put("address", "Country, Address1, Address2, District, City must not be null");
+		}
+		if (request.getParameter("postalCode") == null || !request.getParameter("postalCode").matches("\\d{6}")) {
+			errors.put("postalCode", "Postal code must be 6 digits");
 		}
 
 		User user = userDao.getUserById(userId);
@@ -86,8 +103,15 @@ public class UpdateUserServlet extends HttpServlet {
 			// Update the user in the database
 			user.setUserName(username);
 			user.setEmail(email);
-			user.setAddress(address);
 			user.setRole(role);
+
+			// Update the address fields
+			user.getAddress().setCountry(request.getParameter("country"));
+			user.getAddress().setAddress1(request.getParameter("address1"));
+			user.getAddress().setAddress2(request.getParameter("address2"));
+			user.getAddress().setDistrict(request.getParameter("district"));
+			user.getAddress().setCity(request.getParameter("city"));
+			user.getAddress().setPostalCode(request.getParameter("postalCode"));
 
 			userDao.updateUser(user);
 
@@ -100,12 +124,15 @@ public class UpdateUserServlet extends HttpServlet {
 			inputData.put("userId", userId);
 			inputData.put("username", username);
 			inputData.put("email", email);
-			inputData.put("address", address);
 			inputData.put("role", role);
 
 			request.getSession().setAttribute("inputData", inputData);
 			request.getSession().setAttribute("errors", errors);
 			response.sendRedirect("ca1/editUser.jsp?id=" + userId);
 		}
+	}
+
+	private boolean isNullOrEmpty(String str) {
+		return str == null || str.isEmpty();
 	}
 }

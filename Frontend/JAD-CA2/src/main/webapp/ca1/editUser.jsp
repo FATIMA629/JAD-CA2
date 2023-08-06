@@ -36,7 +36,7 @@
 </head>
 <body>
 	<%-- Navigation Bar --%>
- <jsp:include page="header.jsp"/>
+	<jsp:include page="header.jsp" />
 
 	<%
 	if (session != null && session.getAttribute("loggedIn") != null) {
@@ -88,19 +88,6 @@
 			</div>
 
 			<div class="mb-3">
-				<label for="address" class="form-label">Address:</label> <input
-					type="text" class="form-control" id="address" name="address"
-					value="<%=inputData.getOrDefault("address", user.getAddress())%>">
-				<%
-				if (errors != null && errors.containsKey("address")) {
-				%>
-				<div class="error"><%=errors.get("address")%></div>
-				<%
-				}
-				%>
-			</div>
-
-			<div class="mb-3">
 				<label for="role" class="form-label">Role:</label> <select
 					class="form-control" id="role" name="role">
 					<option value="admin"
@@ -112,6 +99,86 @@
 				if (errors != null && errors.containsKey("role")) {
 				%>
 				<div class="error"><%=errors.get("role")%></div>
+				<%
+				}
+				%>
+			</div>
+
+			<%-- Shipping Address fields --%>
+			<h3>Shipping Address:</h3>
+			<div class="mb-3">
+				<label for="country" class="form-label">Country:</label> <input
+					type="text" class="form-control" id="country" name="country"
+					value="<%=user.getAddress().getCountry()%>">
+				<%
+				if (errors != null && errors.containsKey("country")) {
+				%>
+				<div class="error"><%=errors.get("country")%></div>
+				<%
+				}
+				%>
+			</div>
+
+			<div class="mb-3">
+				<label for="address1" class="form-label">Address1:</label> <input
+					type="text" class="form-control" id="address1" name="address1"
+					value="<%=user.getAddress().getAddress1()%>">
+				<%
+				if (errors != null && errors.containsKey("address1")) {
+				%>
+				<div class="error"><%=errors.get("address1")%></div>
+				<%
+				}
+				%>
+			</div>
+
+			<div class="mb-3">
+				<label for="address2" class="form-label">Address2:</label> <input
+					type="text" class="form-control" id="address2" name="address2"
+					value="<%=user.getAddress().getAddress2()%>">
+				<%
+				if (errors != null && errors.containsKey("address2")) {
+				%>
+				<div class="error"><%=errors.get("address2")%></div>
+				<%
+				}
+				%>
+			</div>
+
+			<div class="mb-3">
+				<label for="district" class="form-label">District:</label> <input
+					type="text" class="form-control" id="district" name="district"
+					value="<%=user.getAddress().getDistrict()%>">
+				<%
+				if (errors != null && errors.containsKey("district")) {
+				%>
+				<div class="error"><%=errors.get("district")%></div>
+				<%
+				}
+				%>
+			</div>
+
+			<div class="mb-3">
+				<label for="city" class="form-label">City:</label> <input
+					type="text" class="form-control" id="city" name="city"
+					value="<%=user.getAddress().getCity()%>">
+				<%
+				if (errors != null && errors.containsKey("city")) {
+				%>
+				<div class="error"><%=errors.get("city")%></div>
+				<%
+				}
+				%>
+			</div>
+
+			<div class="mb-3">
+				<label for="postalCode" class="form-label">Postal Code:</label> <input
+					type="text" class="form-control" id="postalCode" name="postalCode"
+					value="<%=user.getAddress().getPostalCode()%>">
+				<%
+				if (errors != null && errors.containsKey("postalCode")) {
+				%>
+				<div class="error"><%=errors.get("postalCode")%></div>
 				<%
 				}
 				%>

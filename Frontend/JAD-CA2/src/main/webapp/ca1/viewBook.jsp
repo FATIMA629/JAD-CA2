@@ -98,7 +98,6 @@ UserDao userDao = new UserDao();
 								%>
 							</div>
 						</a> <span class="rating-line"></span> 
-							style="text-decoration: none; color: black;">
 							<p class="rating-amount">
 								<%=book.getQuantity()%><span class="rating-word">Quantity</span>
 							</p>
