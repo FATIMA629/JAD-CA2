@@ -149,7 +149,7 @@ public class UpdateBookServlet extends HttpServlet {
 			errors.put("sold", "Sold should be a whole number");
 		}
 
-		Book book = bookDao.getBookById(bookId);
+		Book book = bookDao.getBookById(Integer.parseInt(bookId));
 		if (book == null) {
 			errors.put("bookId", "Invalid book ID");
 		}

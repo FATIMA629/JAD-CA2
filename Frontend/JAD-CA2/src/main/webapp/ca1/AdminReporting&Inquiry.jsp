@@ -196,7 +196,7 @@
 .statistics-card {
 	width: 300px;
 	margin: 10px;
-	height: 200px;
+	height: auto;
 	padding: 20px;
 	text-align: center;
 	background-color: #f8f8f8;
@@ -263,7 +263,24 @@
 	justify-content: center;
 	align-items: center;
 }
+
+.scrollable-list {
+	max-height: 150px; /* changed from 300px to 150px */
+	overflow-y: auto;
+}
 </style>
+
+<script>
+	window.onload = function() {
+		document.getElementById("endDate").onchange = function() {
+			if (this.value < document.getElementById("startDate").value) {
+				alert("End date cannot be before start date!");
+				this.value = document.getElementById("startDate").value;
+			}
+		};
+	};
+</script>
+
 </head>
 <body>
 	<jsp:include page="header.jsp" />
@@ -400,37 +417,12 @@
 					%>
 				</ul>
 			</div>
-		</div>
-
-		<h3 class="mt-5">Users Report</h3>
-		<div id="users-section">
-			<!-- Users Report Section -->
 			<div class="statistics-card">
-				<h3 class="statistics-header">Total Users</h3>
-				<p class="statistics-value">
-					<%=userDao.getTotalUsers()%>
-				</p>
-			</div>
-		</div>
-
-		<h3 class="mt-5">Sales Report</h3>
-		<div id="sales-section">
-
-			<!-- Sales Report Section -->
-			<div class="statistics-card">
-				<h3 class="statistics-header">Total Revenue</h3>
-				<p class="statistics-value">
-					$<%=String.format("%.2f", bookDao.getTotalRevenue())%>
-				</p>
-			</div>
-
-			<div class="statistics-card">
-				<h3 class="statistics-header">Top Selling Books</h3>
+				<h3 class="statistics-header">Worst Selling Books</h3>
 				<ul>
 					<%
-					SalesDao salesDao = new SalesDao();
-					List<Book> topSellingBooks2 = salesDao.fetchTopBooks(5);
-					for (Book book : topSellingBooks2) {
+					List<Book> worstSellingBoooks = bookDao.getWorstSellingBooks(3);
+					for (Book book : worstSellingBoooks) {
 					%>
 					<li><%=book.getTitle()%> - <%=book.getSold()%> copies sold</li>
 					<%
@@ -438,82 +430,358 @@
 					%>
 				</ul>
 			</div>
+		</div>
 
-			<div class="statistics-card">
-				<h3 class="statistics-header">Top Orders</h3>
-				<ul>
-					<%
-					List<Order> topOrders = salesDao.fetchTopOrders(5);
-					for (Order order : topOrders) {
-					%>
-					<li>Order ID: <%=order.getOrderId()%>, Total Price: $<%=order.getTotalPrice()%></li>
-					<%
-					}
-					%>
-				</ul>
+		<h3 class="mt-5">Users Report</h3>
+		<div id="users-section">
+			<!-- Users Report Section -->
+			<form action="../UserReportingServlet" method="POST"
+				class="form-group">
+				<h3 class="mb-3">Filter Options</h3>
+				<div class="row">
+					<div class="col">
+						<label for="userRole">Users by Role</label> <select
+							class="form-control" id="userRole" name="userRole">
+							<option value="">--Select Role--</option>
+							<option value="admin">Admin</option>
+							<option value="member">Member</option>
+							<!-- Add more options as per your role list -->
+						</select>
+					</div>
+					<div class="col">
+						<label for="userIdSpending">User Spending</label> <input
+							type="number" class="form-control" id="userIdSpending"
+							name="userIdSpending" placeholder="Enter User ID">
+					</div>
+					<div class="col">
+						<label for="userAddressCriteria">Users by Address Criteria</label>
+						<select class="form-control" id="userAddressCriteria"
+							name="userAddressCriteria">
+							<option value="">--Select Criteria--</option>
+							<option value="address">Address</option>
+							<option value="city">City</option>
+							<option value="country">Country</option>
+							<option value="district">District</option>
+							<option value="postal_code">Postal Code</option>
+							<option value="address2">Address2</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row mt-3">
+					<div class="col">
+						<label for="userAddressInput">Address Input:</label> <input
+							type="text" class="form-control" id="userAddressInput"
+							name="userAddressInput" placeholder="Enter Search Term">
+					</div>
+				</div>
+
+				<div class="mt-3">
+					<input type="submit" value="Submit" class="btn btn-primary">
+				</div>
+			</form>
+
+
+			<div id="users-section">
+
+				<div class="statistics-card">
+					<h3 class="statistics-header">Total Number of Users</h3>
+					<p class="statistics-value">
+						<%=userDao.getTotalUsers()%>
+					</p>
+				</div>
+
+				<div class="statistics-card">
+					<h3 class="statistics-header">User Details Based on Role</h3>
+					<div class="scrollable-list">
+						<ul>
+							<%
+							List<User> usersByRole = (List<User>) session.getAttribute("usersByRole");
+							if (usersByRole != null) {
+								for (User user : usersByRole) {
+							%>
+							<li><%=user.getUserName()%></li>
+							<%
+							}
+							} else {
+							%>
+							<li>No users found.</li>
+							<%
+							}
+							%>
+						</ul>
+					</div>
+				</div>
+
+				<div class="statistics-card">
+					<h3 class="statistics-header">User Expenditure</h3>
+					<li class="statistics-value">
+						<%
+						Double userSpending = (Double) session.getAttribute("userSpending");
+						if (userSpending != null) {
+						%> $<%=String.format("%.2f", userSpending)%> <%
+ } else {
+ %> No user spending data found. <%
+ }
+ %>
+					</li>
+				</div>
+
+				<div class="statistics-card">
+					<h3 class="statistics-header">Users Based on Address Criteria</h3>
+					<div class="scrollable-list">
+						<ul>
+							<%
+							List<User> usersByAddress = (List<User>) session.getAttribute("usersByAddress");
+							if (usersByAddress != null) {
+								for (User user : usersByAddress) {
+							%>
+							<li><%=user.getUserName()%></li>
+							<%
+							}
+							} else {
+							%>
+							<li>No users found.</li>
+							<%
+							}
+							%>
+						</ul>
+					</div>
+				</div>
 			</div>
+		</div>
+		<h3 class="mt-5">Sales Report</h3>
+		<div id="sales-section">
 
-			<div class="statistics-card">
-				<h3 class="statistics-header">Top Customers</h3>
-				<ul>
-					<%
-					List<User> topCustomers = salesDao.fetchTopCustomers(5);
-					for (User customer : topCustomers) {
-					%>
-					<li><%=customer.getUserName()%> - Total Spending: $<%=String.format("%.2f", userDao.getTotalSpendingByUserId(customer.getUserID()))%></li>
-					<%
-					}
-					%>
-				</ul>
-			</div>
+			<form method="POST" class="form-group" action="../ReportingServlet">
+				<h3 class="mb-3">Filter Options</h3>
+				<div class="row">
+					<div class="col">
+						<label for="numTopSellingBooks">Number of Top Selling
+							Books:</label> <input type="number" class="form-control"
+							id="numTopSellingBooks" name="numTopSellingBooks" placeholder="5">
+					</div>
+					<div class="col">
+						<label for="numTopOrders">Number of Top Orders:</label> <input
+							type="number" class="form-control" id="numTopOrders"
+							name="numTopOrders" placeholder="5">
+					</div>
+					<div class="col">
+						<label for="numTopCustomers">Number of Top Customers:</label> <input
+							type="number" class="form-control" id="numTopCustomers"
+							name="numTopCustomers" placeholder="5">
+					</div>
+				</div>
 
-			<!-- Display Book Sales by Date -->
-			<div class="statistics-card">
-				<h3 class="statistics-header">Book Sales by Date</h3>
-				<ul>
-					<%
-					String targetDate = "2023-08-01"; // Replace with the desired date
-					List<Book> bookSalesByDate = salesDao.fetchBookSaleByDate(targetDate);
-					for (Book book : bookSalesByDate) {
-					%>
-					<li><%=book.getTitle()%> - Quantity Sold: <%=book.getSold()%></li>
-					<%
-					}
-					%>
-				</ul>
-			</div>
+				<div class="row mt-3">
+					<div class="col">
+						<label for="targetDate">Date:</label> <input type="date"
+							class="form-control" id="targetDate" name="targetDate">
+					</div>
+					<div class="col">
+						<label for="startDate">Start Date:</label> <input type="date"
+							class="form-control" id="startDate" name="startDate">
+					</div>
+					<div class="col">
+						<label for="endDate">End Date:</label> <input type="date"
+							class="form-control" id="endDate" name="endDate">
+					</div>
+				</div>
 
-			<!-- Display Book Sales by Period -->
-			<div class="statistics-card">
-				<h3 class="statistics-header">Book Sales by Period</h3>
-				<ul>
-					<%
-					String startDate = "2023-07-01"; // Replace with the desired start date
-					String endDate = "2023-07-31"; // Replace with the desired end date
-					List<Book> bookSalesByPeriod = salesDao.fetchBookSaleByPeriod(startDate, endDate);
-					for (Book book : bookSalesByPeriod) {
-					%>
-					<li><%=book.getTitle()%> - Quantity Sold: <%=book.getSold()%></li>
-					<%
-					}
-					%>
-				</ul>
-			</div>
+				<div class="row mt-3">
+					<div class="col">
+						<label for="targetGenreId">Genre ID:</label> <input type="number"
+							class="form-control" id="targetGenreId" name="targetGenreId"
+							placeholder="1">
+					</div>
+				</div>
 
-			<!-- Display Book Sales by Genre -->
-			<div class="statistics-card">
-				<h3 class="statistics-header">Book Sales by Genre</h3>
-				<ul>
-					<%
-					int targetGenreId = 1; // Replace with the desired genre ID
-					List<Book> bookSalesByGenre = salesDao.fetchSalesByGenre(targetGenreId);
-					for (Book book : bookSalesByGenre) {
-					%>
-					<li><%=book.getTitle()%> - Quantity Sold: <%=book.getSold()%></li>
-					<%
-					}
-					%>
-				</ul>
+				<div class="mt-3">
+					<input type="submit" value="Submit" class="btn btn-primary">
+				</div>
+			</form>
+
+
+			<div id="sales-section">
+
+				<!-- Display Message Section -->
+				<div class="statistics-card">
+					<h3 class="statistics-header">Messages</h3>
+					<p class="statistics-value">
+						<%
+						String message = (String) session.getAttribute("message");
+						if (message != null) {
+							out.print(message);
+							session.removeAttribute("message"); // remove message after displaying
+						}
+						%>
+					</p>
+				</div>
+
+				<!-- Total Revenue Section -->
+				<div class="statistics-card">
+					<h3 class="statistics-header">Total Revenue</h3>
+					<p class="statistics-value">
+						<%
+						if (session.getAttribute("totalRevenue") != null) {
+						%>
+						$<%=String.format("%.2f", (Double) session.getAttribute("totalRevenue"))%>
+						<%
+						}
+						%>
+					</p>
+				</div>
+
+				<!-- Top Selling Books Section -->
+				<div class="statistics-card">
+					<h3 class="statistics-header">Top Selling Books</h3>
+					<ul>
+						<%
+						List<Book> topSellingBooks2 = (List<Book>) session.getAttribute("topSellingBooks");
+						if (topSellingBooks2 != null && !topSellingBooks2.isEmpty()) {
+							for (Book book : topSellingBooks2) {
+						%>
+						<li><%=book.getTitle()%> - <%=book.getSold()%> copies sold</li>
+						<%
+						}
+						} else {
+						String topSellingBooksError = (String) session.getAttribute("topSellingBooksError");
+						if (topSellingBooksError != null && !topSellingBooksError.trim().isEmpty()) {
+						%>
+						<li class="error-message"><%=topSellingBooksError%></li>
+						<%
+						session.removeAttribute("topSellingBooksError");
+						}
+						}
+						%>
+					</ul>
+				</div>
+
+				<!-- Top Orders Section -->
+				<div class="statistics-card">
+					<h3 class="statistics-header">Top Orders</h3>
+					<ul>
+						<%
+						List<Order> topOrders = (List<Order>) session.getAttribute("topOrders");
+						if (topOrders != null && !topOrders.isEmpty()) {
+							for (Order order : topOrders) {
+						%>
+						<li>Order ID: <%=order.getOrderId()%>, Total Price: $<%=order.getTotalPrice()%></li>
+						<%
+						}
+						} else {
+						String topOrdersError = (String) session.getAttribute("topOrdersError");
+						if (topOrdersError != null && !topOrdersError.trim().isEmpty()) {
+						%>
+						<li class="error-message"><%=topOrdersError%></li>
+						<%
+						session.removeAttribute("topOrdersError");
+						}
+						}
+						%>
+					</ul>
+				</div>
+
+				<!-- Top Customers Section -->
+				<div class="statistics-card">
+					<h3 class="statistics-header">Top Customers</h3>
+					<ul>
+						<%
+						List<User> topCustomers = (List<User>) session.getAttribute("topCustomers");
+						if (topCustomers != null && !topCustomers.isEmpty()) {
+							for (User customer : topCustomers) {
+						%>
+						<li><%=customer.getUserName()%> - Total Spending: $<%=String.format("%.2f", userDao.getTotalSpendingByUserId(customer.getUserID()))%></li>
+						<%
+						}
+						} else {
+						String topCustomersError = (String) session.getAttribute("topCustomersError");
+						if (topCustomersError != null && !topCustomersError.trim().isEmpty()) {
+						%>
+						<li class="error-message"><%=topCustomersError%></li>
+						<%
+						session.removeAttribute("topCustomersError");
+						}
+						}
+						%>
+					</ul>
+				</div>
+
+				<!-- Book Sales by Date Section -->
+				<div class="statistics-card">
+					<h3 class="statistics-header">Book Sales by Date</h3>
+					<ul>
+						<%
+						List<Book> bookSalesByDate = (List<Book>) session.getAttribute("bookSalesByDate");
+						if (bookSalesByDate != null && !bookSalesByDate.isEmpty()) {
+							for (Book book : bookSalesByDate) {
+						%>
+						<li><%=book.getTitle()%> - Quantity Sold: <%=book.getSold()%></li>
+						<%
+						}
+						} else {
+						String bookSalesByDateError = (String) session.getAttribute("bookSalesByDateError");
+						if (bookSalesByDateError != null && !bookSalesByDateError.trim().isEmpty()) {
+						%>
+						<li class="error-message"><%=bookSalesByDateError%></li>
+						<%
+						session.removeAttribute("bookSalesByDateError");
+						}
+						}
+						%>
+					</ul>
+				</div>
+
+				<!-- Book Sales by Period Section -->
+				<div class="statistics-card">
+					<h3 class="statistics-header">Book Sales by Period</h3>
+					<ul>
+						<%
+						List<Book> bookSalesByPeriod = (List<Book>) session.getAttribute("bookSalesByPeriod");
+						if (bookSalesByPeriod != null && !bookSalesByPeriod.isEmpty()) {
+							for (Book book : bookSalesByPeriod) {
+						%>
+						<li><%=book.getTitle()%> - Quantity Sold: <%=book.getSold()%></li>
+						<%
+						}
+						} else {
+						String bookSalesByPeriodError = (String) session.getAttribute("bookSalesByPeriodError");
+						if (bookSalesByPeriodError != null && !bookSalesByPeriodError.trim().isEmpty()) {
+						%>
+						<li class="error-message"><%=bookSalesByPeriodError%></li>
+						<%
+						session.removeAttribute("bookSalesByPeriodError");
+						}
+						}
+						%>
+					</ul>
+				</div>
+
+				<!-- Book Sales by Genre Section -->
+				<div class="statistics-card">
+					<h3 class="statistics-header">Book Sales by Genre</h3>
+					<ul>
+						<%
+						List<Book> bookSalesByGenre = (List<Book>) session.getAttribute("bookSalesByGenre");
+						if (bookSalesByGenre != null && !bookSalesByGenre.isEmpty()) {
+							for (Book book : bookSalesByGenre) {
+						%>
+						<li><%=book.getTitle()%> - Quantity Sold: <%=book.getSold()%></li>
+						<%
+						}
+						} else {
+						String bookSalesByGenreError = (String) session.getAttribute("bookSalesByGenreError");
+						if (bookSalesByGenreError != null && !bookSalesByGenreError.trim().isEmpty()) {
+						%>
+						<li class="error-message"><%=bookSalesByGenreError%></li>
+						<%
+						session.removeAttribute("bookSalesByGenreError");
+						}
+						}
+						%>
+					</ul>
+				</div>
+
 			</div>
 		</div>
 
@@ -529,5 +797,6 @@
 	response.sendRedirect("home.jsp"); // Redirect to the home page
 	}
 	%>
+
 </body>
 </html>

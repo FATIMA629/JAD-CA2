@@ -705,18 +705,6 @@
 				%>
 			</div>
 
-			<!-- Address field -->
-			<div class="mb-3">
-				<label for="address" class="form-label">Address</label> <input
-					type="text" class="form-control" id="address" name="address"
-					value="<%=inputUserData != null ? inputUserData.get("address") : ""%>">
-				<%
-				if (userErrors != null && userErrors.containsKey("address")) {
-					out.println("<div class='error'>" + userErrors.get("address") + "</div>");
-				}
-				%>
-			</div>
-
 			<!-- Role field -->
 			<div class="mb-3">
 				<label for="role" class="form-label">Role</label> <select
@@ -726,10 +714,10 @@
 		? "selected"
 		: ""%>>Choose
 						a role</option>
-					<option value="USER"
-						<%=inputUserData != null && inputUserData.get("role") != null && inputUserData.get("role").equals("USER")
+					<option value="MEMBER"
+						<%=inputUserData != null && inputUserData.get("role") != null && inputUserData.get("role").equals("MEMBER")
 		? "selected"
-		: ""%>>User</option>
+		: ""%>>Member</option>
 					<option value="ADMIN"
 						<%=inputUserData != null && inputUserData.get("role") != null && inputUserData.get("role").equals("ADMIN")
 		? "selected"
@@ -741,6 +729,80 @@
 				}
 				%>
 			</div>
+
+
+			<!-- Country field -->
+			<div class="mb-3">
+				<label for="country" class="form-label">Country</label> <input
+					type="text" class="form-control" id="country" name="country"
+					value="<%=inputUserData != null ? inputUserData.get("country") : ""%>">
+				<%
+				if (userErrors != null && userErrors.containsKey("country")) {
+					out.println("<div class='error'>" + userErrors.get("country") + "</div>");
+				}
+				%>
+			</div>
+
+			<!-- Address1 field -->
+			<div class="mb-3">
+				<label for="address1" class="form-label">Address1</label> <input
+					type="text" class="form-control" id="address1" name="address1"
+					value="<%=inputUserData != null ? inputUserData.get("address1") : ""%>">
+				<%
+				if (userErrors != null && userErrors.containsKey("address1")) {
+					out.println("<div class='error'>" + userErrors.get("address1") + "</div>");
+				}
+				%>
+			</div>
+
+			<!-- Address2 field -->
+			<div class="mb-3">
+				<label for="address2" class="form-label">Address2</label> <input
+					type="text" class="form-control" id="address2" name="address2"
+					value="<%=inputUserData != null ? inputUserData.get("address2") : ""%>">
+				<%
+				if (userErrors != null && userErrors.containsKey("address2")) {
+					out.println("<div class='error'>" + userErrors.get("address2") + "</div>");
+				}
+				%>
+			</div>
+
+			<!-- District field -->
+			<div class="mb-3">
+				<label for="district" class="form-label">District</label> <input
+					type="text" class="form-control" id="district" name="district"
+					value="<%=inputUserData != null ? inputUserData.get("district") : ""%>">
+				<%
+				if (userErrors != null && userErrors.containsKey("district")) {
+					out.println("<div class='error'>" + userErrors.get("district") + "</div>");
+				}
+				%>
+			</div>
+
+			<!-- City field -->
+			<div class="mb-3">
+				<label for="city" class="form-label">City</label> <input type="text"
+					class="form-control" id="city" name="city"
+					value="<%=inputUserData != null ? inputUserData.get("city") : ""%>">
+				<%
+				if (userErrors != null && userErrors.containsKey("city")) {
+					out.println("<div class='error'>" + userErrors.get("city") + "</div>");
+				}
+				%>
+			</div>
+
+			<!-- Postal Code field -->
+			<div class="mb-3">
+				<label for="postalCode" class="form-label">Postal Code</label> <input
+					type="text" class="form-control" id="postalCode" name="postalCode"
+					value="<%=inputUserData != null ? inputUserData.get("postalCode") : ""%>">
+				<%
+				if (userErrors != null && userErrors.containsKey("postalCode")) {
+					out.println("<div class='error'>" + userErrors.get("postalCode") + "</div>");
+				}
+				%>
+			</div>
+
 
 			<!-- Submit button -->
 			<button type="submit" class="btn btn-primary">Add User</button>

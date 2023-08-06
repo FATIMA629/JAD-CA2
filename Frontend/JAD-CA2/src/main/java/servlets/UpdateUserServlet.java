@@ -49,9 +49,16 @@ public class UpdateUserServlet extends HttpServlet {
 
 		System.out.println("Entered doPost method in UpdateUserServlet");
 		String userId = request.getParameter("userId");
+		System.out.println("userId: " + userId);
+
 		String username = request.getParameter("username");
+		System.out.println("username: " + username);
+
 		String email = request.getParameter("email");
+		System.out.println("email: " + email);
+
 		String role = request.getParameter("role");
+		System.out.println("role: " + role);
 
 		Map<String, String> errors = new HashMap<>();
 		Pattern emailPattern = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,}$");

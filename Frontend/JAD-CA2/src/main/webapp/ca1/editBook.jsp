@@ -48,7 +48,7 @@
 			String bookId = request.getParameter("id");
 			BookDao bookDao = new BookDao();
 			GenreDao genreDao = new GenreDao();
-			Book book = bookDao.getBookById(bookId);
+			Book book = bookDao.getBookById(Integer.parseInt(bookId));
 			Map<String, String> errors = (Map<String, String>) session.getAttribute("errors");
 			Map<String, String> inputData = (Map<String, String>) session.getAttribute("inputData");
 			if (inputData == null) {

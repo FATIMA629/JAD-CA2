@@ -92,8 +92,8 @@
 					class="form-control" id="role" name="role">
 					<option value="admin"
 						<%=user.getRole().equals("admin") ? "selected" : ""%>>Admin</option>
-					<option value="user"
-						<%=user.getRole().equals("user") ? "selected" : ""%>>User</option>
+					<option value="member"
+						<%=user.getRole().equals("member") ? "selected" : ""%>>Member</option>
 				</select>
 				<%
 				if (errors != null && errors.containsKey("role")) {

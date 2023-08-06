@@ -72,7 +72,11 @@
 					</form>
 					<a href="adminDashboard.jsp"> <!-- Add a link to the admin dashboard page -->
 						<button class="btn btn-primary">Admin Dashboard</button> <!-- Add a button for admin dashboard -->
-					</a> <a href="cart.jsp"> <img src="../images/cart.png"
+					</a>
+					<a href="AdminReporting&Inquiry.jsp"> <!-- Add a link to the admin dashboard page -->
+						<button class="btn btn-primary">Admin Reporting & Inquiry</button> <!-- Add a button for admin dashboard -->
+					</a>
+					 <a href="cart.jsp"> <img src="../images/cart.png"
 						class="img-fluid" id="cartImage">
 					</a>
 					<div class="cart-drawer">

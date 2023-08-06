@@ -281,6 +281,37 @@ public class BookDao {
 		}
 		return topSellingBooks;
 	}
+	
+	
+	public ArrayList<Book> getWorstSellingBooks(int limit) {
+	    Connection conn = null;
+	    ArrayList<Book> worstSellingBooks = new ArrayList<>();
+
+	    try {
+	        conn = DBConnection.getConnection();
+
+	        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM books ORDER BY sold ASC LIMIT ?");
+	        pstmt.setInt(1, limit);
+
+	        ResultSet rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            Book book = new Book();
+	            book.setBookId(rs.getInt("bookId"));
+	            book.setTitle(rs.getString("title"));
+	            book.setAuthor(rs.getString("author"));
+	            book.setSold(rs.getInt("sold"));
+
+	            worstSellingBooks.add(book);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        closeConnection(conn);
+	    }
+	    return worstSellingBooks;
+	}
+
 
 	public ArrayList<Book> getNewestBooks(int limit) {
 		Connection conn = null;
