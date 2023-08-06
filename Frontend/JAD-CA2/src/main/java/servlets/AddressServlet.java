@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Address.*;
+import user.*;
 
 
 
@@ -59,8 +61,6 @@ public class AddressServlet extends HttpServlet {
 		String postalCode = request.getParameter("postalCode");
         int userid = (int) session.getAttribute("userId");
         
-      
-        
         Address address = new Address();
         address.setAddress1(Address);
         address.setAddress2(address2);
@@ -72,8 +72,11 @@ public class AddressServlet extends HttpServlet {
 		
         AddressDao addressDao = new AddressDao();
 		addressDao.createAddress(address);
-
-        response.sendRedirect(request.getContextPath() + "/ca1/checkout.jsp");
+		
+		request.setAttribute("address", address);
+		String url = "/UpdateUserAddressServlet";
+		RequestDispatcher cd = request.getRequestDispatcher(url);
+        cd.forward(request, response);
 	}
 
 }

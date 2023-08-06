@@ -76,7 +76,7 @@ public class UserDao {
 		return users;
 	}
 
-	public boolean deleteUser(String userId) {
+	public boolean deleteUser(int userId) {
 		Connection conn = null;
 		boolean deleted = false;
 
@@ -84,7 +84,7 @@ public class UserDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("DELETE FROM users WHERE UserID = ?");
-			pstmt.setString(1, userId);
+			pstmt.setInt(1, userId);
 
 			int rowsAffected = pstmt.executeUpdate();
 			deleted = (rowsAffected > 0);
@@ -132,7 +132,7 @@ public class UserDao {
 		return user;
 	}
 
-	public User getUserById(String userId) {
+	public User getUserById(int userId) {
 		Connection conn = null;
 		User user = null;
 
@@ -140,7 +140,7 @@ public class UserDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE UserID = ?");
-			pstmt.setString(1, userId);
+			pstmt.setInt(1, userId);
 
 			ResultSet rs = pstmt.executeQuery();
 
@@ -161,6 +161,32 @@ public class UserDao {
 		}
 
 		return user;
+	}
+	
+	public String getUserNameById(int userId) {
+		Connection conn = null;
+		String username = null;
+
+		try {
+			conn = DBConnection.getConnection();
+
+			PreparedStatement pstmt = conn.prepareStatement("SELECT UserName FROM users WHERE UserID = ?");
+			pstmt.setInt(1, userId);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				username = rs.getString("UserName");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
+
+		return username;
+		
 	}
 
 	public User getUserByEmail(String email) {
@@ -194,7 +220,30 @@ public class UserDao {
 
 		return user;
 	}
+	
+	public void updateDefaultAddress(User user) {
+		Connection conn = null;
+         System.out.println("Entered method");
+		try {
+			conn = DBConnection.getConnection();
 
+			PreparedStatement pstmt = conn.prepareStatement(
+					"UPDATE users SET DefaultAddressID = ? WHERE UserID = ?");
+			pstmt.setInt(1, user.getAddress().getAddressID());
+			pstmt.setInt(2, user.getUserID());
+
+
+			System.out.println("Error is setting prepared statement");
+			pstmt.executeUpdate();
+			System.out.println("Error in execute update");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
+	}
+	
 	public void updateUser(User user) {
 		Connection conn = null;
 
@@ -207,8 +256,9 @@ public class UserDao {
 			pstmt.setString(2, user.getRole());
 			pstmt.setString(3, user.getEmail());
 			pstmt.setInt(4, user.getAddress().getAddressID());
-			pstmt.setInt(5, user.getUserID());
-			pstmt.setString(6, user.getPhone());
+			pstmt.setString(5, user.getPhone());
+			pstmt.setInt(6, user.getUserID());
+
 
 			pstmt.executeUpdate();
 

@@ -10,18 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import order.*;
+import Cart.CartDao;
+import book.Book;
+
 /**
- * Servlet implementation class PurchaseHistoryServlet
+ * Servlet implementation class ReadAllBooksFromCart
  */
-@WebServlet("/PurchaseHistoryServlet")
-public class PurchaseHistoryServlet extends HttpServlet {
+@WebServlet("/ReadAllBooksFromCart")
+public class ReadFromCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PurchaseHistoryServlet() {
+    public ReadFromCartServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,14 +33,19 @@ public class PurchaseHistoryServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		int userId = (int) session.getAttribute("userId");
-		
-		OrderDao orderDao = new OrderDao();
-		List<Order> orderList = orderDao.getAllOrdersByUserId(userId);
-		
-		session.setAttribute("orders", orderList);
-		
-		response.sendRedirect("/ca1/purchaseHistory.jsp");
+        int userid = (int) session.getAttribute("userId");
+
+        CartDao cartDao = null;
+        try {
+            cartDao = new CartDao();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        List<Book> cartItems = cartDao.getAllBooksInCart(userid);
+        session.setAttribute("cartItems", cartItems);
+
+        response.sendRedirect("ca1/cart.jsp");
 	}
 
 	/**

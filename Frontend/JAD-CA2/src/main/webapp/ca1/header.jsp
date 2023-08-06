@@ -82,7 +82,7 @@
 								<div class="profile">
 									<span class="dot"><img class="profile-picture"
 										src="../images/image-removebg-preview (39).png" /></span> <a
-										href="./userEditUser"><span class="profile-status">Admin</span></a>
+										href="userEditUser.jsp"><span class="profile-status">Admin</span></a>
 								</div>
 								<hr>
 								<span><a href="purchaseHistory.jsp">My Purchases</a></span>
@@ -137,7 +137,7 @@
 								<div class="profile">
 									<span class="dot"><img class="profile-picture"
 										src="../images/image-removebg-preview (39).png" /></span> <a
-										href="./userEditUser"><span class="profile-status">User</span></a>
+										href="userEditUser.jsp"><span class="profile-status">User</span></a>
 								</div>
 								<hr>
 								<span><a href="purchaseHistory.jsp">My Purchases</a></span>

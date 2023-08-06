@@ -105,8 +105,8 @@ List<Book> allBooks = bookDao.readAllBooks();
 			for (Book book : allBooks) {
 			%>
 			<div class="book-container">
-				<a href="viewBook.jsp?id=<%=book.getBookId()%>"
-					style="text-decoration: none;">
+				<a href="../FilterRatingsServlet?id=<%=book.getBookId() %>" style="text-decoration: none;">
+				 <input type="hidden" name="bookId" value="<%=book.getBookId() %>">
 					<figure class="movie-figure"
 						style="background-color: white; width: 14em; margin: 0.5em; box-shadow: 0 5px 15px gray; overflow: hidden; position: relative; cursor: pointer; transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);">
 						<img src="<%=request.getContextPath()%>/<%=book.getImageLocation()%>" alt="logo-image"

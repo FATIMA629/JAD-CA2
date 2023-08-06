@@ -1,13 +1,21 @@
-<%@page import="book.* "%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@page import="book.* "%>
+<%@page import="rating.* "%>
+<%@page import="user.* "%>
+<%@ page import="java.util.List"%>
 
 <%
+System.out.println("bookId in jsp is " + request.getAttribute("bookId"));
 // Hardcoded book ID for testing
-int bookId = Integer.parseInt(request.getParameter("id"));
+int bookId = (int) session.getAttribute("bookId");
 
 // Create a BookDao and get the book
 BookDao bookDao = new BookDao();
 Book book = bookDao.getBookById(bookId);
+RatingDao ratingDao = new RatingDao();
+double AvgRating = ratingDao.getAverageRatingForBook(bookId);
+List<Rating> ratingList = (List<Rating>) session.getAttribute("ratingList");
+UserDao userDao = new UserDao();
 %>
 
 <!DOCTYPE html>
@@ -65,7 +73,7 @@ Book book = bookDao.getBookById(bookId);
 						<a href="#rating-section"
 							style="text-decoration: none; font-size: 18px; font-weight: bold; margin-right: 8px; color: black;">
 							<p class="rating-value">
-								<u><%=book.getRating()%></u>
+								<u><%=String.format("%.1f", AvgRating) %></u>
 							</p>
 						</a> <a href="#rating-section"
 							style="text-decoration: none; color: black;">
@@ -75,7 +83,7 @@ Book book = bookDao.getBookById(bookId);
 								for (int i = 1; i <= 5; i++) {
 								%>
 								<%
-								if (i <= book.getRating()) {
+								if (i <= AvgRating) {
 								%>
 								<span class="fa fa-star checked"></span>
 								<%
@@ -89,12 +97,12 @@ Book book = bookDao.getBookById(bookId);
 								}
 								%>
 							</div>
-						</a> <span class="rating-line"></span> <a href="#rating-section"
+						</a> <span class="rating-line"></span> 
 							style="text-decoration: none; color: black;">
 							<p class="rating-amount">
-								<u><%=book.getQuantity()%></u> <span class="rating-word">Quantity</span>
+								<%=book.getQuantity()%><span class="rating-word">Quantity</span>
 							</p>
-						</a> <span class="rating-line"></span>
+						<span class="rating-line"></span>
 						<p class="amount-sold"><%=book.getSold()%>
 							<span class="sold-word">Sold</span>
 						</p>
@@ -146,7 +154,7 @@ Book book = bookDao.getBookById(bookId);
 					</div>
 						<input type="hidden" name="id" value="<%=book.getBookId()%>">
 						<button type="submit" class="buy--btn">
-							<img src="images/output-onlinepngtools.png" alt="cart-image"
+							<img src="../images/output-onlinepngtools.png" alt="cart-image"
 								class="add-to-cart"> ADD TO CART
 						</button>
 					</form>
@@ -168,7 +176,7 @@ Book book = bookDao.getBookById(bookId);
 					style="background-color: #fffbf8; min-height: 5rem; border: 1px solid #f9ede5; margin-bottom: 1rem; display: flex; align-items: center; border-radius: 2px; box-sizing: border-box; padding: 1.875rem;">
 
 					<div style="text-align: center; margin-right: 1.875rem;">
-						<p style="color: #ee4d2d; font-size: 1.125rem;"><%=book.getRating()%>
+						<p style="color: #ee4d2d; font-size: 1.125rem;"><%=String.format("%.1f", AvgRating) %>
 							out of 5
 						</p>
 						<div style="font-size: 1.25rem; margin-top: 0.625rem;">
@@ -177,7 +185,7 @@ Book book = bookDao.getBookById(bookId);
 							for (int i = 1; i <= 5; i++) {
 							%>
 							<%
-							if (i <= book.getRating()) {
+							if (i <= AvgRating) {
 							%>
 							<span class="fa fa-star checked"></span>
 							<%
@@ -193,11 +201,18 @@ Book book = bookDao.getBookById(bookId);
 						</div>
 					</div>
 					<div style="flex: 1; margin-left: 0.9375rem;">
-						<div id="button1" class="active">All</div>
-						<div id="button2">highest</div>
-						<div id="button3">lowest</div>
+					<form id="filterForm" action="../FilterRatingsServlet" method="post">
+        <input type="hidden" name="selectedButton" id="selectedButton" value="All">
+        <input type="hidden" name="bookId" value="<%=bookId %>">
+        <button id="button1" class="active" onclick="setSelectedButton('All')">All</button>
+        <button id="button2" onclick="setSelectedButton('highest')">highest</button>
+        <button id="button3" onclick="setSelectedButton('lowest')">lowest</button>
+    </form>
 					</div>
 				</div>
+				<%
+				for(Rating rating: ratingList) {	
+				%>
 				<div style="display: block">
 					<div class="comment-section">
 						<div class="comment-avatar"
@@ -215,14 +230,14 @@ Book book = bookDao.getBookById(bookId);
 						<div class="comment-main-section" style="flex: 1">
 							<div class="comment-author"
 								style="text-decoration: none; color: rgba(0, 0, 0, .87); font-size: 0.80rem;">
-								John Tan</div>
+								<%=userDao.getUserNameById(rating.getUserId()) %></div>
 							<div class="comment-star" style="display: flex;">
 								<div class="comment-star-rating">
 									<%
 									for (int i = 1; i <= 5; i++) {
 									%>
 									<%
-									if (i <= book.getRating()) {
+									if (i <= rating.getRating()) {
 									%>
 									<span class="fa fa-star checked"></span>
 									<%
@@ -240,19 +255,20 @@ Book book = bookDao.getBookById(bookId);
 							</div>
 							<div class="comment-text"
 								style="position: relative; box-sizing: border-box; margin: 0.5rem 0; font-size: 0.875rem; line-height: 1.25rem; color: rgba(0, 0, 0, .87); word-break: break-word; white-space: pre-wrap;">
-								Lorem ipsum dolor sit amet consectetur adipisicing elit.
-								Architecto totam facilis quae doloribus modi a, impedit ipsa
-								officiis! Non laboriosam perspiciatis sapiente itaque at atque
-								quod vitae ut cumque optio?</div>
+								<%=rating.getComment() %></div>
 						</div>
 						<div class="comment-feedback"
-							style="position: relative; top: 118px; right: 25px">
+							style="position: relative; top: 90px; right: 25px">
 							<button class="comment-like-btn">
 								<i class="far fa-thumbs-up"></i> <span
 									style="font-size: 0.875rem; position: relative; bottom: 3px; color: grey">Helpful?</span>
+									</button>
 						</div>
 					</div>
 				</div>
+				<%
+				}
+				%>
 			</div>
 		</div>
 	</div>
@@ -308,6 +324,11 @@ Book book = bookDao.getBookById(bookId);
 			button2.classList.remove('active');
 			button3.classList.add('active');
 		});
+		
+		  function setSelectedButton(buttonValue) {
+		        document.getElementById('selectedButton').value = buttonValue;
+		        document.getElementById('filterForm').submit();
+		    }
 	</script>
 
 	<script

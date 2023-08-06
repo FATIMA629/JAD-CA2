@@ -55,10 +55,13 @@
 <h4>Sales History</h4>
 
 <%
+int orderNumber = orderList.size();
+
 for(Order order: orderList) {
+	System.out.println(orderNumber);
 %>
 <div id="salesHistoryTab">
-<h5>Order # <%=order.getOrderId() %></h5>
+<h5>Order # <%=orderNumber %></h5>
 <h6>Date Purchased: <%=order.getOrderDate() %></h6>
 <h6>Order Status: <%=order.getOrderStatus() %></h6>
 <h6 style="text-decoration:underline; font-weight:bold">Delivery Details:</h6>
@@ -105,14 +108,13 @@ for(Order order: orderList) {
                                                 $<span class="amount"><%=orderItem.getBook().getPrice() * orderItem.getQuantity() %></span>
                                             </td>
                                             <td>
-                                             <div style="    margin: 0 0 0 10px;
-    display: flex;
-    align-items: center;
-    text-overflow: ellipsis;">
-    
-    <button class="btn btn--primary position">
+                                             <div style="margin: 0 0 0 10px; display: flex; align-items: center; text-overflow: ellipsis;">
+                                             <form method="get" action="../AddRatingServlet">
+                                             <input type="hidden" name="bookId" value="<%=orderItem.getBook().getBookId()%>">
+    <button class="btn btn--primary position" type="submit">
     Rate
     </button>
+    </form>
     </div>
 								
                                             </td>
@@ -138,6 +140,7 @@ for(Order order: orderList) {
                                     </div>
                                 </div>
 <%
+orderNumber--;
 }
 %>
 </div>

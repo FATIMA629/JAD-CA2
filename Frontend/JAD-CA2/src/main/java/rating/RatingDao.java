@@ -75,6 +75,76 @@ public class RatingDao {
 
 		return averageRating;
 	}
+	
+	public ArrayList<Rating> getLowestRating(int bookId) {
+		Connection conn = null;
+		ArrayList<Rating> ratingList = new ArrayList<>();
+
+		try {
+			conn = getConnection();
+
+			PreparedStatement pstmt = conn
+					.prepareStatement("SELECT r.* FROM ca1.ratings r JOIN (SELECT MIN(Rating) AS LowestRating FROM ca1.ratings WHERE BookID = ?) min_rating ON r.Rating = min_rating.LowestRating WHERE r.BookID = ?");
+			pstmt.setInt(1, bookId);
+			pstmt.setInt(2, bookId);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				Rating rating = new Rating();
+			    rating = new Rating();
+				rating.setRatingId(rs.getInt("ratingId"));
+				rating.setBookId(rs.getInt("bookId"));
+				rating.setUserId(rs.getInt("userId"));
+				rating.setRating(rs.getDouble("rating"));
+				rating.setHelpful(rs.getInt("helpful"));
+				rating.setComment(rs.getString("comment"));
+
+				ratingList.add(rating);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
+
+		return ratingList;
+	}
+	
+	public ArrayList<Rating> getHighestRating(int bookId) {
+		Connection conn = null;
+		ArrayList<Rating> ratingList = new ArrayList<>();
+
+		try {
+			conn = getConnection();
+
+			PreparedStatement pstmt = conn
+					.prepareStatement("SELECT r.* FROM ca1.ratings r JOIN (SELECT MAX(Rating) AS LowestRating FROM ca1.ratings WHERE BookID = ?) min_rating ON r.Rating = min_rating.LowestRating WHERE r.BookID = ?");
+			pstmt.setInt(1, bookId);
+			pstmt.setInt(2, bookId);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				Rating rating = new Rating();
+			    rating = new Rating();
+				rating.setRatingId(rs.getInt("ratingId"));
+				rating.setBookId(rs.getInt("bookId"));
+				rating.setUserId(rs.getInt("userId"));
+				rating.setRating(rs.getDouble("rating"));
+				rating.setHelpful(rs.getInt("helpful"));
+				rating.setComment(rs.getString("comment"));
+
+				ratingList.add(rating);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
+
+		return ratingList;
+	}
 
 	public boolean incrementHelpfulCount(int ratingId) {
 		Connection conn = null;
