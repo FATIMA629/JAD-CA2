@@ -132,6 +132,36 @@ public class CartDao {
         return quantity;
     }
     
+    public boolean updateQuantity(int quantity, int userId, int bookId) {
+        Connection conn = null;
+        boolean updated = false;
+        try {
+            conn = getConnection();
+
+            // Delete the book from the cart
+            PreparedStatement stmt = conn.prepareStatement("UPDATE shoppingcart SET Quantity = ? WHERE UserID = ? AND BookID = ?");
+            stmt.setInt(1, quantity);
+            stmt.setInt(2, userId);
+            stmt.setInt(3, bookId);
+            int rowsAffected = stmt.executeUpdate();
+            
+            System.out.println("Executed SQL query, rows affected: " + rowsAffected);
+			updated = (rowsAffected > 0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return updated;
+    }
+    
     public boolean deleteFromCart(int userId, int bookId) {
         Connection conn = null;
         boolean deleted = false;

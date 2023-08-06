@@ -6,11 +6,7 @@
     <%
 	if (session != null && session.getAttribute("loggedIn") != null) {
 		// User is logged in
-
-		// Check if the user is an admin
-		String role = (String) session.getAttribute("role");
-		if (!role.equals("admin")) {
-			// User is a registered user
+		
     int bookId = (int) request.getAttribute("bookId");
     BookDao bookDao = new BookDao();
 	Book book = bookDao.getBookById(bookId);
@@ -96,10 +92,6 @@ alert('<%=successMessage%>
 			<%
 	} else {
 	// User is not an admin
-	response.sendRedirect("login.jsp"); // Redirect to the home page
-	}
-	} else {
-	// User is not logged in
 	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 	%>

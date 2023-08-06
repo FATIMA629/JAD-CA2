@@ -37,7 +37,14 @@ public class AddToCartServlet extends HttpServlet {
 
 
             HttpSession session = request.getSession();
-            int userid = (int) session.getAttribute("userId");
+            Integer userIdInteger = (Integer) session.getAttribute("userId");
+            int userid = (userIdInteger != null) ? userIdInteger.intValue() : 0;
+            
+            if(userid == 0) {
+            	
+            	response.sendRedirect("ca1/login.jsp");
+            } else {
+            
             int bookId = Integer.parseInt(request.getParameter("id"));
             int cartQuantity = Integer.parseInt(request.getParameter("cart-quantity"));
 
@@ -54,5 +61,6 @@ public class AddToCartServlet extends HttpServlet {
         //}
 
         response.sendRedirect("ca1/cart.jsp");
+            }
     }
 }

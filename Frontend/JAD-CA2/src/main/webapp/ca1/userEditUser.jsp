@@ -40,14 +40,8 @@
 	<%
 	if (session != null && session.getAttribute("loggedIn") != null) {
 		// User is logged in
-
-		// Check if the user is an admin
-		String role = (String) session.getAttribute("role");
-		if (!role.equals("admin")) {
-			// User is a registered user
-
-			int userId = (int) session.getAttribute("userId");
-
+		
+		int userId = (int) session.getAttribute("userId");
 			UserDao userDao = new UserDao();
 			User user = userDao.getUserById(userId);
 			Map<String, String> errors = (Map<String, String>) session.getAttribute("errors");
@@ -216,11 +210,7 @@
 	<%
 	} else {
 	// User is an admin
-	response.sendRedirect("home.jsp"); // Redirect to the home page
-	}
-	} else {
-	// User is not logged in
-	response.sendRedirect("home.jsp"); // Redirect to the home page
+	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 	%>
 

@@ -9,11 +9,6 @@
 if (session != null && session.getAttribute("loggedIn") != null) {
 	// User is logged in
 
-	// Check if the user is an admin
-	String role = (String) session.getAttribute("role");
-	if (!role.equals("admin")) {
-		// User is a registered user
-
 // Retrieve the cart items from the session
 List<Book> cartItems = (List<Book>) session.getAttribute("cartItems");
 int userid = (int) session.getAttribute("userId");
@@ -93,21 +88,26 @@ int userid = (int) session.getAttribute("userId");
 				style="width: 89%; height: 150px; margin: 0 auto; border-radius: 5px; border: 1px solid rgba(0, 0, 0, .4); background-color: rgb(221, 221, 221); margin-bottom: 30px;">
 				<div class="row">
 					<div class="col-6 p-3">
-						<img src="<%=item.getImageLocation()%>" alt="<%=item.getTitle()%>"
+						<img src="<%=request.getContextPath()%>/<%=item.getImageLocation()%>" alt="<%=item.getTitle()%>"
 							style="height: 120px; width: 90px" /> <span
 							style="font-size: 15px;"><%=item.getTitle()%></span>
 					</div>
 					<div class="col-2 center">
 						<span><%=totalPriceOfEachBook%></span>
 					</div>
+					
 					<div class="col-3 center">
-						<button class="minus-button">-</button>
-						<input type="text"
+					<form action="../EditCartServlet" method="post">
+					<input type="hidden" name="bookId" value="<%=item.getBookId()%>">
+					<div style="display: flex;">
+						<button class="minus-button" type="submit" name="action" value="minus">-</button>
+						<input type="text" name="quantity"
 							value="<%=cartDao.getQuantity(userid, item.getBookId()) %>"
 							class="quantity-input">
-						<button class="plus-button">+</button>	
+						<button class="plus-button" type="submit" name="action" value="plus">+</button>	
+						</div>
+					</form>
 					</div>
-					
 					<div class="col-1 center">
 					<form action="../DeleteFromCartServlet" method="post">
 						<button type="submit" class="delete" name="bookId" value="<%=item.getBookId()%>">Delete</button>
@@ -163,35 +163,13 @@ int userid = (int) session.getAttribute("userId");
 	// User is not an admin
 	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
-	} else {
-	// User is not logged in
-	response.sendRedirect("login.jsp"); // Redirect to the home page
-	}
 	%>
 </body>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 	crossorigin="anonymous"></script>
-
-
-<script>
-	var quantityCounter = document.querySelector('.quantity-input');
-	var minusButton = document.querySelector('.minus-button');
-	var plusButton = document.querySelector('.plus-button');
-
-	minusButton.addEventListener('click', function() {
-		var currentQuantity = parseInt(quantityCounter.value);
-		if (currentQuantity > 1) {
-			quantityCounter.value = currentQuantity - 1;
-		}
-	});
-
-	plusButton.addEventListener('click', function() {
-		var currentQuantity = parseInt(quantityCounter.value);
-		quantityCounter.value = currentQuantity + 1;
-	});
-</script>
+	
 </html>
 
 
