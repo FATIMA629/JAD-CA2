@@ -13,7 +13,7 @@ int bookId = (int) session.getAttribute("bookId");
 BookDao bookDao = new BookDao();
 Book book = bookDao.getBookById(bookId);
 RatingDao ratingDao = new RatingDao();
-String selected = request.getParameter("selected"); 
+String selected = request.getParameter("selected");
 System.out.println(selected);
 double AvgRating = ratingDao.getAverageRatingForBook(bookId);
 List<Rating> ratingList = (List<Rating>) session.getAttribute("ratingList");
@@ -58,7 +58,7 @@ UserDao userDao = new UserDao();
 </head>
 
 <body>
- <jsp:include page="header.jsp"/>
+	<jsp:include page="header.jsp" />
 
 	<div class="container-fluid p-5" id="product-details"
 		style="background-color: #f1f1f1; height: 100vh;">
@@ -66,8 +66,9 @@ UserDao userDao = new UserDao();
 			style="background-color: white; height: 100%;">
 			<div class="row" style="height: 100%;">
 				<div class="col-4 p-3" style="height: 100%;">
-					<img src="<%=request.getContextPath()%>/<%=book.getImageLocation()%>" alt="book"
-						style="height: 100%; width: 100%;" />
+					<img
+						src="<%=request.getContextPath()%>/<%=book.getImageLocation()%>"
+						alt="book" style="height: 100%; width: 100%;" />
 				</div>
 				<div class="col-8 p-4">
 					<h2 class="book-name"><%=book.getTitle()%></h2>
@@ -75,7 +76,7 @@ UserDao userDao = new UserDao();
 						<a href="#rating-section"
 							style="text-decoration: none; font-size: 18px; font-weight: bold; margin-right: 8px; color: black;">
 							<p class="rating-value">
-								<u><%=String.format("%.1f", AvgRating) %></u>
+								<u><%=String.format("%.1f", AvgRating)%></u>
 							</p>
 						</a> <a href="#rating-section"
 							style="text-decoration: none; color: black;">
@@ -99,11 +100,11 @@ UserDao userDao = new UserDao();
 								}
 								%>
 							</div>
-						</a> <span class="rating-line"></span> 
-							<p class="rating-amount">
-								<%=book.getQuantity()%>
-								<span class="rating-word"> Quantity</span>
-							</p>
+						</a> <span class="rating-line"></span>
+						<p class="rating-amount">
+							<%=book.getQuantity()%>
+							<span class="rating-word"> Quantity</span>
+						</p>
 						<span class="rating-line"></span>
 						<p class="amount-sold"><%=book.getSold()%>
 							<span class="sold-word">Sold</span>
@@ -146,14 +147,15 @@ UserDao userDao = new UserDao();
 					</div>
 					<p class="book-amount"><%=book.getPrice()%></p>
 					<form action="../AddToCartServlet" method="post">
-					<div class="quantity-wrapper">
-						<span class="quantity-text">Quantity: </span>
-						<div class="quantity">
-							<button class="minus-button" type="button">-</button>
-							<input type="text" name="cart-quantity" value="1" class="quantity-input">
-							<button class="plus-button" type="button">+</button>
+						<div class="quantity-wrapper">
+							<span class="quantity-text">Quantity: </span>
+							<div class="quantity">
+								<button class="minus-button" type="button">-</button>
+								<input type="text" name="cart-quantity" value="1"
+									class="quantity-input">
+								<button class="plus-button" type="button">+</button>
+							</div>
 						</div>
-					</div>
 						<input type="hidden" name="id" value="<%=book.getBookId()%>">
 						<button type="submit" class="buy--btn">
 							<img src="../images/output-onlinepngtools.png" alt="cart-image"
@@ -178,7 +180,7 @@ UserDao userDao = new UserDao();
 					style="background-color: #fffbf8; min-height: 5rem; border: 1px solid #f9ede5; margin-bottom: 1rem; display: flex; align-items: center; border-radius: 2px; box-sizing: border-box; padding: 1.875rem;">
 
 					<div style="text-align: center; margin-right: 1.875rem;">
-						<p style="color: #ee4d2d; font-size: 1.125rem;"><%=String.format("%.1f", AvgRating) %>
+						<p style="color: #ee4d2d; font-size: 1.125rem;"><%=String.format("%.1f", AvgRating)%>
 							out of 5
 						</p>
 						<div style="font-size: 1.25rem; margin-top: 0.625rem;">
@@ -203,17 +205,19 @@ UserDao userDao = new UserDao();
 						</div>
 					</div>
 					<div style="flex: 1; margin-left: 0.9375rem;">
-					<form id="filterForm" action="../FilterRatingsServlet" method="post">
-        <input type="hidden" name="selectedButton" id="selectedButton" value="All">
-        <input type="hidden" name="bookId" value="<%=bookId %>">
-        <button id="button1" >All</button>
-        <button id="button2" >highest</button>
-        <button id="button3" >lowest</button>
-    </form>
+						<form id="filterForm" action="../FilterRatingsServlet"
+							method="post">
+							<input type="hidden" name="selectedButton" id="selectedButton"
+								value="All"> <input type="hidden" name="bookId"
+								value="<%=bookId%>">
+							<button id="button1">All</button>
+							<button id="button2">highest</button>
+							<button id="button3">lowest</button>
+						</form>
 					</div>
 				</div>
 				<%
-				for(Rating rating: ratingList) {	
+				for (Rating rating : ratingList) {
 				%>
 				<div style="display: block">
 					<div class="comment-section">
@@ -232,7 +236,7 @@ UserDao userDao = new UserDao();
 						<div class="comment-main-section" style="flex: 1">
 							<div class="comment-author"
 								style="text-decoration: none; color: rgba(0, 0, 0, .87); font-size: 0.80rem;">
-								<%=userDao.getUserNameById(rating.getUserId()) %></div>
+								<%=userDao.getUserNameById(rating.getUserId())%></div>
 							<div class="comment-star" style="display: flex;">
 								<div class="comment-star-rating">
 									<%
@@ -257,14 +261,14 @@ UserDao userDao = new UserDao();
 							</div>
 							<div class="comment-text"
 								style="position: relative; box-sizing: border-box; margin: 0.5rem 0; font-size: 0.875rem; line-height: 1.25rem; color: rgba(0, 0, 0, .87); word-break: break-word; white-space: pre-wrap;">
-								<%=rating.getComment() %></div>
+								<%=rating.getComment()%></div>
 						</div>
 						<div class="comment-feedback"
 							style="position: relative; top: 90px; right: 25px">
 							<button class="comment-like-btn">
 								<i class="far fa-thumbs-up"></i> <span
 									style="font-size: 0.875rem; position: relative; bottom: 3px; color: grey">Helpful?</span>
-									</button>
+							</button>
 						</div>
 					</div>
 				</div>
@@ -304,7 +308,6 @@ UserDao userDao = new UserDao();
 			}
 		});
 
-		
 		const button1 = document.getElementById('button1');
 		const button2 = document.getElementById('button2');
 		const button3 = document.getElementById('button3');
@@ -330,7 +333,6 @@ UserDao userDao = new UserDao();
 			button3.classList.add('active');
 			document.getElementById('selectedButton').value = "lowest";
 		});
-		
 	</script>
 
 	<script
