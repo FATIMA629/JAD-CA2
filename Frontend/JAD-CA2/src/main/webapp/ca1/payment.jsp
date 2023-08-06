@@ -9,15 +9,15 @@
 		if (!role.equals("admin")) {
 			// User is a registered user
     
-    String amountStr = (String) session.getAttribute("totalPrice");
+    String amountStr = (String) session.getAttribute("totalAmount");
     double amount = Double.parseDouble(amountStr);
     double gstRate = 0.08;
     double gstAmount = amount * gstRate;
     double totalAmount = amount + gstRate;
-    String publicKey = (String) request.getAttribute("stripePublicKey");
+    String publicKey = (String) session.getAttribute("stripePublicKey");
     String paymentType = (String) request.getAttribute("paymentType");
     System.out.println(publicKey);
-    %>
+    %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,7 +69,6 @@
     <div class="summary">
       <ul>
         <li>Subtotal <span><%=amount %></span></li>
-        <li>Discount <span></span></li>
         <li>Tax <span><%=String.format("%.2f", gstAmount)%></span></li>
         <li class="total">Total<span><%=String.format("%.2f", totalAmount) %></span></li>
       </ul>

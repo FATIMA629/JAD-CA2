@@ -120,9 +120,9 @@ int userid = (int) session.getAttribute("userId");
 			}
 			%>
 		</div>
-		
-		<section class="checkout-section">
 		<form action="../AddToCartServlet" method="get">
+		<section class="checkout-section">
+		
             <div class="grid-container">
                 
 <div class="ff">
@@ -148,8 +148,9 @@ int userid = (int) session.getAttribute("userId");
             </button>
            
 </div>
- </form>
+ 
         </section>
+        </form>
         <%
 			} else {
         %>

@@ -119,7 +119,7 @@ public class BookController {
         return lowestStockBooks;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/searchBooks/{keyword}")
+    @RequestMapping(method = RequestMethod.GET, path = "/searchBooks/{keyword}", consumes = "application/json")
     public ArrayList<Book> searchBooks(@PathVariable("keyword") String keyword) {
     	ArrayList<Book> books = new ArrayList<>();
         try {
@@ -131,7 +131,7 @@ public class BookController {
         return books;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/getFilteredBooks")
+    @RequestMapping(method = RequestMethod.GET, path = "/getFilteredBooks", consumes = "application/json")
     public ArrayList<Book> getFilteredBooks(@RequestParam(value = "genre", required = false) String[] genreIds,
                                             @RequestParam(value = "price", required = false) double price) {
         ArrayList<Book> filteredBooks = new ArrayList<>();

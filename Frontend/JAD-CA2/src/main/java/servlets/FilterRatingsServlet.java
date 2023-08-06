@@ -85,7 +85,7 @@ public class FilterRatingsServlet extends HttpServlet {
 		}
 		session.setAttribute("ratingList", ratingList);
 		session.setAttribute("bookId", bookId);
-		response.sendRedirect(request.getContextPath() + "/ca1/viewBook.jsp");
+		response.sendRedirect(request.getContextPath() + "/ca1/viewBook.jsp?selected=" + selected);
 	}
 
 }

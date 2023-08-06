@@ -582,7 +582,7 @@
 		if (userIdsToDelete != null) {
 			String[] userIds = userIdsToDelete.split(",");
 			for (String userId : userIds) {
-				userDao.deleteUser(userId);
+				userDao.deleteUser(Integer.parseInt(userId));
 			}
 			users = userDao.getAllUsers(); // Refresh the list after deletion
 		}

@@ -62,7 +62,7 @@
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav mx-auto">
 					<!-- Added 'mx-auto' class for center alignment -->
-					<form class="search-container" action="../SearchBook">
+					<form class="search-container" action="../SearchBookServlet">
 						<input type="text" name="search" id="search-bar"
 							placeholder="Search anything...">
 						<button type="submit" class="search-btn">
@@ -118,7 +118,7 @@
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav mx-auto">
 					<!-- Added 'mx-auto' class for center alignment -->
-					<form class="search-container" action="../SearchBook">
+					<form class="search-container" action="../SearchBookServlet">
 						<input type="text" name="search" id="search-bar"
 							placeholder="Search anything...">
 						<button type="submit" class="search-btn">
@@ -172,7 +172,7 @@
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav mx-auto">
 					<!-- Added 'mx-auto' class for center alignment -->
-					<form class="search-container" action="../SearchBook">
+					<form class="search-container" action="../SearchBookServlet" method="get">
 						<input type="text" name="search" id="search-bar"
 							placeholder="Search anything...">
 						<button type="submit" class="search-btn">

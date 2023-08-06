@@ -80,10 +80,9 @@ public class AddressServlet extends HttpServlet {
 		UserDao userDao = new UserDao();
 		userDao.updateDefaultAddress(user);
 		
-		request.setAttribute("address", address);
-		String url = "/ca1/checkout.jsp";
-		RequestDispatcher cd = request.getRequestDispatcher(url);
-        cd.forward(request, response);
+		session.setAttribute("address", address);
+		String url = request.getContextPath() + "/ca1/checkout.jsp";
+	    response.sendRedirect(url);
 	}
 
 }

@@ -122,6 +122,7 @@ public class UserUpdateUserServlet extends HttpServlet {
 		if (errors.isEmpty()) {
 			System.out.println("Am I working 4.5");
 			Address address = new Address();
+			AddressDao addressDao = new AddressDao();
 	        address.setAddress1(Address);
 	        address.setAddress2(address2);
 	        address.setCountry(country);
@@ -129,16 +130,32 @@ public class UserUpdateUserServlet extends HttpServlet {
 	        address.setDistrict(district);
 	        address.setPostalCode(postalCode);
 	        address.setUserID(userId);
+	        address.setAddressID(userDao.getAddressIdById(userId));
+	
+			System.out.println("Address: " + address.getAddress1());
+			System.out.println("address2: " + address.getAddress2());
+			System.out.println("country: " + address.getCountry());
+			System.out.println("city: " + address.getCity());
+			System.out.println("district: " + address.getDistrict());
+			System.out.println("postalCode: " + address.getPostalCode());
+
 	        
-	        AddressDao addressDao = new AddressDao();
-			address = addressDao.updateAddress(address);
-			System.out.print("Updated Address is " + address);
+	        
+	        
+			Address newaddress = addressDao.updateAddress(address);
+			System.out.println("Updated Address: " + newaddress.getAddress1());
+			System.out.println("Updated address2: " + newaddress.getAddress2());
+			System.out.println("Updated country: " + newaddress.getCountry());
+			System.out.println("Updated city: " + newaddress.getCity());
+			System.out.println("Updated district: " + newaddress.getDistrict());
+			System.out.println("Updated postalCode: " + newaddress.getPostalCode());
+			System.out.print("Updated Address is " + newaddress);
 			
 	        System.out.println("Am I working 5");
 			// Update the user in the database
 			user.setUserName(username);
 			user.setEmail(email);
-			user.setAddress(address);
+			user.setAddress(newaddress);
 			user.setPassword(password);
 			user.setPhone(phone);
 
@@ -148,7 +165,8 @@ public class UserUpdateUserServlet extends HttpServlet {
 			request.getSession().setAttribute("success", "User updated successfully");
 			request.getSession().removeAttribute("errors");
 			request.getSession().removeAttribute("inputData");
-			response.sendRedirect("home.jsp");
+			String url = request.getContextPath() + "/ca1/home.jsp";
+			response.sendRedirect(url);
 		} else {
 			Map<String, String> inputData = new HashMap<>();
 			inputData.put("userId", Integer.toString(userId));

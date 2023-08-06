@@ -9,7 +9,7 @@ String searchQuery = request.getParameter("search");
 // Create a BookDao and get the search results
 BookDao bookDao = new BookDao();
 GenreDao genreDao = new GenreDao();
-List<Book> searchBooks = (List<Book>) request.getAttribute("searchBookArray");
+List<Book> searchBooks = (List<Book>) session.getAttribute("searchBookArray");
 %>
 <!DOCTYPE html>
 <html>

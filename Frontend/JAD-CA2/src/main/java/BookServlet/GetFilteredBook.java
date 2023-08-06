@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -33,7 +34,7 @@ public class GetFilteredBook extends HttpServlet {
     public GetFilteredBook() {
         super();
         // TODO Auto-generated constructor stub
-    }
+    }	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,7 +42,7 @@ public class GetFilteredBook extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
         Client client = ClientBuilder.newClient();
         String[] selectedGenres = request.getParameterValues("genre");
@@ -86,19 +87,15 @@ public class GetFilteredBook extends HttpServlet {
                 out.print("<br>Author: " + book.getAuthor() + "<br>");
             }
 
-            request.setAttribute("bookArray", filteredBooks);
-            System.out.println("......requestObj set...forwarding..");
+            session.setAttribute("bookArray", filteredBooks);
             String url = "/ca1/filterResults.jsp";
-            System.out.println(url);
-            RequestDispatcher cd = request.getRequestDispatcher(url);
-            cd.forward(request, response);
+            response.sendRedirect(url);
         } else {
             System.out.println("failed");
+            session.setAttribute("err", "NotFound");
             String url = "/ca1/filterResults.jsp";
-            System.out.println(url);
-            request.setAttribute("err", "NotFound");
-            RequestDispatcher cd = request.getRequestDispatcher(url);
-            cd.forward(request, response);
+            response.sendRedirect(url);
+
         }
 		
 	}

@@ -208,7 +208,11 @@
 
 			<input type="submit" class="btn btn-primary" value="Update User">
 		</form>
+		
+		<hr>
+		
 	</div>
+	
 	<%
 	} else {
 	// User is an admin

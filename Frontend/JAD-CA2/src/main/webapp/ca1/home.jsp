@@ -95,7 +95,7 @@ List<Book> allBooks = bookDao.readAllBooks();
 	<div class="container-fluid">
 		<div class="browse" style="display: flex; justify-content: center">
 			<h3>Browse</h3>
-			<a href="filter.jsp"><img src="images/menu.png"
+			<a href="filter.jsp"><img src="../images/menu.png"
 				class="filter-btn"></a>
 		</div>
 		<hr class="browse-line">

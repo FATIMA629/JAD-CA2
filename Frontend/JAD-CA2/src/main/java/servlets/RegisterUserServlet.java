@@ -83,7 +83,6 @@ public class RegisterUserServlet extends HttpServlet {
 		user.setPassword(password);
 		user.setRole("member");	
 		user.setEmail(email);
-		user.setAddress(null);
 		user.setPhone(phone);
 
 		session.setAttribute("userId", user.getUserID());
@@ -91,7 +90,7 @@ public class RegisterUserServlet extends HttpServlet {
 		session.setAttribute("loggedIn", true);
 		
 		// Add the user to the database
-		userDao.createUser(user);
+		userDao.userCreateUser(user);
 
 		// Set a success message
 		request.getSession().setAttribute("success", "Registration successful! Please log in.");

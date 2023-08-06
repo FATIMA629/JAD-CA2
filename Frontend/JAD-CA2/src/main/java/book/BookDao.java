@@ -8,6 +8,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
+import com.bookstore.storews.book.Book;
+
 import DBAccess.DBConnection;
 
 public class BookDao {

@@ -153,6 +153,8 @@ public class UserDao {
 
 		return user;
 	}
+	
+	
 
 	public User getUserById(int userId) {
 		Connection conn = null;
@@ -208,6 +210,32 @@ public class UserDao {
 		}
 
 		return username;
+		
+	}
+	
+	public int getAddressIdById(int userId) {
+		Connection conn = null;
+		int addressId = 0;
+
+		try {
+			conn = DBConnection.getConnection();
+
+			PreparedStatement pstmt = conn.prepareStatement("SELECT DefaultAddressID FROM users WHERE UserID = ?");
+			pstmt.setInt(1, userId);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				addressId = rs.getInt("DefaultAddressID");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
+
+		return addressId;
 		
 	}
 
@@ -303,7 +331,7 @@ public class UserDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement(
-					"INSERT INTO users (UserName, Password, Role, Email , DefaultAddressID) VALUES (?, ?, ?, ?, ?)");
+					"INSERT INTO users (UserName, Password, Role, Email , DefaultAddressID, PhoneNumber) VALUES (?, ?, ?, ?, ?)");
 			pstmt.setString(1, user.getUserName());
 			pstmt.setString(2, user.getPassword());
 			pstmt.setString(3, user.getRole());
@@ -319,6 +347,30 @@ public class UserDao {
 			closeConnection(conn);
 		}
 	}
+	
+	public void userCreateUser(User user) {
+		Connection conn = null;
+
+		try {
+			conn = DBConnection.getConnection();
+
+			PreparedStatement pstmt = conn.prepareStatement(
+					"INSERT INTO users (UserName, Password, Role, Email ,PhoneNumber) VALUES (?, ?, ?, ?, ?)");
+			pstmt.setString(1, user.getUserName());
+			pstmt.setString(2, user.getPassword());
+			pstmt.setString(3, user.getRole());
+			pstmt.setString(4, user.getEmail());
+			pstmt.setString(5, user.getPhone());
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
+		}
+	}
+
 
 	public void userUpdateUser(User user) {
 		Connection conn = null;

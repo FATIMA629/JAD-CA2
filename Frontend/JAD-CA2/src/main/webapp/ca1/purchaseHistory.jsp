@@ -53,6 +53,9 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
+
+ <jsp:include page="header.jsp" />
+ 
 <div class="container">
 <div class="row">
 <div class="col-md-12">
@@ -103,10 +106,10 @@ for(Order order: orderList) {
                                                             %>
                                                             <tr class="cart_table_item">
                                             <td class="product-thumbnail">
-                                                <a href="viewBook.jsp?id=<%=orderItem.getBook().getBookId() %>"><img width="100" height="100" alt="" class="img-responsive" src=<%=orderItem.getBook().getImageLocation() %>></a>
+                                                <a href="../FilterRatingsServlet?id=<%=orderItem.getBook().getBookId() %>"><img width="100" height="100" alt="" class="img-responsive" src=<%=orderItem.getBook().getImageLocation() %>></a>
                                             </td>
                                             <td class="product-name">
-                                                <a class="productDetails" href="viewBook.jsp?id=<%=orderItem.getBook().getBookId() %>"><%=orderItem.getBook().getTitle() %></a>
+                                                <a class="productDetails" href="../FilterRatingsServlet?id=<%=orderItem.getBook().getBookId() %>"><%=orderItem.getBook().getTitle() %></a>
                                             </td>
                                             <td class="product-price">
                                                 $<span class="amount"><%=orderItem.getBook().getPrice() %></span>

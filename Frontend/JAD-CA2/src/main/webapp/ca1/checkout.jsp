@@ -42,11 +42,13 @@ System.out.println(addressList);
 			
 			  <% if (!addressList.isEmpty()) { %>
             
-            <form action="AddressServlet" method="GET">
+            <form action="../AddressServlet" method="GET">
                
                 <% for (Address address : addressList) { %>
+                <div style="margin-top:10px">
                     <input type="radio" name="selectedAddress" value="<%= address.getAddressID() %>">
                     <%=address.getAddress1() %><br>
+                    </div>
                 <% } %>
                 	<hr>
 				

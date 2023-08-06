@@ -5,7 +5,7 @@
 <%@ page import="java.util.List"%>
 
 <%
-System.out.println("bookId in jsp is " + request.getAttribute("bookId"));
+System.out.println("bookId in jsp is " + session.getAttribute("bookId"));
 // Hardcoded book ID for testing
 int bookId = (int) session.getAttribute("bookId");
 
@@ -13,6 +13,8 @@ int bookId = (int) session.getAttribute("bookId");
 BookDao bookDao = new BookDao();
 Book book = bookDao.getBookById(bookId);
 RatingDao ratingDao = new RatingDao();
+String selected = request.getParameter("selected"); 
+System.out.println(selected);
 double AvgRating = ratingDao.getAverageRatingForBook(bookId);
 List<Rating> ratingList = (List<Rating>) session.getAttribute("ratingList");
 UserDao userDao = new UserDao();
@@ -99,7 +101,8 @@ UserDao userDao = new UserDao();
 							</div>
 						</a> <span class="rating-line"></span> 
 							<p class="rating-amount">
-								<%=book.getQuantity()%><span class="rating-word">Quantity</span>
+								<%=book.getQuantity()%>
+								<span class="rating-word"> Quantity</span>
 							</p>
 						<span class="rating-line"></span>
 						<p class="amount-sold"><%=book.getSold()%>
@@ -203,9 +206,9 @@ UserDao userDao = new UserDao();
 					<form id="filterForm" action="../FilterRatingsServlet" method="post">
         <input type="hidden" name="selectedButton" id="selectedButton" value="All">
         <input type="hidden" name="bookId" value="<%=bookId %>">
-        <button id="button1" class="active" onclick="setSelectedButton('All')">All</button>
-        <button id="button2" onclick="setSelectedButton('highest')">highest</button>
-        <button id="button3" onclick="setSelectedButton('lowest')">lowest</button>
+        <button id="button1" >All</button>
+        <button id="button2" >highest</button>
+        <button id="button3" >lowest</button>
     </form>
 					</div>
 				</div>
@@ -301,6 +304,7 @@ UserDao userDao = new UserDao();
 			}
 		});
 
+		
 		const button1 = document.getElementById('button1');
 		const button2 = document.getElementById('button2');
 		const button3 = document.getElementById('button3');
@@ -310,24 +314,23 @@ UserDao userDao = new UserDao();
 			button1.classList.add('active');
 			button2.classList.remove('active');
 			button3.classList.remove('active');
+			document.getElementById('selectedButton').value = "All";
 		});
 
 		button2.addEventListener('click', function() {
 			button1.classList.remove('active');
 			button2.classList.add('active');
 			button3.classList.remove('active');
+			document.getElementById('selectedButton').value = "highest";
 		});
 
 		button3.addEventListener('click', function() {
 			button1.classList.remove('active');
 			button2.classList.remove('active');
 			button3.classList.add('active');
+			document.getElementById('selectedButton').value = "lowest";
 		});
 		
-		  function setSelectedButton(buttonValue) {
-		        document.getElementById('selectedButton').value = buttonValue;
-		        document.getElementById('filterForm').submit();
-		    }
 	</script>
 
 	<script

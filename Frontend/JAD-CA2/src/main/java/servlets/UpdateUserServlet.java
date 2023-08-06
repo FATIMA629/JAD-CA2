@@ -76,12 +76,12 @@ public class UpdateUserServlet extends HttpServlet {
 			errors.put("postalCode", "Postal code must be 6 digits");
 		}
 
-		User user = userDao.getUserById(userId);
+		User user = userDao.getUserById(Integer.parseInt(userId));
 		if (user == null) {
 			errors.put("userId", "Invalid user ID");
 		}
 
-		User existingUser = userDao.getUserById(userId);
+		User existingUser = userDao.getUserById(Integer.parseInt(userId));
 
 		// Check for duplicate username
 		if (existingUser != null && !existingUser.getUserName().equals(username)) {

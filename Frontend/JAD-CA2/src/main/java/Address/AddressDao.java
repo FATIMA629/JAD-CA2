@@ -39,6 +39,9 @@ public class AddressDao {
         return address;
     }
     
+    
+    
+    
     public List<Address> getAddressByUserId(int userId) {
         Connection conn = null;
         List<Address> addressList = new ArrayList<>();
@@ -51,7 +54,7 @@ public class AddressDao {
 
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 Address address = new Address();
                 address.setAddressID(rs.getInt("AddressID"));
                 address.setUserID(rs.getInt("UserID"));
@@ -152,8 +155,11 @@ public class AddressDao {
 	        try {
 	            conn = DBConnection.getConnection();
 
+	            System.out.println("Preparing SQL statement...");
 	            PreparedStatement pstmt = conn.prepareStatement(
 	                    "UPDATE address SET UserID = ?, Address1 = ?, Address2 = ?, District = ?, City = ?, PostalCode = ?, Country = ? WHERE AddressID = ?");
+	            
+	            System.out.println("Setting PreparedStatement parameters...");
 	            pstmt.setInt(1, address.getUserID());
 	            pstmt.setString(2, address.getAddress1());
 	            pstmt.setString(3, address.getAddress2());
@@ -163,20 +169,25 @@ public class AddressDao {
 	            pstmt.setString(7, address.getCountry());
 	            pstmt.setInt(8, address.getAddressID());
 
+	            System.out.println("Executing update...");
 	            int rowsUpdated = pstmt.executeUpdate();
+	            System.out.println("Rows updated: " + rowsUpdated);
 
 	            if (rowsUpdated > 0) {
 	                updatedAddress = address; // The updated object can be considered the same as the input object
 	            }
 
 	        } catch (SQLException e) {
+	            System.err.println("An SQL exception occurred:" + e);
 	            e.printStackTrace();
 	        } finally {
 	            closeConnection(conn);
 	        }
 
+	        System.out.println("Returning updated address: " + updatedAddress);
 	        return updatedAddress;
 	    }
+
 
 
     public boolean deleteAddress(int addressID) {

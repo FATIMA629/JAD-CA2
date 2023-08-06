@@ -58,7 +58,7 @@ alert('<%=successMessage%>
 </head>
 <body>
 <div class="container mt-5">
-		<h2 class="mb-4">Add Rating</h2>
+		<h2 class="mb-4">Rate Product</h2>
 		<form method="post" action="AddRatingServlet">
 			<input type="hidden" name="bookId" value="<%=bookId%>">
 
@@ -69,6 +69,7 @@ alert('<%=successMessage%>
 				<%
 				if (errors != null && errors.containsKey("rating")) {
 				%>
+				
 				<div class="error"><%=errors.get("rating")%></div>
 				<%
 				}
@@ -76,9 +77,9 @@ alert('<%=successMessage%>
 			</div>
 
 			<div class="mb-3">
-				<label for="comment" class="form-label">Comment:</label> <input
-					type="text" class="form-control" id="comment" name="comment"
-					value="<%=inputData != null ? inputData.get("comment") : ""%>">
+				<label for="comment" class="form-label">Comment:</label> <textarea
+					type="text" class="form-control" id="comment" name="comment" rows="5" placeholder="Share your thoughts about the product..."
+					value="<%=inputData != null ? inputData.get("comment") : ""%>"></textarea>
 				<%
 				if (errors != null && errors.containsKey("comment")) {
 				%>

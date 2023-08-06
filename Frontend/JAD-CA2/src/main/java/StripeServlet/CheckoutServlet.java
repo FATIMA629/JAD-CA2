@@ -40,13 +40,12 @@ public class CheckoutServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		request.setAttribute("totalPrice", session.getAttribute("totalPrice"));
+		session.setAttribute("totalAmount", session.getAttribute("totalPrice"));
 		System.out.println("Total price from checkoutservlet " + session.getAttribute("totalPrice"));
-		request.setAttribute("stripePublicKey", "pk_test_51Na4b7JLhf6EaydIrHUGjamPvdvBjHGVw4p8d6cl3TRWAOVTKN9JHuvkEz3N4a1tJJsyFGg5QnWO0GXcXWAO2eUL00sAXrSuwr");
+		session.setAttribute("stripePublicKey", "pk_test_51Na4b7JLhf6EaydIrHUGjamPvdvBjHGVw4p8d6cl3TRWAOVTKN9JHuvkEz3N4a1tJJsyFGg5QnWO0GXcXWAO2eUL00sAXrSuwr");
 		
 		String url = "ca1/payment.jsp";
-		RequestDispatcher cd = request.getRequestDispatcher(url);
-        cd.forward(request, response);
+		response.sendRedirect(url);
 	}
 
 	/**

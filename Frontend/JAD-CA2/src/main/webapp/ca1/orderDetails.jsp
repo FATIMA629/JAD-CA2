@@ -19,7 +19,7 @@
 <body>
     <body>
     <h3 style='color: green;'>Order is Successful!</h3>
-    <p>Amount Payed: <%=totalPrice %></p>
+    <p>Amount Payed: <%=String.format("%.2f", totalPrice) %></p>
     <a href="ca1/home.jsp">Return to home page</a>
     
     <%
