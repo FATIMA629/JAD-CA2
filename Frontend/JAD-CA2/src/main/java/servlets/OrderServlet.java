@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Cart.CartDao;
-import book.Book;
+import book.*;
 import order.*;
 import Address.*;
 import Payment.*;
@@ -50,7 +50,7 @@ public class OrderServlet extends HttpServlet {
 		System.out.println("hello i am working 1");
 		int userid = (int) session.getAttribute("userId");
 		System.out.println("hello i am working 2");
-		String amountStr = (String) session.getAttribute("totalPrice");
+		String amountStr = request.getParameter("totalAmount");
 		double totalPrice = Double.parseDouble(amountStr);
 		System.out.println("hello i am working 3");
 		System.out.println("hello i am working 4");
@@ -77,6 +77,8 @@ public class OrderServlet extends HttpServlet {
 		int orderId = orderDao.createOrder(order);
 		System.out.println(orderId);
 		System.out.println("hello i am working 11");
+		
+		
 		CartDao cartDao = null;
 		try {
 			cartDao = new CartDao();
@@ -86,18 +88,36 @@ public class OrderServlet extends HttpServlet {
 		}
 		System.out.println("hello i am working 12");
 		OrderItemDao orderItemDao = new OrderItemDao();
+		BookDao bookDao = new BookDao();
 		List<Book> cartItems = cartDao.getAllBooksInCart(userid);
 		for (Book item : cartItems) {
-			int bookId = Integer.parseInt(item.getBookId());
+			int bookId =item.getBookId();
+			int quantity = cartDao.getQuantity(userid, bookId);
 			double price = item.getPrice();
+			
+			Book book = new Book();
+			book.setBookId(bookId);
+			book.setTitle(item.getTitle());
+			book.setAuthor(item.getAuthor());	
+			book.setGenreId(item.getGenreId());
+			book.setPrice(price);
+			book.setQuantity(item.getQuantity()-quantity);
+			book.setPublisher(item.getPublisher());
+			book.setPublishDate(item.getPublishDate());
+			book.setIsbn(item.getIsbn());
+			book.setRating(item.getRating());
+			book.setDescription(item.getDescription());
+			book.setImageLocation(item.getImageLocation());
+			book.setSold(item.getSold()+quantity);
 			
 			OrderItem orderItem = new OrderItem();
 			orderItem.setOrderId(orderId);
-			orderItem.setBookId(bookId);
+			orderItem.setBook(book);
 			orderItem.setQuantity(cartDao.getQuantity(userid, bookId));
 			orderItem.setUnitPrice(price);
 			
 			orderItemDao.createOrderItem(orderItem);
+			bookDao.updateBook(book);
 			cartDao.deleteFromCart(userid, bookId);
 		}
 		System.out.println("hello i am working 13");

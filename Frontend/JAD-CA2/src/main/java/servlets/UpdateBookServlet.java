@@ -98,7 +98,7 @@ public class UpdateBookServlet extends HttpServlet {
 	    String imageLocation = imagesDir + File.separator + imageName;
 		
 		System.out.println("Entered doPost method in UpdateBookServlet");
-		String bookId = request.getParameter("bookId");
+		int bookId = Integer.parseInt(request.getParameter("bookId"));
 		String title = request.getParameter("title");
 		String author = request.getParameter("author");
 		String genreId = request.getParameter("genreId");
@@ -177,7 +177,7 @@ public class UpdateBookServlet extends HttpServlet {
 			response.sendRedirect("ca1/adminDashboard.jsp");
 		} else {
 			Map<String, String> inputData = new HashMap<>();
-			inputData.put("bookId", bookId);
+			inputData.put("bookId", Integer.toString(bookId));
 			inputData.put("title", title);
 			inputData.put("author", author);
 			inputData.put("genreId", genreId);

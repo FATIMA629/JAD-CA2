@@ -8,6 +8,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
+import com.bookstore.storews.book.Book;
+
 import DBAccess.DBConnection;
 
 public class BookDao {
@@ -71,7 +73,7 @@ public class BookDao {
 
 		return book;
 	}
-
+	
 	public boolean createBook(Book book) throws SQLException, ClassNotFoundException, IOException {
 		System.out.println("Entered createBook method");
 		Connection conn = null;

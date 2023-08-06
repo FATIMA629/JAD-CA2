@@ -8,21 +8,21 @@ public class User {
     private String role;
     private String email;
     private Address address;
-    private String phone;
+    private String phoneNumber;
 
     // Constructor, getters, and setters
 
     public User() {
     }
 
-    public User(int userID, String userName, String password, String role, String email, Address address, String phone) {
+    public User(int userID, String userName, String password, String role, String email, Address address, String phoneNumber) {
         this.userID = userID;
         this.userName = userName;
         this.password = password;
         this.role = role;
         this.email = email;
         this.address = address;
-        this.phone = phone;
+        this.phoneNumber = phoneNumber;
     }
 
 	public int getUserID() {
@@ -68,22 +68,22 @@ public class User {
     public Address getAddress() {
         return address;
     }
-
+    
     public void setAddress(Address address) {
         this.address = address;
     }
     
     public String getPhone() {
-		return phone;
+		return phoneNumber;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setPhone(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
     @Override
     public String toString() {
         return "User [userID=" + userID + ", userName=" + userName + ", password=" + password + ", role=" + role
-                + ", email=" + email + ", address=" + address + ", phone=" + phone + "]";
+                + ", email=" + email + ", address=" + address + ", phoneNumber=" + phoneNumber + "]";
     }
 }

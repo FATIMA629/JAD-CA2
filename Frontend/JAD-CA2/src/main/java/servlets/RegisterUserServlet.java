@@ -53,7 +53,7 @@ public class RegisterUserServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String email = request.getParameter("email");
-		String address = request.getParameter("address");
+		String phone = request.getParameter("phone");
 
 		// Verify username and password format
 		if (!username.matches("[a-zA-Z0-9_]+") || !password.matches("[a-zA-Z0-9_]+")) {
@@ -81,16 +81,16 @@ public class RegisterUserServlet extends HttpServlet {
 		User user = new User();
 		user.setUserName(username);
 		user.setPassword(password);
-		user.setRole("member");
+		user.setRole("member");	
 		user.setEmail(email);
-		user.setAddress(address);
+		user.setPhone(phone);
 
 		session.setAttribute("userId", user.getUserID());
 		session.setAttribute("role", user.getRole());
 		session.setAttribute("loggedIn", true);
 		
 		// Add the user to the database
-		userDao.createUser(user);
+		userDao.userCreateUser(user);
 
 		// Set a success message
 		request.getSession().setAttribute("success", "Registration successful! Please log in.");

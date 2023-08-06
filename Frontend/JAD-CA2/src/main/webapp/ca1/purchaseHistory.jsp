@@ -3,12 +3,20 @@
     <%@ page import="java.util.List"%>
 <%@page import="order.*"%>
     <%
+	if (session != null && session.getAttribute("loggedIn") != null) {
+		// User is logged in
+
+		// Check if the user is an admin
+		String role = (String) session.getAttribute("role");
+		if (!role.equals("admin")) {
+			// User is a registered user
+    
     int userId = (int) session.getAttribute("userId");
     String username = (String) session.getAttribute("username");
 	String phone = (String) session.getAttribute("phone");
 	
 	OrderDao orderDao = new OrderDao();
-	List<Order> orderList = orderDao.getAllOrders(userId);
+	List<Order> orderList = orderDao.getAllOrdersByUserId(userId);
     %>
 <!DOCTYPE html>
 <html>
@@ -45,6 +53,9 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
+
+ <jsp:include page="header.jsp" />
+ 
 <div class="container">
 <div class="row">
 <div class="col-md-12">
@@ -55,10 +66,15 @@
 <h4>Sales History</h4>
 
 <%
+if(!orderList.isEmpty()) {
+
+int orderNumber = orderList.size();
+
 for(Order order: orderList) {
+	System.out.println(orderNumber);
 %>
 <div id="salesHistoryTab">
-<h5>Order # <%=order.getOrderId() %></h5>
+<h5>Order # <%=orderNumber %></h5>
 <h6>Date Purchased: <%=order.getOrderDate() %></h6>
 <h6>Order Status: <%=order.getOrderStatus() %></h6>
 <h6 style="text-decoration:underline; font-weight:bold">Delivery Details:</h6>
@@ -90,10 +106,10 @@ for(Order order: orderList) {
                                                             %>
                                                             <tr class="cart_table_item">
                                             <td class="product-thumbnail">
-                                                <a href="viewBook.jsp?id=<%=orderItem.getBook().getBookId() %>"><img width="100" height="100" alt="" class="img-responsive" src=<%=orderItem.getBook().getImageLocation() %>></a>
+                                                <a href="../FilterRatingsServlet?id=<%=orderItem.getBook().getBookId() %>"><img width="100" height="100" alt="" class="img-responsive" src=<%=orderItem.getBook().getImageLocation() %>></a>
                                             </td>
                                             <td class="product-name">
-                                                <a class="productDetails" href="viewBook.jsp?id=<%=orderItem.getBook().getBookId() %>"><%=orderItem.getBook().getTitle() %></a>
+                                                <a class="productDetails" href="../FilterRatingsServlet?id=<%=orderItem.getBook().getBookId() %>"><%=orderItem.getBook().getTitle() %></a>
                                             </td>
                                             <td class="product-price">
                                                 $<span class="amount"><%=orderItem.getBook().getPrice() %></span>
@@ -105,14 +121,13 @@ for(Order order: orderList) {
                                                 $<span class="amount"><%=orderItem.getBook().getPrice() * orderItem.getQuantity() %></span>
                                             </td>
                                             <td>
-                                             <div style="    margin: 0 0 0 10px;
-    display: flex;
-    align-items: center;
-    text-overflow: ellipsis;">
-    
-    <button class="btn btn--primary position">
+                                             <div style="margin: 0 0 0 10px; display: flex; align-items: center; text-overflow: ellipsis;">
+                                             <form method="get" action="../AddRatingServlet">
+                                             <input type="hidden" name="bookId" value="<%=orderItem.getBook().getBookId()%>">
+    <button class="btn btn--primary position" type="submit">
     Rate
     </button>
+    </form>
     </div>
 								
                                             </td>
@@ -138,6 +153,16 @@ for(Order order: orderList) {
                                     </div>
                                 </div>
 <%
+orderNumber--;
+}
+%>
+</div>
+</div>
+<%
+} else {
+%>
+<h4 style="text-align: center">Sales History is empty</h4>
+<%
 }
 %>
 </div>
@@ -146,7 +171,15 @@ for(Order order: orderList) {
 </div>
 </div>
 </div>
-</div>
-</div>
+<%
+	} else {
+	// User is not an admin
+	response.sendRedirect("login.jsp"); // Redirect to the home page
+	}
+	} else {
+	// User is not logged in
+	response.sendRedirect("login.jsp"); // Redirect to the home page
+	}
+	%>
 </body>
 </html>

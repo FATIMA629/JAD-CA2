@@ -46,7 +46,7 @@
 		if (!role.equals("admin")) {
 			// User is a registered user
 
-			String userId = (String) session.getAttribute("userId");
+			int userId = (int) session.getAttribute("userId");
 
 			UserDao userDao = new UserDao();
 			User user = userDao.getUserById(userId);
@@ -88,18 +88,109 @@
 				}
 				%>
 			</div>
-
+			
 			<div class="mb-3">
-				<label for="address" class="form-label">Address:</label> <input
-					type="text" class="form-control" id="address" name="address"
-					value="<%=inputData.getOrDefault("address", user.getAddress())%>">
+				<label for="phone" class="form-label">Phone</label> <input
+					type="text" class="form-control" id="phone" name="phone"
+					value="<%=inputData.getOrDefault("phone", user.getPhone())%>">
 				<%
+				if (errors != null && errors.containsKey("phone")) {
+				%>
+				<div class="error"><%=errors.get("phone")%></div>
+				<%
+				}
+				%>
+			</div>
+			
+			<div class="form-group">
+					<label for="address1">Address</label>
+					<input type="text" name="address" class="form-control" id="address1" value="<%=inputData.getOrDefault("Address", user.getAddress().getAddress1())%>" required>
+					<%
 				if (errors != null && errors.containsKey("address")) {
 				%>
 				<div class="error"><%=errors.get("address")%></div>
 				<%
 				}
 				%>
+				</div>
+
+				<div class="form-group">
+					<label for="address2">Address 2
+						<span class="text-muted">(Optional)</span>
+					</label>
+					<input type="text" name="address2" class="form-control" id="address2" value="<%=inputData.getOrDefault("address2", user.getAddress().getAddress2())%>">
+				</div>
+				
+					<div class="row">
+					<div class="col-md-6 form-group">
+						<label for="country">Country</label>
+						<select type="text" name="country" class="form-control" id="country">
+						<%if(user.getAddress().getCountry().equals("United Kingdom")) {%>
+						<option><%=user.getAddress().getCountry() %></option>
+							<option>Canada</option>
+							<option>USA</option>
+							<% } else if(user.getAddress().getCountry().equals("Canada")) {%>
+							<option><%=user.getAddress().getCountry() %></option>
+							<option>United Kingdom</option>
+							<option>USA</option>
+							<% } else { %>
+							<option><%=user.getAddress().getCountry() %></option>
+							<option>United Kingdom</option>
+							<option>Canada</option>
+							<% } %> 
+						</select>
+					
+					</div>
+
+					<div class="col-md-6 form-group">
+						<label for="city">City</label>
+						<select type="text" name="city" class="form-control" id="city">
+						<%if(user.getAddress().getCity().equals("London")) {%>
+							<option><%=user.getAddress().getCity() %></option>
+							<option>Las Vegas</option>
+							<option>Texas</option>
+							<% } else if (user.getAddress().getCity().equals("Las Vegas")) { %>
+							<option><%=user.getAddress().getCity() %></option>
+							<option>London</option>
+							<option>Texas</option>
+							<%
+							} else {
+							%>
+							<option ><%=user.getAddress().getCity() %></option>
+							<option>London</option>
+							<option>Las Vegas</option>
+							<%
+							}
+							%>
+						</select>
+					
+					</div>
+</div>
+				
+			<div class="row">
+				<div class="col-md-6 form-group">
+						<label for="district">District</label>
+					<input type="text" name="district" class="form-control" id="district" value="<%=inputData.getOrDefault("district", user.getAddress().getDistrict())%>">
+						<%
+				if (errors != null && errors.containsKey("district")) {
+				%>
+				<div class="error"><%=errors.get("district")%></div>
+				<%
+				}
+				%>
+					</div>
+
+					<div class="col-md-6 form-group">
+						<label for="postalCode">Postal Code</label>
+						<input type="text" name="postalCode" class="form-control" id="postalCode" value="<%=inputData.getOrDefault("postalCode", user.getAddress().getPostalCode())%>">
+						<%
+				if (errors != null && errors.containsKey("postalCode")) {
+				%>
+				<div class="error"><%=errors.get("postalCode")%></div>
+				<%
+				}
+				%>
+					</div>
 			</div>
 
 			<div class="mb-3">
@@ -117,7 +208,11 @@
 
 			<input type="submit" class="btn btn-primary" value="Update User">
 		</form>
+		
+		<hr>
+		
 	</div>
+	
 	<%
 	} else {
 	// User is an admin

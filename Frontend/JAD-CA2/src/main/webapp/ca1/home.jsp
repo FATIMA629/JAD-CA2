@@ -95,7 +95,7 @@ List<Book> allBooks = bookDao.readAllBooks();
 	<div class="container-fluid">
 		<div class="browse" style="display: flex; justify-content: center">
 			<h3>Browse</h3>
-			<a href="filter.jsp"><img src="images/menu.png"
+			<a href="filter.jsp"><img src="../images/menu.png"
 				class="filter-btn"></a>
 		</div>
 		<hr class="browse-line">
@@ -105,12 +105,12 @@ List<Book> allBooks = bookDao.readAllBooks();
 			for (Book book : allBooks) {
 			%>
 			<div class="book-container">
-				<a href="viewBook.jsp?id=<%=book.getBookId()%>"
-					style="text-decoration: none;">
+				<a href="../FilterRatingsServlet?id=<%=book.getBookId() %>" style="text-decoration: none;">
+				 <input type="hidden" name="bookId" value="<%=book.getBookId() %>">
 					<figure class="movie-figure"
 						style="background-color: white; width: 14em; margin: 0.5em; box-shadow: 0 5px 15px gray; overflow: hidden; position: relative; cursor: pointer; transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);">
 						<img src="<%=request.getContextPath()%>/<%=book.getImageLocation()%>" alt="logo-image"
-							style="height: 21em; width: 100%; border-style: none">
+							style="height: 21em	; width: 100%; border-style: none">
 						<figcaption
 							style="display: block; line-height: 2; padding: 0 0.8em; height: 140px;">
 							<h5
@@ -136,7 +136,7 @@ List<Book> allBooks = bookDao.readAllBooks();
 									}
 									 %>
 								</div>
-								<h4 style="color: black; display: block;"><%=book.getRating()%></h4>
+									<h4 style="color: black; display: block;"><%=book.getRating()%></h4>
 							</div>
 						</figcaption>
 					</figure>

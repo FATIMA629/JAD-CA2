@@ -62,7 +62,7 @@
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav mx-auto">
 					<!-- Added 'mx-auto' class for center alignment -->
-					<form class="search-container" action="../SearchBook">
+					<form class="search-container" action="../SearchBookServlet">
 						<input type="text" name="search" id="search-bar"
 							placeholder="Search anything...">
 						<button type="submit" class="search-btn">
@@ -82,11 +82,11 @@
 					<div class="cart-drawer">
 						<div class="profile-icon">
 							<img src="../images/profile.png" class="img-fluid" id="profileImage">
-							<div class="profile-prompt user">
+							<div class="profile-prompt guest">
 								<div class="profile">
 									<span class="dot"><img class="profile-picture"
 										src="../images/image-removebg-preview (39).png" /></span> <a
-										href="./userEditUser"><span class="profile-status">Admin</span></a>
+										href="userEditUser.jsp"><span class="profile-status">Admin</span></a>
 								</div>
 								<hr>
 								<span><a href="purchaseHistory.jsp">My Purchases</a></span>
@@ -122,7 +122,7 @@
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav mx-auto">
 					<!-- Added 'mx-auto' class for center alignment -->
-					<form class="search-container" action="../SearchBook">
+					<form class="search-container" action="../SearchBookServlet">
 						<input type="text" name="search" id="search-bar"
 							placeholder="Search anything...">
 						<button type="submit" class="search-btn">
@@ -137,11 +137,11 @@
 					<div class="cart-drawer">
 						<div class="profile-icon">
 							<img src="../images/profile.png" class="img-fluid" id="profileImage">
-							<div class="profile-prompt user">
+							<div class="profile-prompt guest">
 								<div class="profile">
 									<span class="dot"><img class="profile-picture"
 										src="../images/image-removebg-preview (39).png" /></span> <a
-										href="./userEditUser"><span class="profile-status">User</span></a>
+										href="userEditUser.jsp"><span class="profile-status">User</span></a>
 								</div>
 								<hr>
 								<span><a href="purchaseHistory.jsp">My Purchases</a></span>
@@ -176,7 +176,7 @@
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav mx-auto">
 					<!-- Added 'mx-auto' class for center alignment -->
-					<form class="search-container" action="../SearchBook">
+					<form class="search-container" action="../SearchBookServlet" method="get">
 						<input type="text" name="search" id="search-bar"
 							placeholder="Search anything...">
 						<button type="submit" class="search-btn">

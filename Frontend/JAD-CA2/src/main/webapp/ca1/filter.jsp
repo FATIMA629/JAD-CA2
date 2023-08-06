@@ -58,7 +58,7 @@ String searchInput = request.getParameter("searchInput");
 
 	<div class="container-fluid filter">
 			<h4 class="header">Filter</h4>
-		<form action="../GetFilteredBook">
+		<form action="../FilterResultsServlet" method="post">
 		<div class="checkbox-container">
 			<%
 			for (Genre genre : genreList) {

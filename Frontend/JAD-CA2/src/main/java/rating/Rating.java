@@ -8,7 +8,7 @@ public class Rating {
     private int helpful;
     private String comment;
 
-    public Rating(int bookId, int userId, double rating, int helpful, String comment) {
+    public Rating(int bookId, int userId, double rating, int helpful, String comment, int ratingId) {
     	this.ratingId = ratingId;
         this.bookId = bookId;
         this.userId = userId;

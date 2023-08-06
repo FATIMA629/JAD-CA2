@@ -10,18 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import order.*;
+import book.*;
 /**
- * Servlet implementation class PurchaseHistoryServlet
+ * Servlet implementation class searchBookServlet
  */
-@WebServlet("/PurchaseHistoryServlet")
-public class PurchaseHistoryServlet extends HttpServlet {
+@WebServlet("/SearchBookServlet")
+public class SearchBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PurchaseHistoryServlet() {
+    public SearchBookServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,14 +31,17 @@ public class PurchaseHistoryServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		int userId = (int) session.getAttribute("userId");
+		String keyword = request.getParameter("search");
 		
-		OrderDao orderDao = new OrderDao();
-		List<Order> orderList = orderDao.getAllOrdersByUserId(userId);
+		BookDao bookDao = new BookDao();
 		
-		session.setAttribute("orders", orderList);
+		List<Book> searchBookArray = bookDao.searchBooks(keyword);
 		
-		response.sendRedirect("/ca1/purchaseHistory.jsp");
+		session.setAttribute("searchBookArray", searchBookArray);
+		
+		String url = request.getContextPath() + "/ca1/search.jsp";
+		response.sendRedirect(url);
+		
 	}
 
 	/**

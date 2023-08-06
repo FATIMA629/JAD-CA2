@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -41,7 +42,7 @@ public class SearchBook extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
         Client client = ClientBuilder.newClient();
         String keyword = request.getParameter("search");
@@ -63,17 +64,14 @@ public class SearchBook extends HttpServlet {
                 out.print("<br>Author: " + book.getAuthor() + "<br>");
             }
 
-            request.setAttribute("searchBookArray", bookList);
-            System.out.println("......requestObj set...forwarding..");
-            String url = "/ca1/search.jsp";
-            RequestDispatcher cd = request.getRequestDispatcher(url);
-            cd.forward(request, response);
+            session.setAttribute("searchBookArray", bookList);
+            String url = request.getContextPath() + "/ca1/search.jsp";
+            response.sendRedirect(url);
         } else {
             System.out.println("failed");
-            String url = "/ca1/search.jsp";
-            request.setAttribute("err", "NotFound");
-            RequestDispatcher cd = request.getRequestDispatcher(url);
-            cd.forward(request, response);
+            session.setAttribute("err", "NotFound");
+            String url = request.getContextPath() + "/ca1/search.jsp";
+            response.sendRedirect(url);
         }
 	}
 

@@ -42,6 +42,7 @@ public class VerifyLoginServlet extends HttpServlet {
 				session.setAttribute("role", user.getRole());
 				session.setAttribute("username", user.getUserName());
 				session.setAttribute("phone", user.getPhone());
+				session.setAttribute("email", user.getEmail());
 				System.out.println("VerifyLoginServlet phone is " + user.getPhone());
 				session.setAttribute("loggedIn", true);
 				List<Book> cartItems = cartDao.getAllBooksInCart(user.getUserID());

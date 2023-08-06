@@ -10,9 +10,6 @@ import javax.servlet.RequestDispatcher;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class FilterResultsServlet
@@ -42,6 +39,7 @@ public class FilterResultsServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Retrieve the selected filter values from the request parameters
+		HttpSession session = request.getSession();
         String[] selectedGenres = request.getParameterValues("genre");
         if (selectedGenres != null) {
             for (String genreId : selectedGenres) {
@@ -54,21 +52,14 @@ public class FilterResultsServlet extends HttpServlet {
      // Create an instance of the BookDao class
         BookDao bookDao = null;
         bookDao = new BookDao();
-
-        // Check if the bookDao object was successfully initialized
-        if (bookDao != null) {
+        
             // Retrieve the filtered results from the database
             List<Book> filteredBooks = bookDao.getFilteredBooks(selectedGenres, price);
 
-            // Set the filtered results as a request attribute
-            request.setAttribute("filteredBooks", filteredBooks);
+            session.setAttribute("filteredBooks", filteredBooks);
 
-            // Forward the request to a JSP page to display the results
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/ca1/filterResults.jsp");
-            dispatcher.forward(request, response);
-        } else {
-           
-        }
+            String url = request.getContextPath() + "/ca1/filterResults.jsp";
+            response.sendRedirect(url);
 
 	}
 }

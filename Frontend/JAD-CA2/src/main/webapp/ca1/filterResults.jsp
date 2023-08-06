@@ -7,7 +7,7 @@
 BookDao bookDao = new BookDao();
 GenreDao genreDao = new GenreDao();
 
-List<Book> filteredBooks = (List<Book>) request.getAttribute("bookArray");
+List<Book> filteredBooks = (List<Book>) session.getAttribute("filteredBooks");
 %>
 <!DOCTYPE html>
 <html>
@@ -45,22 +45,22 @@ List<Book> filteredBooks = (List<Book>) request.getAttribute("bookArray");
 </head>
 <body>
 	 <jsp:include page="header.jsp"/>
-	<div id="carouselExampleControls" class="carousel slide m-5"
+	 <div id="carouselExampleControls" class="carousel slide m-5"
 		data-bs-ride="carousel">
 		<div class="carousel-inner">
 			<div class="carousel-item active">
 				<img
-					src="https://img.freepik.com/free-photo/abstract-luxury-gradient-blue-background-smooth-dark-blue-with-black-vignette-studio-banner_1258-63998.jpg?w=2000"
+					src="https://asset.popular.com.sg/general/popular-online/2023/home/titbitscarnival_june-b.jpg"
 					class="d-block w-75 mx-auto height" alt="...">
 			</div>
 			<div class="carousel-item">
 				<img
-					src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5HO-GUCt47tHTMfPLuXPBBYFq7_P75YiYzVqlt_2vKA&s"
+					src="https://asset.popular.com.sg/general/popular-online/2023/home/logitech-b.jpg"
 					class="d-block w-75 mx-auto height" alt="...">
 			</div>
 			<div class="carousel-item">
 				<img
-					src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5HO-GUCt47tHTMfPLuXPBBYFq7_P75YiYzVqlt_2vKA&s"
+					src="https://asset.popular.com.sg/general/popular-online/2023/home/myreward-b.jpg"
 					class="d-block w-75 mx-auto height" alt="...">
 			</div>
 		</div>

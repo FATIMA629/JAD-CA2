@@ -39,6 +39,9 @@ public class AddressDao {
         return address;
     }
     
+    
+    
+    
     public List<Address> getAddressByUserId(int userId) {
         Connection conn = null;
         List<Address> addressList = new ArrayList<>();
@@ -51,7 +54,7 @@ public class AddressDao {
 
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 Address address = new Address();
                 address.setAddressID(rs.getInt("AddressID"));
                 address.setUserID(rs.getInt("UserID"));
@@ -106,56 +109,86 @@ public class AddressDao {
         return addresses;
     }
 
-    public void createAddress(Address address) {
-        Connection conn = null;
+	    public Address createAddress(Address address) {
+	        Connection conn = null;
+	
+	        try {
+	            conn = DBConnection.getConnection();
+	
+	            PreparedStatement pstmt = conn.prepareStatement(
+	                "INSERT INTO address (UserID, Address1, Address2, District, City, PostalCode, Country) VALUES (?, ?, ?, ?, ?, ?, ?)",
+	                Statement.RETURN_GENERATED_KEYS); // Requesting generated keys
+	
+	            pstmt.setInt(1, address.getUserID());
+	            pstmt.setString(2, address.getAddress1());
+	            pstmt.setString(3, address.getAddress2());
+	            pstmt.setString(4, address.getDistrict());
+	            pstmt.setString(5, address.getCity());
+	            pstmt.setString(6, address.getPostalCode());
+	            pstmt.setString(7, address.getCountry());
+	
+	            int rowsAffected = pstmt.executeUpdate();
+	
+	            if (rowsAffected > 0) {
+	                ResultSet generatedKeys = pstmt.getGeneratedKeys();
+	                if (generatedKeys.next()) {
+	                    int generatedAddressId = generatedKeys.getInt(1); // Get the generated Address ID
+	                    address.setAddressID(generatedAddressId); // Set the generated Address ID in the address object
+	                }
+	            }
+	
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        } finally {
+	            closeConnection(conn);
+	        }
+	
+	        return address; // Return the Address object with the generated Address ID
+	    }
 
-        try {
-            conn = DBConnection.getConnection();
 
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO address (UserID, Address1, Address2, District, City, PostalCode, Country) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            pstmt.setInt(1, address.getUserID());
-            pstmt.setString(2, address.getAddress1());
-            pstmt.setString(3, address.getAddress2());
-            pstmt.setString(4, address.getDistrict());
-            pstmt.setString(5, address.getCity());
-            pstmt.setString(6, address.getPostalCode());
-            pstmt.setString(7, address.getCountry());
 
-            pstmt.executeUpdate();
+	    public Address updateAddress(Address address) {
+	        Connection conn = null;
+	        Address updatedAddress = null;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection(conn);
-        }
-    }
+	        try {
+	            conn = DBConnection.getConnection();
 
-    public void updateAddress(Address address) {
-        Connection conn = null;
+	            System.out.println("Preparing SQL statement...");
+	            PreparedStatement pstmt = conn.prepareStatement(
+	                    "UPDATE address SET UserID = ?, Address1 = ?, Address2 = ?, District = ?, City = ?, PostalCode = ?, Country = ? WHERE AddressID = ?");
+	            
+	            System.out.println("Setting PreparedStatement parameters...");
+	            pstmt.setInt(1, address.getUserID());
+	            pstmt.setString(2, address.getAddress1());
+	            pstmt.setString(3, address.getAddress2());
+	            pstmt.setString(4, address.getDistrict());
+	            pstmt.setString(5, address.getCity());
+	            pstmt.setString(6, address.getPostalCode());
+	            pstmt.setString(7, address.getCountry());
+	            pstmt.setInt(8, address.getAddressID());
 
-        try {
-            conn = DBConnection.getConnection();
+	            System.out.println("Executing update...");
+	            int rowsUpdated = pstmt.executeUpdate();
+	            System.out.println("Rows updated: " + rowsUpdated);
 
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "UPDATE address SET UserID = ?, Address1 = ?, Address2 = ?, District = ?, City = ?, PostalCode = ?, Country = ? WHERE AddressID = ?");
-            pstmt.setInt(1, address.getUserID());
-            pstmt.setString(2, address.getAddress1());
-            pstmt.setString(3, address.getAddress2());
-            pstmt.setString(4, address.getDistrict());
-            pstmt.setString(5, address.getCity());
-            pstmt.setString(6, address.getPostalCode());
-            pstmt.setString(7, address.getCountry());
-            pstmt.setInt(8, address.getAddressID());
+	            if (rowsUpdated > 0) {
+	                updatedAddress = address; // The updated object can be considered the same as the input object
+	            }
 
-            pstmt.executeUpdate();
+	        } catch (SQLException e) {
+	            System.err.println("An SQL exception occurred:" + e);
+	            e.printStackTrace();
+	        } finally {
+	            closeConnection(conn);
+	        }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection(conn);
-        }
-    }
+	        System.out.println("Returning updated address: " + updatedAddress);
+	        return updatedAddress;
+	    }
+
+
 
     public boolean deleteAddress(int addressID) {
         Connection conn = null;
