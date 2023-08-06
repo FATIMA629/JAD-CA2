@@ -1,10 +1,2 @@
-/servlets/
-/Address/
-/user/
-/order/
-/BookServlet/
-/StripeServlet/
+/DBAccess/
 /book/
-/CountryServlet/
-/Cart/
-/AddressServlet/
