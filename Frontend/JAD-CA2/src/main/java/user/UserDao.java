@@ -55,6 +55,7 @@ public class UserDao {
 				user.setEmail(rs.getString("Email"));
 				user.setRole(rs.getString("Role"));
 				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
+				user.setPhone(rs.getString("PhoneNumber"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -151,7 +152,8 @@ public class UserDao {
 		return user;
 	}
 
-	public User getUserById(int i) {
+
+	public User getUserById(int userId) {
 		Connection conn = null;
 		User user = null;
 
@@ -159,7 +161,9 @@ public class UserDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE UserID = ?");
-			pstmt.setInt(1, i);
+      
+			pstmt.setInt(1, userId);
+
 
 			ResultSet rs = pstmt.executeQuery();
 
@@ -170,6 +174,7 @@ public class UserDao {
 				user.setEmail(rs.getString("Email"));
 				user.setRole(rs.getString("Role"));
 				user.setAddress(getAddressByUserId(rs.getInt("DefaultAddressID")));
+				user.setPhone(rs.getString("PhoneNumber"));
 			}
 
 		} catch (SQLException e) {
@@ -220,11 +225,13 @@ public class UserDao {
 
 			// Updating the user details
 			PreparedStatement pstmt = conn
-					.prepareStatement("UPDATE users SET UserName = ? , Role = ? , Email = ? WHERE UserID = ?");
+					.prepareStatement("UPDATE users SET UserName = ? , Password = ? , Email = ?, DefaultAddressID = ?, PhoneNumber = ? WHERE UserID = ?");
 			pstmt.setString(1, user.getUserName());
-			pstmt.setString(2, user.getRole());
+			pstmt.setString(2, user.getPassword());
 			pstmt.setString(3, user.getEmail());
-			pstmt.setInt(4, user.getUserID());
+			pstmt.setInt(4, user.getAddress().getAddressID());
+			pstmt.setString(5, user.getPhone());
+			pstmt.setInt(6, user.getUserID());
 
 			pstmt.executeUpdate();
 

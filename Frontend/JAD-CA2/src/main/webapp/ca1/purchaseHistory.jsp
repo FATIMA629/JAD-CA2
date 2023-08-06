@@ -6,10 +6,7 @@
 	if (session != null && session.getAttribute("loggedIn") != null) {
 		// User is logged in
 
-		// Check if the user is an admin
-		String role = (String) session.getAttribute("role");
-		if (!role.equals("admin")) {
-			// User is a registered user
+		
     
     int userId = (int) session.getAttribute("userId");
     String username = (String) session.getAttribute("username");
@@ -102,11 +99,12 @@ for(Order order: orderList) {
                                                             <tbody>
                                                             <%
                                                             List<OrderItem> orderItemsList = order.getOrderItems();
+                                                            System.out.println(orderItemsList);
                                                             for (OrderItem orderItem: orderItemsList) {	
                                                             %>
                                                             <tr class="cart_table_item">
                                             <td class="product-thumbnail">
-                                                <a href="../FilterRatingsServlet?id=<%=orderItem.getBook().getBookId() %>"><img width="100" height="100" alt="" class="img-responsive" src=<%=orderItem.getBook().getImageLocation() %>></a>
+                                                <a href="../FilterRatingsServlet?id=<%=orderItem.getBook().getBookId() %>"><img width="100" height="100" alt="" class="img-responsive" src="<%=request.getContextPath()%>/<%=orderItem.getBook().getImageLocation()%>"></a>
                                             </td>
                                             <td class="product-name">
                                                 <a class="productDetails" href="../FilterRatingsServlet?id=<%=orderItem.getBook().getBookId() %>"><%=orderItem.getBook().getTitle() %></a>
@@ -174,10 +172,6 @@ orderNumber--;
 <%
 	} else {
 	// User is not an admin
-	response.sendRedirect("login.jsp"); // Redirect to the home page
-	}
-	} else {
-	// User is not logged in
 	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 	%>

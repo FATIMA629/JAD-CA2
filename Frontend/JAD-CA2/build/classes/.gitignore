@@ -1,6 +1,7 @@
-/BookServlet/
-/StripeServlet/
 /DBAccess/
-/user/
 /book/
+/OrderServlet/
 /servlets/
+/user/
+/Cart/
+

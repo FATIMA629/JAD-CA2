@@ -4,16 +4,13 @@
 	if (session != null && session.getAttribute("loggedIn") != null) {
 		// User is logged in
 
-		// Check if the user is an admin
-		String role = (String) session.getAttribute("role");
-		if (!role.equals("admin")) {
-			// User is a registered user
+		
     
     String amountStr = (String) session.getAttribute("totalAmount");
     double amount = Double.parseDouble(amountStr);
     double gstRate = 0.08;
     double gstAmount = amount * gstRate;
-    double totalAmount = amount + gstRate;
+    double totalAmount = amount + gstAmount;
     String publicKey = (String) session.getAttribute("stripePublicKey");
     String paymentType = (String) request.getAttribute("paymentType");
     System.out.println(publicKey);
@@ -70,7 +67,7 @@
       <ul>
         <li>Subtotal <span><%=amount %></span></li>
         <li>Tax <span><%=String.format("%.2f", gstAmount)%></span></li>
-        <li class="total">Total<span><%=String.format("%.2f", totalAmount) %></span></li>
+        <li class="total">Total <span><%=String.format("%.2f", totalAmount) %></span></li>
       </ul>
     </div>
                     
@@ -93,10 +90,6 @@
 <%
 	} else {
 	// User is not an admin
-	response.sendRedirect("login.jsp"); // Redirect to the home page
-	}
-	} else {
-	// User is not logged in
 	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 	%>

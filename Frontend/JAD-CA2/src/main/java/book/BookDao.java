@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import book.Book;
-
 import DBAccess.DBConnection;
 
 public class BookDao {
