@@ -1,7 +1,5 @@
-/servlets/
-/Address/
-/user/
-/order/
 /BookServlet/
 /StripeServlet/
+/DBAccess/
+/user/
 /book/

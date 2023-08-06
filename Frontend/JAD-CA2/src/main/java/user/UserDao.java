@@ -96,7 +96,7 @@ public class UserDao {
 		return users;
 	}
 
-	public boolean deleteUser(String userId) {
+	public boolean deleteUser(int userId) {
 		Connection conn = null;
 		boolean deleted = false;
 
@@ -104,7 +104,7 @@ public class UserDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("DELETE FROM users WHERE UserID = ?");
-			pstmt.setString(1, userId);
+			pstmt.setInt(1, userId);
 
 			int rowsAffected = pstmt.executeUpdate();
 			deleted = (rowsAffected > 0);
