@@ -327,13 +327,14 @@ public class UserDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement(
-					"UPDATE users SET UserName = ? , Email = ?, DefaultAddressID = ?, Password = ? WHERE UserID = ?");
+					"UPDATE users SET UserName = ? , Email = ?, PhoneNumber = ?, DefaultAddressID = ?, Password = ? WHERE UserID = ?");
 			pstmt.setString(1, user.getUserName());
 			pstmt.setString(2, user.getEmail());
-			pstmt.setInt(3, user.getAddress().getAddressID());
-			pstmt.setString(4, user.getPassword());
-			pstmt.setInt(5, user.getUserID());
-			pstmt.setString(6, user.getPhone());
+			pstmt.setString(3, user.getPhone());
+			pstmt.setInt(4, user.getAddress().getAddressID());
+			pstmt.setString(5, user.getPassword());
+			pstmt.setInt(6, user.getUserID());
+
 
 			pstmt.executeUpdate();
 

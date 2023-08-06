@@ -104,11 +104,11 @@
 			
 			<div class="form-group">
 					<label for="address1">Address</label>
-					<input type="text" name="address1" class="form-control" id="address1" value="<%=inputData.getOrDefault("Address", user.getAddress().getAddress1())%>" required>
+					<input type="text" name="address" class="form-control" id="address1" value="<%=inputData.getOrDefault("Address", user.getAddress().getAddress1())%>" required>
 					<%
-				if (errors != null && errors.containsKey("address1")) {
+				if (errors != null && errors.containsKey("address")) {
 				%>
-				<div class="error"><%=errors.get("address1")%></div>
+				<div class="error"><%=errors.get("address")%></div>
 				<%
 				}
 				%>
@@ -125,48 +125,45 @@
 					<div class="col-md-6 form-group">
 						<label for="country">Country</label>
 						<select type="text" name="country" class="form-control" id="country">
-							<option value><%=user.getAddress().getCountry() %></option>
-							<option>United Kingdom</option>
+						<%if(user.getAddress().getCountry().equals("United Kingdom")) {%>
+						<option><%=user.getAddress().getCountry() %></option>
 							<option>Canada</option>
 							<option>USA</option>
+							<% } else if(user.getAddress().getCountry().equals("Canada")) {%>
+							<option><%=user.getAddress().getCountry() %></option>
+							<option>United Kingdom</option>
+							<option>USA</option>
+							<% } else { %>
+							<option><%=user.getAddress().getCountry() %></option>
+							<option>United Kingdom</option>
+							<option>Canada</option>
+							<% } %> 
 						</select>
-						<%
-				if (errors != null && errors.containsKey("country")) {
-				%>
-				<div class="error"><%=errors.get("country")%></div>
-				<%
-				}
-				%>
+					
 					</div>
 
 					<div class="col-md-6 form-group">
 						<label for="city">City</label>
 						<select type="text" name="city" class="form-control" id="city">
 						<%if(user.getAddress().getCity().equals("London")) {%>
-							<option value><%=user.getAddress().getCity() %></option>
+							<option><%=user.getAddress().getCity() %></option>
 							<option>Las Vegas</option>
 							<option>Texas</option>
 							<% } else if (user.getAddress().getCity().equals("Las Vegas")) { %>
-							<option value><%=user.getAddress().getCity() %></option>
+							<option><%=user.getAddress().getCity() %></option>
 							<option>London</option>
 							<option>Texas</option>
 							<%
 							} else {
 							%>
-							<option value><%=user.getAddress().getCity() %></option>
+							<option ><%=user.getAddress().getCity() %></option>
 							<option>London</option>
 							<option>Las Vegas</option>
 							<%
 							}
 							%>
 						</select>
-						<%
-				if (errors != null && errors.containsKey("city")) {
-				%>
-				<div class="error"><%=errors.get("city")%></div>
-				<%
-				}
-				%>
+					
 					</div>
 </div>
 				

@@ -136,7 +136,7 @@ List<Book> allBooks = bookDao.readAllBooks();
 									}
 									 %>
 								</div>
-								<h4 style="color: black; display: block;"><%=book.getRating()%></h4>
+									<h4 style="color: black; display: block;"><%=book.getRating()%></h4>
 							</div>
 						</figcaption>
 					</figure>

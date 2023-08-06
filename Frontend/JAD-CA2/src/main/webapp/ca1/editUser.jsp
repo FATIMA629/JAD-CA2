@@ -47,7 +47,7 @@
 		if (role.equals("admin")) {
 			String userId = request.getParameter("id");
 			UserDao userDao = new UserDao();
-			User user = userDao.getUserById(userId);
+			User user = userDao.getUserById(Integer.parseInt(userId));
 			Map<String, String> errors = (Map<String, String>) session.getAttribute("errors");
 			Map<String, String> inputData = (Map<String, String>) session.getAttribute("inputData");
 			if (inputData == null) {
@@ -190,11 +190,11 @@
 	<%
 	} else {
 	// User is not an admin
-	response.sendRedirect("home.jsp"); // Redirect to the home page
+	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 	} else {
 	// User is not logged in
-	response.sendRedirect("home.jsp"); // Redirect to the home page
+	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 	%>
 

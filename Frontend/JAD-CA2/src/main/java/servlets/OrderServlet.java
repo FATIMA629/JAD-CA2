@@ -50,7 +50,7 @@ public class OrderServlet extends HttpServlet {
 		System.out.println("hello i am working 1");
 		int userid = (int) session.getAttribute("userId");
 		System.out.println("hello i am working 2");
-		String amountStr = (String) session.getAttribute("totalPrice");
+		String amountStr = request.getParameter("totalAmount");
 		double totalPrice = Double.parseDouble(amountStr);
 		System.out.println("hello i am working 3");
 		System.out.println("hello i am working 4");

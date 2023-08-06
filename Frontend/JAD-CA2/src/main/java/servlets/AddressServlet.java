@@ -71,10 +71,17 @@ public class AddressServlet extends HttpServlet {
         address.setUserID(userid);
 		
         AddressDao addressDao = new AddressDao();
-		addressDao.createAddress(address);
+		address = addressDao.createAddress(address);
+		
+		User user = new User();
+		user.setUserID(userid);
+		user.setAddress(address);
+		
+		UserDao userDao = new UserDao();
+		userDao.updateDefaultAddress(user);
 		
 		request.setAttribute("address", address);
-		String url = "/UpdateUserAddressServlet";
+		String url = "/ca1/checkout.jsp";
 		RequestDispatcher cd = request.getRequestDispatcher(url);
         cd.forward(request, response);
 	}

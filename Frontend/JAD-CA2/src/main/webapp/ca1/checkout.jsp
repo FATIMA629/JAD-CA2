@@ -5,6 +5,14 @@
     <%@page import="Address.*" %>
     <%@ page import="java.util.List"%>
 <%
+if (session != null && session.getAttribute("loggedIn") != null) {
+	// User is logged in
+
+	// Check if the user is an admin
+	String role = (String) session.getAttribute("role");
+	if (!role.equals("admin")) {
+		// User is a registered user
+
 AddressDao addressDao = new AddressDao();
 CountryDao countryDao = new CountryDao();
 CityDao cityDao = new CityDao();
@@ -34,7 +42,7 @@ System.out.println(addressList);
 			
 			  <% if (!addressList.isEmpty()) { %>
             
-            <form action="../AddressServlet" method="GET">
+            <form action="AddressServlet" method="GET">
                
                 <% for (Address address : addressList) { %>
                     <input type="radio" name="selectedAddress" value="<%= address.getAddressID() %>">
@@ -46,7 +54,7 @@ System.out.println(addressList);
 						<input type="checkbox" class="form-check-input" id="shipping-adress"> 
 							Shipping address is the same as my billing address
 						<label for="shipping-address" class="form-check-label"></label>
-					</div>
+					</div> 
 					<div class="form-check">
 					<input type="checkbox" class="form-check-input" id="same-adress">
 						Save this information for next time
@@ -147,7 +155,16 @@ System.out.println(addressList);
 			}
 %>			
 		</div>
-		
+		<%
+	} else {
+	// User is not an admin
+	response.sendRedirect("login.jsp"); // Redirect to the home page
+	}
+	} else {
+	// User is not logged in
+	response.sendRedirect("login.jsp"); // Redirect to the home page
+	}
+	%>
 		
 		
 </body>

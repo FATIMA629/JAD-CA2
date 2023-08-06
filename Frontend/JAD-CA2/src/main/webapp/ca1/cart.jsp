@@ -6,6 +6,14 @@
 <html>
 <head>
 <%
+if (session != null && session.getAttribute("loggedIn") != null) {
+	// User is logged in
+
+	// Check if the user is an admin
+	String role = (String) session.getAttribute("role");
+	if (!role.equals("admin")) {
+		// User is a registered user
+
 // Retrieve the cart items from the session
 List<Book> cartItems = (List<Book>) session.getAttribute("cartItems");
 int userid = (int) session.getAttribute("userId");
@@ -73,7 +81,9 @@ int userid = (int) session.getAttribute("userId");
 					<span class="text-color">Action</span>
 				</div>
 			</div>
+			
 			<%
+			if(!cartItems.isEmpty()) {
 			for (Book item : cartItems) {
 				 totalCartItemsAmt += cartDao.getQuantity(userid,item.getBookId());
 				 double totalPriceOfEachBook = item.getPrice() * cartDao.getQuantity(userid,item.getBookId());
@@ -112,8 +122,9 @@ int userid = (int) session.getAttribute("userId");
 		</div>
 		
 		<section class="checkout-section">
+		<form action="../AddToCartServlet" method="get">
             <div class="grid-container">
-                <form action="../AddToCartServlet" method="get">
+                
 <div class="ff">
                 <div class="aa">
                     <div class="bb">
@@ -135,15 +146,28 @@ int userid = (int) session.getAttribute("userId");
             <button class="checkout-btn-solid checkout-btn-solid--primary">
                 <span style="width: 100%">Check out</span>
             </button>
-            </form>
+           
 </div>
+ </form>
         </section>
+        <%
+			} else {
+        %>
+        <h4 style="text-align: center">Cart is Empty</h4>
+        
+        <% }%>
 	</div>
+	<%
+	} else {
+	// User is not an admin
+	response.sendRedirect("login.jsp"); // Redirect to the home page
+	}
+	} else {
+	// User is not logged in
+	response.sendRedirect("login.jsp"); // Redirect to the home page
+	}
+	%>
 </body>
-
-<%
-System.out.println(totalPrice);
-%>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

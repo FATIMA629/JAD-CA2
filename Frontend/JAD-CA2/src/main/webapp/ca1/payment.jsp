@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%
+	if (session != null && session.getAttribute("loggedIn") != null) {
+		// User is logged in
+
+		// Check if the user is an admin
+		String role = (String) session.getAttribute("role");
+		if (!role.equals("admin")) {
+			// User is a registered user
+    
     String amountStr = (String) session.getAttribute("totalPrice");
     double amount = Double.parseDouble(amountStr);
     double gstRate = 0.08;
@@ -47,7 +55,8 @@
 <body>
   <div class="col-md-4 container bg-default">
 			<h4 class="my-4">Select Payment Method</h4>
-	<form action="CheckoutServlet" method="post">
+	<form action="../CheckoutServlet" method="post">
+	<input type="hidden" name=totalAmount value="<%=totalAmount %>">
 <input type="radio" name="paymentType" value="Stripe">
                    Stripe<br >
                  <hr class="my-4">  
@@ -82,5 +91,15 @@
    </section>
 </form>
 </div>
+<%
+	} else {
+	// User is not an admin
+	response.sendRedirect("login.jsp"); // Redirect to the home page
+	}
+	} else {
+	// User is not logged in
+	response.sendRedirect("login.jsp"); // Redirect to the home page
+	}
+	%>
 </body>
 </html>

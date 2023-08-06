@@ -47,6 +47,18 @@ public class UserUpdateUserServlet extends HttpServlet {
 		String district = request.getParameter("district");
 		String postalCode = request.getParameter("postalCode");
 		String password = request.getParameter("password"); 
+		
+		System.out.println("userId: " + userId);
+		System.out.println("username: " + username);
+		System.out.println("email: " + email);
+		System.out.println("phone: " + phone);
+		System.out.println("Address: " + Address);
+		System.out.println("address2: " + address2);
+		System.out.println("country: " + country);
+		System.out.println("city: " + city);
+		System.out.println("district: " + district);
+		System.out.println("postalCode: " + postalCode);
+		System.out.println("password: " + password);
 
 		System.out.println("Am I working 1");
 		Map<String, String> errors = new HashMap<>();
@@ -106,7 +118,9 @@ public class UserUpdateUserServlet extends HttpServlet {
 		}
 
 		System.out.println("Am I working 4");
+		System.out.print(errors);
 		if (errors.isEmpty()) {
+			System.out.println("Am I working 4.5");
 			Address address = new Address();
 	        address.setAddress1(Address);
 	        address.setAddress2(address2);
@@ -117,7 +131,8 @@ public class UserUpdateUserServlet extends HttpServlet {
 	        address.setUserID(userId);
 	        
 	        AddressDao addressDao = new AddressDao();
-			addressDao.updateAddress(address);
+			address = addressDao.updateAddress(address);
+			System.out.print("Updated Address is " + address);
 			
 	        System.out.println("Am I working 5");
 			// Update the user in the database

@@ -249,11 +249,11 @@
 	<%
 		} else {
 	// User is not an admin
-	response.sendRedirect("home.jsp"); // Redirect to the home page
+	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 		} else {
 	// User is not logged in
-	response.sendRedirect("home.jsp"); // Redirect to the home page
+	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 	%>
 

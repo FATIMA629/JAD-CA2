@@ -48,7 +48,7 @@
 			String bookId = request.getParameter("id");
 			BookDao bookDao = new BookDao();
 			GenreDao genreDao = new GenreDao();
-			Book book = bookDao.getBookById(bookId);
+			Book book = bookDao.getBookById(Integer.parseInt(bookId));
 			Map<String, String> errors = (Map<String, String>) session.getAttribute("errors");
 			Map<String, String> inputData = (Map<String, String>) session.getAttribute("inputData");
 			if (inputData == null) {
@@ -236,11 +236,11 @@
 	<%
 	} else {
 	// User is not an admin
-	response.sendRedirect("home.jsp"); // Redirect to the home page
+	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 	} else {
 	// User is not logged in
-	response.sendRedirect("home.jsp"); // Redirect to the home page
+	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 	%>
 

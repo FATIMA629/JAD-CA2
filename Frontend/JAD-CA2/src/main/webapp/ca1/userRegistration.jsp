@@ -69,8 +69,8 @@
 							required>
 					</div>
 					<div class="mb-3">
-						<label for="address" class="form-label">Address:</label> <input
-							type="text" id="address" name="address" class="form-control"
+						<label for="phone" class="form-label">Phone Number:</label> <input
+							type="text" id="phone" name="phone" class="form-control"
 							required>
 					</div>
 					<button type="submit" class="btn btn-primary">Register</button>
@@ -81,7 +81,7 @@
 	<%
 	} else {
 	// User is logged in
-	response.sendRedirect("home.jsp"); // Redirect to the home page
+	response.sendRedirect("login.jsp"); // Redirect to the home page
 	}
 	%>
 

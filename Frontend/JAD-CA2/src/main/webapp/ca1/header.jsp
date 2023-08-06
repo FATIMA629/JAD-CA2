@@ -78,7 +78,7 @@
 					<div class="cart-drawer">
 						<div class="profile-icon">
 							<img src="../images/profile.png" class="img-fluid" id="profileImage">
-							<div class="profile-prompt user">
+							<div class="profile-prompt guest">
 								<div class="profile">
 									<span class="dot"><img class="profile-picture"
 										src="../images/image-removebg-preview (39).png" /></span> <a
@@ -133,7 +133,7 @@
 					<div class="cart-drawer">
 						<div class="profile-icon">
 							<img src="../images/profile.png" class="img-fluid" id="profileImage">
-							<div class="profile-prompt user">
+							<div class="profile-prompt guest">
 								<div class="profile">
 									<span class="dot"><img class="profile-picture"
 										src="../images/image-removebg-preview (39).png" /></span> <a
