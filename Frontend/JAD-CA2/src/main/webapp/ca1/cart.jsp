@@ -105,7 +105,7 @@ int userid = (int) session.getAttribute("userId");
 						<input type="text"
 							value="<%=cartDao.getQuantity(userid, item.getBookId()) %>"
 							class="quantity-input">
-						<button class="plus-button">+</button>
+						<button class="plus-button">+</button>	
 					</div>
 					
 					<div class="col-1 center">

@@ -18,7 +18,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import Address.Address;
+import Address.*;
 
 /**
  * Servlet implementation class GetAddressList
@@ -56,10 +56,10 @@ public class GetAddressList extends HttpServlet {
             ArrayList<Address> addressList = resp.readEntity(new GenericType<ArrayList<Address>>() {});
             System.out.println(addressList.size());
             for (Address address : addressList) {
-                System.out.println(address.getAddressId());
-                out.print("<br>Address: " + address.getAddress());
-                out.print("<br>CityId: " + address.getCityId());
-                out.print("<br>UserId: " + address.getUserId() + "<br>");
+                System.out.println(address.getAddressID());
+                out.print("<br>Address: " + address.getAddress1());
+                out.print("<br>CityId: " + address.getCity());
+                out.print("<br>UserId: " + address.getUserID() + "<br>");
             }
 
             request.setAttribute("addressList", addressList);
