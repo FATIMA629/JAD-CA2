@@ -9,9 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -54,13 +52,31 @@ public class AddToCartServlet extends HttpServlet {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+            
+            Map<String, String> errors = new HashMap<>();
+            BookDao bookDao = new BookDao();
+            Book book = bookDao.getBookById(bookId);
+                     
+            if(cartQuantity >  book.getQuantity()) {
+            	errors.put("quantity", "Cart items added available amount");
+            } 
+            
+            if(book.getQuantity() == 0) {
+            	errors.put("quantity", "Book out of stock");
+            }
+            
+            if (errors.isEmpty()) {
             cartDao.addToCart(userid, bookId, cartQuantity);
 
             List<Book> cartItems = cartDao.getAllBooksInCart(userid);
             session.setAttribute("cartItems", cartItems);
-        //}
-
-        response.sendRedirect("ca1/cart.jsp");
+            session.removeAttribute("errors");
+            response.sendRedirect("ca1/cart.jsp");
+            } else {
+            	session.setAttribute("errors", errors);
+            	response.sendRedirect("ca1/viewBook.jsp");
+            }
+            
             }
     }
 }

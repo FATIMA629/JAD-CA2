@@ -2,7 +2,7 @@
 <%@page import="book.* "%>
 <%@page import="rating.* "%>
 <%@page import="user.* "%>
-<%@ page import="java.util.List"%>
+<%@ page import="java.util.*"%>
 
 <%
 System.out.println("bookId in jsp is " + session.getAttribute("bookId"));
@@ -17,6 +17,7 @@ String selected = request.getParameter("selected");
 System.out.println(selected);
 double AvgRating = ratingDao.getAverageRatingForBook(bookId);
 List<Rating> ratingList = (List<Rating>) session.getAttribute("ratingList");
+Map<String, String> errors = (Map<String, String>) session.getAttribute("errors");
 UserDao userDao = new UserDao();
 %>
 
@@ -161,6 +162,13 @@ UserDao userDao = new UserDao();
 							<img src="../images/output-onlinepngtools.png" alt="cart-image"
 								class="add-to-cart"> ADD TO CART
 						</button>
+							<%
+				if (errors != null && errors.containsKey("quantity")) {
+				%>
+				<div class="error"><%=errors.get("quantity")%></div>
+				<%
+				}
+				%>
 					</form>
 				</div>
 			</div>

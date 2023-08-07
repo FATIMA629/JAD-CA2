@@ -129,6 +129,11 @@ public class OrderServlet extends HttpServlet {
 		PaymentDao paymentDao = new PaymentDao();
 		paymentDao.createPayment(payment);
 		
+		List<Book> newCartItems = cartDao.getAllBooksInCart(userid);
+        session.setAttribute("cartItems", newCartItems);
+        
+        System.out.println("cartItems in servlet is " + cartItems);
+        System.out.println("Updated cartItems in servlet is " + newCartItems);
 		request.setAttribute("totalPrice", totalPrice);
 		System.out.println("hello i am working 15");
 		String url = "/ca1/orderDetails.jsp";

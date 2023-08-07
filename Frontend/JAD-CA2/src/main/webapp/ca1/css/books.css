@@ -42,6 +42,10 @@ nav {
     max-width: 60px;
 }
 
+.error {
+	color: red;
+}
+
 .profile-icon {
     position: relative;
   }

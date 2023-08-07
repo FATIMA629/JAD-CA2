@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Cart.*;
+import book.*;
 /**
  * Servlet implementation class EditCartServlet
  */
@@ -52,7 +55,13 @@ public class EditCartServlet extends HttpServlet {
 		}
 		
 		if ("minus".equals(action)) { 
-	        cartDao.updateQuantity(quantity - 1, userid, bookid);
+	        int newQuantity = cartDao.updateQuantity(quantity - 1, userid, bookid);
+	        System.out.println("Updated quantity in servlet is " + newQuantity);
+	        if(newQuantity == 0) {
+	        	cartDao.deleteFromCart(userid, bookid);
+	        	List<Book> cartItems = cartDao.getAllBooksInCart(userid);
+	            session.setAttribute("cartItems", cartItems);
+	        }
 	    } else if ("plus".equals(action)) {
 	        cartDao.updateQuantity(quantity + 1, userid, bookid);
 	    }
