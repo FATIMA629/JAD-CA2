@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="book.*"%>
+<%@ page import="Address.*"%>
 <%@ page import="user.*"%>
 <%@ page import="java.util.*"%>
 <!DOCTYPE html>
@@ -106,10 +107,13 @@
 
 			<%-- Shipping Address fields --%>
 			<h3>Shipping Address:</h3>
+			<%
+			Address userAddress = user.getAddress();
+			%>
 			<div class="mb-3">
 				<label for="country" class="form-label">Country:</label> <input
 					type="text" class="form-control" id="country" name="country"
-					value="<%=user.getAddress().getCountry()%>">
+					value="<%=(userAddress != null ? userAddress.getCountry() : "")%>">
 				<%
 				if (errors != null && errors.containsKey("country")) {
 				%>
@@ -122,7 +126,7 @@
 			<div class="mb-3">
 				<label for="address1" class="form-label">Address1:</label> <input
 					type="text" class="form-control" id="address1" name="address1"
-					value="<%=user.getAddress().getAddress1()%>">
+					value="<%=(userAddress != null ? userAddress.getAddress1() : "")%>">
 				<%
 				if (errors != null && errors.containsKey("address1")) {
 				%>
@@ -135,7 +139,7 @@
 			<div class="mb-3">
 				<label for="address2" class="form-label">Address2:</label> <input
 					type="text" class="form-control" id="address2" name="address2"
-					value="<%=user.getAddress().getAddress2()%>">
+					value="<%=(userAddress != null ? userAddress.getAddress2() : "")%>">
 				<%
 				if (errors != null && errors.containsKey("address2")) {
 				%>
@@ -148,7 +152,7 @@
 			<div class="mb-3">
 				<label for="district" class="form-label">District:</label> <input
 					type="text" class="form-control" id="district" name="district"
-					value="<%=user.getAddress().getDistrict()%>">
+					value="<%=(userAddress != null ? userAddress.getDistrict() : "")%>">
 				<%
 				if (errors != null && errors.containsKey("district")) {
 				%>
@@ -161,7 +165,7 @@
 			<div class="mb-3">
 				<label for="city" class="form-label">City:</label> <input
 					type="text" class="form-control" id="city" name="city"
-					value="<%=user.getAddress().getCity()%>">
+					value="<%=(userAddress != null ? userAddress.getCity() : "")%>">
 				<%
 				if (errors != null && errors.containsKey("city")) {
 				%>
@@ -174,7 +178,7 @@
 			<div class="mb-3">
 				<label for="postalCode" class="form-label">Postal Code:</label> <input
 					type="text" class="form-control" id="postalCode" name="postalCode"
-					value="<%=user.getAddress().getPostalCode()%>">
+					value="<%=(userAddress != null ? userAddress.getPostalCode() : "")%>">
 				<%
 				if (errors != null && errors.containsKey("postalCode")) {
 				%>
@@ -183,6 +187,7 @@
 				}
 				%>
 			</div>
+
 
 			<input type="submit" class="btn btn-primary" value="Update User">
 		</form>

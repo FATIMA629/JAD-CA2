@@ -152,7 +152,6 @@ public class UserDao {
 		return user;
 	}
 
-
 	public User getUserById(int userId) {
 		Connection conn = null;
 		User user = null;
@@ -161,9 +160,8 @@ public class UserDao {
 			conn = DBConnection.getConnection();
 
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE UserID = ?");
-      
-			pstmt.setInt(1, userId);
 
+			pstmt.setInt(1, userId);
 
 			ResultSet rs = pstmt.executeQuery();
 
@@ -224,8 +222,8 @@ public class UserDao {
 			conn = DBConnection.getConnection();
 
 			// Updating the user details
-			PreparedStatement pstmt = conn
-					.prepareStatement("UPDATE users SET UserName = ? , Password = ? , Email = ?, DefaultAddressID = ?, PhoneNumber = ? WHERE UserID = ?");
+			PreparedStatement pstmt = conn.prepareStatement(
+					"UPDATE users SET UserName = ? , Password = ? , Email = ?, DefaultAddressID = ?, PhoneNumber = ? WHERE UserID = ?");
 			pstmt.setString(1, user.getUserName());
 			pstmt.setString(2, user.getPassword());
 			pstmt.setString(3, user.getEmail());
@@ -245,6 +243,72 @@ public class UserDao {
 			closeConnection(conn);
 		}
 	}
+
+	public void adminUpdateUser(User user) {
+	    Connection conn = null;
+	    
+	    try {
+	        System.out.println("[AdminUpdateUser] Started for User ID: " + user.getUserID());
+
+	        conn = DBConnection.getConnection();
+	        System.out.println("[AdminUpdateUser] Database connection established successfully.");
+
+	        // Check if the user has an address. If not, create one.
+	        Address address = user.getAddress();
+	        
+	        System.out.println("[AdminUpdateUser] Checking user's address ID: " + address.getAddressID());
+	        
+	        if (address.getAddressID() == 0) {
+	            System.out.println("[AdminUpdateUser] User doesn't have an associated address. Initiating address creation.");
+	            
+	            AddressDao addressDao = new AddressDao();
+	            address = addressDao.createAddress(address);
+	            
+	            System.out.println("[AdminUpdateUser] New address created with ID: " + address.getAddressID());
+	            
+	            user.setAddress(address); 
+	            System.out.println("[AdminUpdateUser] Updated user object with the newly created address ID.");
+	        }
+
+	        // Update the user details
+	        System.out.println("[AdminUpdateUser] Preparing SQL statement to update user details.");
+	        
+	        PreparedStatement pstmt = conn.prepareStatement(
+	                "UPDATE users SET UserName = ? , Email = ?, DefaultAddressID = ?, PhoneNumber = ? WHERE UserID = ?");
+	        pstmt.setString(1, user.getUserName());
+	        pstmt.setString(2, user.getEmail());
+	        pstmt.setInt(3, user.getAddress().getAddressID());
+	        pstmt.setString(4, user.getPhone());
+	        pstmt.setInt(5, user.getUserID());
+
+	        System.out.println("[AdminUpdateUser] Set values in the prepared statement: UserName=" + user.getUserName() 
+	        + ", Email=" + user.getEmail() + ", AddressID=" + user.getAddress().getAddressID() + ", Phone=" + user.getPhone());
+
+	        int rowsUpdated = pstmt.executeUpdate();
+	        
+	        System.out.println("[AdminUpdateUser] User details updated. Rows affected: " + rowsUpdated);
+
+	        // Update the address details using AddressDao
+	        System.out.println("[AdminUpdateUser] Initiating the update of address details for Address ID: " + address.getAddressID());
+	        
+	        AddressDao addressDao = new AddressDao();
+	        addressDao.updateAddress(user.getAddress());
+	        
+	        System.out.println("[AdminUpdateUser] Address details updated successfully.");
+
+	    } catch (SQLException e) {
+	        System.err.println("[AdminUpdateUser] SQL Error encountered: " + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	        if (conn != null) {
+	            System.out.println("[AdminUpdateUser] Attempting to close the database connection.");
+	            closeConnection(conn);
+	            System.out.println("[AdminUpdateUser] Database connection closed.");
+	        }
+	        System.out.println("[AdminUpdateUser] Process completed for User ID: " + user.getUserID());
+	    }
+	}
+
 
 	public void createUser(User user) {
 		Connection conn = null;

@@ -559,17 +559,18 @@
 					<div class="col">
 						<label for="numTopSellingBooks">Number of Top Selling
 							Books:</label> <input type="number" class="form-control"
-							id="numTopSellingBooks" name="numTopSellingBooks" placeholder="5">
+							id="numTopSellingBooks" name="numTopSellingBooks" placeholder="5"
+							min="1">
 					</div>
 					<div class="col">
 						<label for="numTopOrders">Number of Top Orders:</label> <input
 							type="number" class="form-control" id="numTopOrders"
-							name="numTopOrders" placeholder="5">
+							name="numTopOrders" placeholder="5" min="1">
 					</div>
 					<div class="col">
 						<label for="numTopCustomers">Number of Top Customers:</label> <input
 							type="number" class="form-control" id="numTopCustomers"
-							name="numTopCustomers" placeholder="5">
+							name="numTopCustomers" placeholder="5" min="1">
 					</div>
 				</div>
 
@@ -592,7 +593,7 @@
 					<div class="col">
 						<label for="targetGenreId">Genre ID:</label> <input type="number"
 							class="form-control" id="targetGenreId" name="targetGenreId"
-							placeholder="1">
+							placeholder="1" min="1">
 					</div>
 				</div>
 
@@ -602,8 +603,8 @@
 			</form>
 
 
+
 			<div id="sales-section">
-			
 				<!-- Total Revenue Section -->
 				<div class="statistics-card">
 					<h3 class="statistics-header">Total Revenue</h3>
@@ -612,6 +613,11 @@
 						if (session.getAttribute("totalRevenue") != null) {
 						%>
 						$<%=String.format("%.2f", (Double) session.getAttribute("totalRevenue"))%>
+						<%
+						} else {
+						%>
+						<span class="error-message">Total revenue data is not
+							available.</span>
 						<%
 						}
 						%>
@@ -631,13 +637,10 @@
 						<%
 						}
 						} else {
-						String topSellingBooksError = (String) session.getAttribute("topSellingBooksError");
-						if (topSellingBooksError != null && !topSellingBooksError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=topSellingBooksError%></li>
+						<li class="error-message">No top selling books data
+							available.</li>
 						<%
-						session.removeAttribute("topSellingBooksError");
-						}
 						}
 						%>
 					</ul>
@@ -656,13 +659,9 @@
 						<%
 						}
 						} else {
-						String topOrdersError = (String) session.getAttribute("topOrdersError");
-						if (topOrdersError != null && !topOrdersError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=topOrdersError%></li>
+						<li class="error-message">No top orders data available.</li>
 						<%
-						session.removeAttribute("topOrdersError");
-						}
 						}
 						%>
 					</ul>
@@ -681,13 +680,9 @@
 						<%
 						}
 						} else {
-						String topCustomersError = (String) session.getAttribute("topCustomersError");
-						if (topCustomersError != null && !topCustomersError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=topCustomersError%></li>
+						<li class="error-message">No top customers data available.</li>
 						<%
-						session.removeAttribute("topCustomersError");
-						}
 						}
 						%>
 					</ul>
@@ -706,13 +701,10 @@
 						<%
 						}
 						} else {
-						String bookSalesByDateError = (String) session.getAttribute("bookSalesByDateError");
-						if (bookSalesByDateError != null && !bookSalesByDateError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=bookSalesByDateError%></li>
+						<li class="error-message">No book sales by date data
+							available.</li>
 						<%
-						session.removeAttribute("bookSalesByDateError");
-						}
 						}
 						%>
 					</ul>
@@ -731,13 +723,10 @@
 						<%
 						}
 						} else {
-						String bookSalesByPeriodError = (String) session.getAttribute("bookSalesByPeriodError");
-						if (bookSalesByPeriodError != null && !bookSalesByPeriodError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=bookSalesByPeriodError%></li>
+						<li class="error-message">No book sales by period data
+							available.</li>
 						<%
-						session.removeAttribute("bookSalesByPeriodError");
-						}
 						}
 						%>
 					</ul>
@@ -756,18 +745,14 @@
 						<%
 						}
 						} else {
-						String bookSalesByGenreError = (String) session.getAttribute("bookSalesByGenreError");
-						if (bookSalesByGenreError != null && !bookSalesByGenreError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=bookSalesByGenreError%></li>
+						<li class="error-message">No book sales by genre data
+							available.</li>
 						<%
-						session.removeAttribute("bookSalesByGenreError");
-						}
 						}
 						%>
 					</ul>
 				</div>
-
 			</div>
 		</div>
 
