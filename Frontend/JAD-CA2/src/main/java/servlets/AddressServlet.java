@@ -2,6 +2,9 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Address.*;
+import book.Book;
 import user.*;
 
 
@@ -35,17 +39,37 @@ public class AddressServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String addressIdStr = request.getParameter("selectedAddress");
+		Map<String, String> errors = new HashMap<>();
+		HttpSession session = request.getSession();
+		if(addressIdStr == null) {
+			errors.put("selectedAddress", "Please select a valid address");
+		}
+		if (errors.isEmpty()) {
 		int addressId = Integer.parseInt(request.getParameter("selectedAddress"));
 		System.out.println(addressId);
 		AddressDao addressDao = new AddressDao();
 		Address address = new Address();
 		
+		
 		address = addressDao.getAddressById(addressId);
 		
-		HttpSession session = request.getSession();
-		session.setAttribute("selectedAddress", address);
+		
+		
+		
+		
+		
 
-		response.sendRedirect(request.getContextPath() + "/CheckoutServlet");	
+            session.setAttribute("selectedAddress", address);
+            session.removeAttribute("errors");
+            
+    		response.sendRedirect(request.getContextPath() + "/CheckoutServlet");	
+            } else {
+            	session.setAttribute("errors", errors);
+            	response.sendRedirect(request.getContextPath() + "/ca1/checkout.jsp");
+            }
+		
+		
 		}
 
 	/**

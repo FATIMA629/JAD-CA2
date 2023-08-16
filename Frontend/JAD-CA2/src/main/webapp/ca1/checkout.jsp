@@ -3,7 +3,7 @@
     <%@page import="Country.*"%>
     <%@page import="City.*" %>
     <%@page import="Address.*" %>
-    <%@ page import="java.util.List"%>
+    <%@ page import="java.util.*"%>
 <%
 if (session != null && session.getAttribute("loggedIn") != null) {
 	// User is logged in
@@ -14,6 +14,7 @@ CityDao cityDao = new CityDao();
 int userId = (int) session.getAttribute("userId");
 System.out.println(userId);
 List<Address> addressList = addressDao.getAddressByUserId(userId);
+Map<String, String> errors = (Map<String, String>) session.getAttribute("errors");
 System.out.println(addressList);
 %>
 <!DOCTYPE html>
@@ -29,6 +30,11 @@ System.out.println(addressList);
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
 </head>
+<style>
+.error {
+	color: red;
+}
+</style>
 <body>
 
 
@@ -45,6 +51,13 @@ System.out.println(addressList);
                     <%=address.getAddress1() %><br>
                     </div>
                 <% } %>
+                <%
+				if (errors != null && errors.containsKey("selectedAddress")) {
+				%>
+				<div class="error"><%=errors.get("selectedAddress")%></div>
+				<%
+				}
+				%>
                 	<hr>
 				
 					<div class="form-check">

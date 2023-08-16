@@ -52,11 +52,22 @@ public class CheckoutServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Map<String, String> errors = new HashMap<>();
+		HttpSession session = request.getSession();
+		session.removeAttribute("errors");
+		String paymentType = request.getParameter("paymentType");
+		System.out.println("Payment Type in servlet is " + paymentType);
+		if(paymentType == null) {
+			errors.put("paymentType", "Please select a valid payment type");
+		}
+		if (errors.isEmpty()) {
 		String token = request.getParameter("stripeToken");
 		String amountStr = request.getParameter("amount");
-		String paymentType = request.getParameter("paymentType");
 		System.out.println("paymentType in checkout servlet is: " + paymentType);
 		double amountDouble = Double.parseDouble(amountStr);
+		
+		
+		
 
 		// Convert amount to smallest currency unit (cents for SGD)
 		int amount = (int) (amountDouble * 100);
@@ -91,6 +102,10 @@ public class CheckoutServlet extends HttpServlet {
 		String url = "/OrderServlet";
 		RequestDispatcher cd = request.getRequestDispatcher(url);
         cd.forward(request, response);
+		} else {
+			session.setAttribute("errors", errors);
+        	response.sendRedirect(request.getContextPath() + "/ca1/payment.jsp");
+		}
 	}
 
 }

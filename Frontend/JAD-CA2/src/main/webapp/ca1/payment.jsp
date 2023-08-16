@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.*"%>
     <%
 	if (session != null && session.getAttribute("loggedIn") != null) {
 		// User is logged in
@@ -13,6 +14,7 @@
     double totalAmount = amount + gstAmount;
     String publicKey = (String) session.getAttribute("stripePublicKey");
     String paymentType = (String) request.getAttribute("paymentType");
+    Map<String, String> errors = (Map<String, String>) session.getAttribute("errors");
     System.out.println(publicKey);
     %>	
 <!DOCTYPE html>
@@ -49,13 +51,25 @@
 	crossorigin="anonymous"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+<style>
+.error {
+	color: red;
+}
+</style>
 <body>
   <div class="col-md-4 container bg-default">
 			<h4 class="my-4">Select Payment Method</h4>
 	<form action="../CheckoutServlet" method="post">
 	<input type="hidden" name=totalAmount value="<%=totalAmount %>">
 <input type="radio" name="paymentType" value="Stripe">
-                   Stripe<br >
+                   Stripe<br>
+                   <%
+				if (errors != null && errors.containsKey("paymentType")) {
+				%>
+				<div class="error"><%=errors.get("paymentType")%></div>
+				<%
+				}
+				%>
                  <hr class="my-4">  
                     <section class="container">
     <div class="promotion">

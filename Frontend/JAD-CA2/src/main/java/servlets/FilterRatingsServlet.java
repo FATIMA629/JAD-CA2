@@ -33,6 +33,7 @@ public class FilterRatingsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		session.removeAttribute("errors");
 		int bookId = Integer.parseInt(request.getParameter("id"));
 		
 		RatingDao ratingDao = null;

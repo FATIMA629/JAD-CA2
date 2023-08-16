@@ -35,6 +35,7 @@ public class AddToCartServlet extends HttpServlet {
 
 
             HttpSession session = request.getSession();
+            session.removeAttribute("errors");
             Integer userIdInteger = (Integer) session.getAttribute("userId");
             int userid = (userIdInteger != null) ? userIdInteger.intValue() : 0;
             
