@@ -36,6 +36,14 @@ public class ReportingServlet extends HttpServlet {
 		System.out.println("Processing POST request");
 
 		HttpSession session = request.getSession();
+		session.removeAttribute("numTopSellingBooks");
+		session.removeAttribute("numTopOrders");
+		session.removeAttribute("numTopCustomers");
+		session.removeAttribute("targetDate");
+		session.removeAttribute("startDate");
+		session.removeAttribute("endDate");
+		session.removeAttribute("targetGenreId");
+
 		session.removeAttribute("totalRevenue");
 		session.removeAttribute("topSellingBooks");
 		session.removeAttribute("topOrders");
@@ -56,24 +64,45 @@ public class ReportingServlet extends HttpServlet {
 
 		String numTopSellingBooks = request.getParameter("numTopSellingBooks");
 		System.out.println("Received numTopSellingBooks: " + numTopSellingBooks);
+		if (numTopSellingBooks != null && !numTopSellingBooks.isEmpty()) {
+			session.setAttribute("numTopSellingBooks", numTopSellingBooks);
+		}
 
 		String numTopOrders = request.getParameter("numTopOrders");
 		System.out.println("Received numTopOrders: " + numTopOrders);
+		if (numTopOrders != null && !numTopOrders.isEmpty()) {
+			session.setAttribute("numTopOrders", numTopOrders);
+		}
 
 		String numTopCustomers = request.getParameter("numTopCustomers");
 		System.out.println("Received numTopCustomers: " + numTopCustomers);
+		if (numTopCustomers != null && !numTopCustomers.isEmpty()) {
+			session.setAttribute("numTopCustomers", numTopCustomers);
+		}
 
 		String targetDate = request.getParameter("targetDate");
 		System.out.println("Received targetDate: " + targetDate);
+		if (targetDate != null && !targetDate.isEmpty()) {
+			session.setAttribute("targetDate", targetDate);
+		}
 
 		String startDate = request.getParameter("startDate");
 		System.out.println("Received startDate: " + startDate);
+		if (startDate != null && !startDate.isEmpty()) {
+			session.setAttribute("startDate", startDate);
+		}
 
 		String endDate = request.getParameter("endDate");
 		System.out.println("Received endDate: " + endDate);
+		if (endDate != null && !endDate.isEmpty()) {
+			session.setAttribute("endDate", endDate);
+		}
 
 		String targetGenreId = request.getParameter("targetGenreId");
 		System.out.println("Received targetGenreId: " + targetGenreId);
+		if (targetGenreId != null && !targetGenreId.isEmpty()) {
+			session.setAttribute("targetGenreId", targetGenreId);
+		}
 
 		session.setAttribute("totalRevenue", bookDao.getTotalRevenue());
 		System.out.println("Set total revenue");

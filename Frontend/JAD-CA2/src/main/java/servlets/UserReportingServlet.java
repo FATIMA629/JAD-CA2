@@ -35,22 +35,37 @@ public class UserReportingServlet extends HttpServlet {
 		session.removeAttribute("usersByAddress");
 		session.removeAttribute("usersByAddressError");
 
-		
 		System.out.println("Processing User POST request");
 
 		UserDao userDao = new UserDao();
 
+		// Check and set userRole to the session
 		String userRole = request.getParameter("userRole");
-		System.out.println("Received userRole: " + userRole);
+		if (userRole != null && !userRole.isEmpty()) {
+			session.setAttribute("userRole", userRole);
+			System.out.println("Received userRole: " + userRole);
+		}
 
+		// Check and set userIdSpending to the session
 		String userIdSpending = request.getParameter("userIdSpending");
-		System.out.println("Received userIdSpending: " + userIdSpending);
+		if (userIdSpending != null && !userIdSpending.isEmpty()) {
+			session.setAttribute("userIdSpending", userIdSpending);
+			System.out.println("Received userIdSpending: " + userIdSpending);
+		}
 
+		// Check and set userAddressCriteria to the session
 		String userAddressCriteria = request.getParameter("userAddressCriteria");
-		System.out.println("Received userAddressCriteria: " + userAddressCriteria);
+		if (userAddressCriteria != null && !userAddressCriteria.isEmpty()) {
+			session.setAttribute("userAddressCriteria", userAddressCriteria);
+			System.out.println("Received userAddressCriteria: " + userAddressCriteria);
+		}
 
+		// Check and set userAddressInput to the session
 		String userAddressInput = request.getParameter("userAddressInput");
-		System.out.println("Received userAddressInput: " + userAddressInput);
+		if (userAddressInput != null && !userAddressInput.isEmpty()) {
+			session.setAttribute("userAddressInput", userAddressInput);
+			System.out.println("Received userAddressInput: " + userAddressInput);
+		}
 
 		try {
 			if (userRole != null && !userRole.isEmpty()) {
