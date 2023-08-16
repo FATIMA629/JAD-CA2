@@ -546,11 +546,20 @@
 				<input type="file" class="form-control" id="imageLocation"
 					name="imageLocation">
 				<%
+				if (inputData != null && inputData.containsKey("imageLocation")) {
+				%>
+				<img src="<%=inputData.get("imageLocation")%>" alt="Previous Image"
+					width="100" height="100">
+				<%
+				}
+				%>
+				<%
 				if (errors != null && errors.containsKey("imageLocation")) {
 					out.println("<div class='error'>" + errors.get("imageLocation") + "</div>");
 				}
 				%>
 			</div>
+
 
 			<!-- Sold field -->
 			<div class="mb-3">
@@ -618,10 +627,20 @@
 						<td><%=user.getUserID()%></td>
 						<td><%=user.getUserName()%></td>
 						<td><%=user.getEmail()%></td>
-						<td>Country: <%=user.getAddress().getCountry()%><br>
+						<td>
+							<%
+							if (user.getAddress() != null) {
+							%> Country: <%=user.getAddress().getCountry()%><br>
 							Address1: <%=user.getAddress().getAddress1()%><br> Address2:
 							<%=user.getAddress().getAddress2()%><br> District: <%=user.getAddress().getDistrict()%><br>
-							City: <%=user.getAddress().getCity()%><br> Postal Code: <%=user.getAddress().getPostalCode()%><br></td>
+							City: <%=user.getAddress().getCity()%><br> Postal Code: <%=user.getAddress().getPostalCode()%><br>
+							<%
+							} else {
+							%> No Address Information Available <%
+							}
+							%>
+						</td>
+
 						<td><%=user.getRole()%></td>
 						<td><a href="editUser.jsp?id=<%=user.getUserID()%>">Update</a></td>
 					</tr>

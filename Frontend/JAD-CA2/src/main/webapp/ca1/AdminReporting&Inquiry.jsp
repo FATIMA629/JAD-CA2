@@ -297,8 +297,6 @@
 			GenreDao genreDao = new GenreDao();
 	%>
 
-
-
 	<div class="container py-5">
 
 		<h1 class="mb-5">Reporting and Inquiry Dashboard</h1>
@@ -492,7 +490,15 @@
 				</div>
 
 				<div class="statistics-card">
-					<h3 class="statistics-header">User Details Based on Role</h3>
+					<h3 class="statistics-header">
+						User Details Based on Role<%
+					if (session.getAttribute("userRole") != null) {
+					%>:
+						<%=session.getAttribute("userRole")%>
+						<%
+						}
+						%>
+					</h3>
 					<div class="scrollable-list">
 						<ul>
 							<%
@@ -514,7 +520,16 @@
 				</div>
 
 				<div class="statistics-card">
-					<h3 class="statistics-header">User Expenditure</h3>
+					<h3 class="statistics-header">
+						User Expenditure<%
+					if (session.getAttribute("userIdSpending") != null) {
+					%>
+						for UserID:
+						<%=session.getAttribute("userIdSpending")%>
+						<%
+						}
+						%>
+					</h3>
 					<li class="statistics-value">
 						<%
 						Double userSpending = (Double) session.getAttribute("userSpending");
@@ -528,7 +543,17 @@
 				</div>
 
 				<div class="statistics-card">
-					<h3 class="statistics-header">Users Based on Address Criteria</h3>
+					<h3 class="statistics-header">
+						Users Based on Address Criteria<%
+					if (session.getAttribute("userAddressCriteria") != null && session.getAttribute("userAddressInput") != null) {
+					%>:
+						<%=session.getAttribute("userAddressCriteria")%>
+						-
+						<%=session.getAttribute("userAddressInput")%>
+						<%
+						}
+						%>
+					</h3>
 					<div class="scrollable-list">
 						<ul>
 							<%
@@ -550,6 +575,8 @@
 				</div>
 			</div>
 		</div>
+
+
 		<h3 class="mt-5">Sales Report</h3>
 		<div id="sales-section">
 
@@ -559,17 +586,18 @@
 					<div class="col">
 						<label for="numTopSellingBooks">Number of Top Selling
 							Books:</label> <input type="number" class="form-control"
-							id="numTopSellingBooks" name="numTopSellingBooks" placeholder="5">
+							id="numTopSellingBooks" name="numTopSellingBooks" placeholder="5"
+							min="1">
 					</div>
 					<div class="col">
 						<label for="numTopOrders">Number of Top Orders:</label> <input
 							type="number" class="form-control" id="numTopOrders"
-							name="numTopOrders" placeholder="5">
+							name="numTopOrders" placeholder="5" min="1">
 					</div>
 					<div class="col">
 						<label for="numTopCustomers">Number of Top Customers:</label> <input
 							type="number" class="form-control" id="numTopCustomers"
-							name="numTopCustomers" placeholder="5">
+							name="numTopCustomers" placeholder="5" min="1">
 					</div>
 				</div>
 
@@ -592,7 +620,7 @@
 					<div class="col">
 						<label for="targetGenreId">Genre ID:</label> <input type="number"
 							class="form-control" id="targetGenreId" name="targetGenreId"
-							placeholder="1">
+							placeholder="1" min="1">
 					</div>
 				</div>
 
@@ -602,8 +630,8 @@
 			</form>
 
 
+
 			<div id="sales-section">
-			
 				<!-- Total Revenue Section -->
 				<div class="statistics-card">
 					<h3 class="statistics-header">Total Revenue</h3>
@@ -613,6 +641,11 @@
 						%>
 						$<%=String.format("%.2f", (Double) session.getAttribute("totalRevenue"))%>
 						<%
+						} else {
+						%>
+						<span class="error-message">Total revenue data is not
+							available.</span>
+						<%
 						}
 						%>
 					</p>
@@ -620,7 +653,23 @@
 
 				<!-- Top Selling Books Section -->
 				<div class="statistics-card">
-					<h3 class="statistics-header">Top Selling Books</h3>
+					<h3 class="statistics-header" id="topSellingBooksHeader">
+						Top
+						<%
+					String numTopSellingBooks = (String) session.getAttribute("numTopSellingBooks");
+					if (numTopSellingBooks != null) {
+					%>
+						<%=numTopSellingBooks%>
+						<%
+						} else {
+						%>
+						Selling
+						<%
+						}
+						%>
+						Books
+					</h3>
+
 					<ul>
 						<%
 						List<Book> topSellingBooks2 = (List<Book>) session.getAttribute("topSellingBooks");
@@ -631,13 +680,10 @@
 						<%
 						}
 						} else {
-						String topSellingBooksError = (String) session.getAttribute("topSellingBooksError");
-						if (topSellingBooksError != null && !topSellingBooksError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=topSellingBooksError%></li>
+						<li class="error-message">No top selling books data
+							available.</li>
 						<%
-						session.removeAttribute("topSellingBooksError");
-						}
 						}
 						%>
 					</ul>
@@ -645,7 +691,19 @@
 
 				<!-- Top Orders Section -->
 				<div class="statistics-card">
-					<h3 class="statistics-header">Top Orders</h3>
+					<h3 class="statistics-header" id="topOrdersHeader">
+						Top
+						<%
+					String numTopOrders = (String) session.getAttribute("numTopOrders");
+					if (numTopOrders != null) {
+					%>
+						<%=numTopOrders%>
+						<%
+						}
+						%>
+						Orders
+
+					</h3>
 					<ul>
 						<%
 						List<Order> topOrders = (List<Order>) session.getAttribute("topOrders");
@@ -656,13 +714,9 @@
 						<%
 						}
 						} else {
-						String topOrdersError = (String) session.getAttribute("topOrdersError");
-						if (topOrdersError != null && !topOrdersError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=topOrdersError%></li>
+						<li class="error-message">No top orders data available.</li>
 						<%
-						session.removeAttribute("topOrdersError");
-						}
 						}
 						%>
 					</ul>
@@ -670,7 +724,18 @@
 
 				<!-- Top Customers Section -->
 				<div class="statistics-card">
-					<h3 class="statistics-header">Top Customers</h3>
+					<h3 class="statistics-header" id="topCustomersHeader">
+						Top
+						<%
+					String numTopCustomers = (String) session.getAttribute("numTopCustomers");
+					if (numTopCustomers != null) {
+					%>
+						<%=numTopCustomers%>
+						<%
+						}
+						%>
+						Customers
+					</h3>
 					<ul>
 						<%
 						List<User> topCustomers = (List<User>) session.getAttribute("topCustomers");
@@ -681,13 +746,9 @@
 						<%
 						}
 						} else {
-						String topCustomersError = (String) session.getAttribute("topCustomersError");
-						if (topCustomersError != null && !topCustomersError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=topCustomersError%></li>
+						<li class="error-message">No top customers data available.</li>
 						<%
-						session.removeAttribute("topCustomersError");
-						}
 						}
 						%>
 					</ul>
@@ -695,7 +756,21 @@
 
 				<!-- Book Sales by Date Section -->
 				<div class="statistics-card">
-					<h3 class="statistics-header">Book Sales by Date</h3>
+					<h3 class="statistics-header" id="salesByDateHeader">
+						Book Sales for
+						<%
+					String targetDate = (String) session.getAttribute("targetDate");
+					if (targetDate != null && !targetDate.isEmpty()) {
+					%>
+						<%=targetDate%>
+						<%
+						} else {
+						%>
+						Date
+						<%
+						}
+						%>
+					</h3>
 					<ul>
 						<%
 						List<Book> bookSalesByDate = (List<Book>) session.getAttribute("bookSalesByDate");
@@ -706,13 +781,10 @@
 						<%
 						}
 						} else {
-						String bookSalesByDateError = (String) session.getAttribute("bookSalesByDateError");
-						if (bookSalesByDateError != null && !bookSalesByDateError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=bookSalesByDateError%></li>
+						<li class="error-message">No book sales by date data
+							available.</li>
 						<%
-						session.removeAttribute("bookSalesByDateError");
-						}
 						}
 						%>
 					</ul>
@@ -720,7 +792,25 @@
 
 				<!-- Book Sales by Period Section -->
 				<div class="statistics-card">
-					<h3 class="statistics-header">Book Sales by Period</h3>
+					<h3 class="statistics-header" id="salesByPeriodHeader">
+						Book Sales
+						<%
+					String startDate = (String) session.getAttribute("startDate");
+					String endDate = (String) session.getAttribute("endDate");
+					if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+					%>
+						from
+						<%=startDate%>
+						to
+						<%=endDate%>
+						<%
+						} else {
+						%>
+						by Period
+						<%
+						}
+						%>
+					</h3>
 					<ul>
 						<%
 						List<Book> bookSalesByPeriod = (List<Book>) session.getAttribute("bookSalesByPeriod");
@@ -731,13 +821,10 @@
 						<%
 						}
 						} else {
-						String bookSalesByPeriodError = (String) session.getAttribute("bookSalesByPeriodError");
-						if (bookSalesByPeriodError != null && !bookSalesByPeriodError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=bookSalesByPeriodError%></li>
+						<li class="error-message">No book sales by period data
+							available.</li>
 						<%
-						session.removeAttribute("bookSalesByPeriodError");
-						}
 						}
 						%>
 					</ul>
@@ -745,7 +832,22 @@
 
 				<!-- Book Sales by Genre Section -->
 				<div class="statistics-card">
-					<h3 class="statistics-header">Book Sales by Genre</h3>
+					<h3 class="statistics-header" id="salesByGenreHeader">
+						Book Sales by
+						<%
+					String targetGenreId = (String) session.getAttribute("targetGenreId");
+					if (targetGenreId != null) {
+					%>
+						Genre ID:
+						<%=targetGenreId%>
+						<%
+						} else {
+						%>
+						Genre
+						<%
+						}
+						%>
+					</h3>
 					<ul>
 						<%
 						List<Book> bookSalesByGenre = (List<Book>) session.getAttribute("bookSalesByGenre");
@@ -756,18 +858,14 @@
 						<%
 						}
 						} else {
-						String bookSalesByGenreError = (String) session.getAttribute("bookSalesByGenreError");
-						if (bookSalesByGenreError != null && !bookSalesByGenreError.trim().isEmpty()) {
 						%>
-						<li class="error-message"><%=bookSalesByGenreError%></li>
+						<li class="error-message">No book sales by genre data
+							available.</li>
 						<%
-						session.removeAttribute("bookSalesByGenreError");
-						}
 						}
 						%>
 					</ul>
 				</div>
-
 			</div>
 		</div>
 
@@ -783,6 +881,5 @@
 	response.sendRedirect("home.jsp"); // Redirect to the home page
 	}
 	%>
-
 </body>
 </html>
